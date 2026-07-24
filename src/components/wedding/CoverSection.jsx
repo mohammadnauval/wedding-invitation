@@ -13,7 +13,7 @@ function CoverSection({ weddingData, guestName, onOpen }) {
     : '';
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-[var(--color-bg)] lg:relative lg:min-h-screen overflow-hidden">
+    <div className="fixed inset-0 z-50 bg-[var(--color-bg)] lg:relative lg:min-h-screen overflow-hidden">
       
       {/* Background image */}
       <div className="absolute inset-0">
@@ -24,55 +24,51 @@ function CoverSection({ weddingData, guestName, onOpen }) {
         />
       </div>
 
-      <div className="max-w-[480px] mx-auto w-full h-full flex flex-col justify-start px-8 pt-0 pb-8 relative">
-        
-        {/* Top section - names and title, positioned at top like reference */}
-        <div className="text-center -mt-6">
-          <p className="text-sm font-bold tracking-[0.25em] uppercase text-[var(--color-primary)] mb-2 fade-up" style={{ animationDelay: '0.2s' }}>
-            We're Getting Married!
-          </p>
+      {/* Top section - title + names */}
+      <div className="absolute top-0 left-0 right-0 px-8 pt-2">
+        <p className="text-sm font-bold tracking-[0.25em] uppercase text-[var(--color-primary)] mb-2 text-center fade-up" style={{ animationDelay: '0.2s' }}>
+          We're Getting Married!
+        </p>
 
-          <div className="fade-up" style={{ animationDelay: '0.4s' }}>
-            <h1 className="font-couple text-7xl md:text-8xl text-[var(--color-primary)] leading-[0.85] text-left">
-              {groomName} &
-            </h1>
-            <h1 className="font-couple text-7xl md:text-8xl text-[var(--color-primary)] leading-[0.85] text-left pl-4">
-              {brideName}
-            </h1>
-          </div>
+        <div className="fade-up" style={{ animationDelay: '0.4s' }}>
+          <h1 className="font-couple text-7xl md:text-8xl text-[var(--color-primary)] leading-[0.85] text-left">
+            {groomName} &
+          </h1>
+          <h1 className="font-couple text-7xl md:text-8xl text-[var(--color-primary)] leading-[0.85] text-left pl-4">
+            {brideName}
+          </h1>
+        </div>
+      </div>
+
+      {/* Save the Date - middle right */}
+      <div className="absolute top-[45%] right-8 text-right fade-up" style={{ animationDelay: '0.6s' }}>
+        <p className="text-xs font-bold tracking-[0.3em] uppercase text-[var(--color-primary)] mb-0.5">
+          Save the Date
+        </p>
+        <p className="font-couple text-3xl text-[var(--color-primary)]">
+          {weddingDate}
+        </p>
+      </div>
+
+      {/* Dear + Button - fixed at very bottom */}
+      <div className="absolute bottom-4 left-0 right-0 text-center fade-up" style={{ animationDelay: '0.8s' }}>
+        <div className="inline-block px-5 py-2 rounded-2xl bg-[var(--color-primary)]/10 mb-3">
+          <p className="text-[10px] tracking-[0.2em] uppercase text-[var(--color-text-muted)] mb-0.5">
+            Dear
+          </p>
+          <p className="text-sm font-semibold text-[var(--color-primary)]">
+            {guestName} & Partner
+          </p>
         </div>
 
-        {/* Spacer - leave room for hand illustration in background */}
-        <div className="flex-1" />
-
-        {/* Bottom section - date, guest name, button (pinned to bottom) */}
-        <div className="text-right pb-0 fade-up mt-auto" style={{ animationDelay: '0.8s' }}>
-          <p className="text-xs font-bold tracking-[0.3em] uppercase text-[var(--color-primary)] mb-0.5 text-right">
-            Save the Date
-          </p>
-          <p className="font-couple text-3xl text-[var(--color-primary)] mb-4 text-right">
-            {weddingDate}
-          </p>
-
-          {/* Guest info */}
-          <div className="inline-block px-5 py-2.5 rounded-2xl bg-[var(--color-primary)]/10 mb-3 mt-auto">
-            <p className="text-[10px] tracking-[0.2em] uppercase text-[var(--color-text-muted)] mb-0.5">
-              Dear
-            </p>
-            <p className="text-sm font-semibold text-[var(--color-primary)]">
-              {guestName} & Partner
-            </p>
-          </div>
-
-          <div className="block">
-            <button
-              onClick={onOpen}
-              className="btn-primary"
-              aria-label="Buka Undangan"
-            >
-              Open Invitation
-            </button>
-          </div>
+        <div className="block">
+          <button
+            onClick={onOpen}
+            className="btn-primary"
+            aria-label="Buka Undangan"
+          >
+            Open Invitation
+          </button>
         </div>
       </div>
     </div>
