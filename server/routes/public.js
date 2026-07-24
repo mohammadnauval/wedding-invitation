@@ -37,6 +37,11 @@ router.get('/invitations/:slugOrToken?', async (req, res) => {
       guest = result.rows[0] || null;
     }
 
+    // If a specific guest was requested but not found, return 404
+    if ((slugOrToken || t || to) && !guest) {
+      return res.status(404).json({ message: 'Undangan tidak ditemukan' });
+    }
+
     // Get RSVP for guest
     let rsvp = null;
     if (guest) {
