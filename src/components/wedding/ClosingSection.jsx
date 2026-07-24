@@ -12,7 +12,7 @@ function ClosingSection({ weddingData }) {
     'Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir untuk memberikan doa restu. Atas kehadiran dan doa restunya, kami mengucapkan terima kasih.';
 
   return (
-    <section ref={ref} className="py-20 bg-white">
+    <section ref={ref} className="py-20 bg-[var(--color-bg)]">
       <div className={`section-container text-center ${inView ? 'fade-up' : 'opacity-0'}`}>
         <p className="text-xs tracking-wider text-[var(--color-text-muted)] mb-6 leading-relaxed">
           {closingText}

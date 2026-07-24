@@ -28,7 +28,7 @@ function HeroSection({ weddingData }) {
           className="w-full h-full object-cover"
           loading="eager"
         />
-        <div className="absolute inset-0 bg-white/60" />
+        <div className="absolute inset-0 bg-[var(--color-bg)]/60" />
       </div>
 
       {/* Content */}

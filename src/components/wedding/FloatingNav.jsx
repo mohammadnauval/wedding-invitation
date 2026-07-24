@@ -41,7 +41,7 @@ function FloatingNav() {
   };
 
   return (
-    <nav className="fixed bottom-4 left-1/2 -translate-x-1/2 z-50 bg-white/90 backdrop-blur-md border border-[var(--color-border)] rounded-full px-4 py-2 shadow-lg">
+    <nav className="fixed bottom-4 left-1/2 -translate-x-1/2 z-50 bg-[var(--color-bg)]/90 backdrop-blur-md border border-[var(--color-border)] rounded-full px-4 py-2 shadow-lg">
       <ul className="flex items-center gap-1">
         {navItems.map((item) => (
           <li key={item.id}>

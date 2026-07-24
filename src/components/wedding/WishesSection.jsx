@@ -74,7 +74,7 @@ function WishesSection({ guestData }) {
   };
 
   return (
-    <section id="wishes" ref={ref} className="py-16 bg-white">
+    <section id="wishes" ref={ref} className="py-16 bg-[var(--color-bg)]">
       <div className={`section-container ${inView ? 'fade-up' : 'opacity-0'}`}>
         <h2 className="section-title">Wishes</h2>
         <p className="section-subtitle">Ucapan & Doa</p>

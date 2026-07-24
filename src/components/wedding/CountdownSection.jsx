@@ -59,7 +59,7 @@ function CountdownSection({ weddingData }) {
               { value: timeLeft.seconds, label: 'Detik' },
             ].map((item) => (
               <div key={item.label} className="text-center">
-                <div className="bg-white rounded-xl p-3 shadow-sm border border-[var(--color-border)]">
+                <div className="bg-[var(--color-bg)] rounded-xl p-3 shadow-sm border border-[var(--color-border)]">
                   <span className="text-2xl md:text-3xl font-semibold text-[var(--color-primary)]">
                     {String(item.value).padStart(2, '0')}
                   </span>

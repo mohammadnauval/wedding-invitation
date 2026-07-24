@@ -37,7 +37,7 @@ function MusicPlayer({ audioRef, weddingData }) {
   return (
     <button
       onClick={togglePlay}
-      className="fixed top-4 right-4 z-50 w-10 h-10 rounded-full bg-white/90 backdrop-blur-md border border-[var(--color-border)] shadow-md flex items-center justify-center transition-all hover:scale-110"
+      className="fixed top-4 right-4 z-50 w-10 h-10 rounded-full bg-[var(--color-bg)]/90 backdrop-blur-md border border-[var(--color-border)] shadow-md flex items-center justify-center transition-all hover:scale-110"
       aria-label={isPlaying ? 'Pause music' : 'Play music'}
     >
       <span className={`text-sm ${isPlaying ? 'animate-spin' : ''}`} style={{ animationDuration: '3s' }}>

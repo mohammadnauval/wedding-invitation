@@ -8,7 +8,7 @@ function CoupleSection({ weddingData }) {
   const bride = weddingData?.couple?.bride || {};
 
   return (
-    <section id="couple" ref={ref} className="py-16 bg-white">
+    <section id="couple" ref={ref} className="py-16 bg-[var(--color-bg)]">
       <div className={`section-container ${inView ? 'fade-up' : 'opacity-0'}`}>
         <h2 className="section-title">Bride & Groom</h2>
         <p className="section-subtitle">Insya Allah yang berbahagia</p>

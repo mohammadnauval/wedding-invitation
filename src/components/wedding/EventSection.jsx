@@ -32,7 +32,7 @@ function EventSection({ weddingData }) {
   };
 
   return (
-    <section id="event" ref={ref} className="py-16 bg-white">
+    <section id="event" ref={ref} className="py-16 bg-[var(--color-bg)]">
       <div className={`section-container ${inView ? 'fade-up' : 'opacity-0'}`}>
         <h2 className="section-title">Wedding Events</h2>
         <p className="section-subtitle">Rangkaian Acara</p>

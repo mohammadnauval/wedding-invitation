@@ -108,7 +108,7 @@ function WeddingPage() {
   const displayName = guestData?.name || guestName || 'Bapak/Ibu/Saudara/i';
 
   return (
-    <div className="relative bg-white">
+    <div className="relative bg-[var(--color-bg)]">
       {/* Desktop decorative background */}
       <div className="hidden lg:block fixed inset-0 z-0">
         <div className="absolute inset-0 bg-[var(--color-bg-muted)]" />
@@ -117,7 +117,7 @@ function WeddingPage() {
       </div>
 
       {/* Main content - centered card on desktop */}
-      <div className="relative z-10 max-w-[480px] mx-auto min-h-screen bg-white lg:shadow-2xl">
+      <div className="relative z-10 max-w-[480px] mx-auto min-h-screen bg-[var(--color-bg)] lg:shadow-2xl">
         {!isOpen ? (
           <CoverSection
             weddingData={weddingData}
