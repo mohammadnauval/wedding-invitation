@@ -30,7 +30,7 @@ function ClosingSection({ weddingData }) {
         </p>
 
         <p className="font-couple text-4xl text-[var(--color-primary)] mt-6">
-          {groomName} & {brideName}
+          {brideName} & {groomName}
         </p>
 
         <p className="text-[10px] text-[var(--color-text-light)] mt-16 font-bold tracking-widest uppercase">

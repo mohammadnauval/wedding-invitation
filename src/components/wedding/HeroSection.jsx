@@ -4,8 +4,8 @@ import useInView from '../../hooks/useInView';
 function HeroSection({ weddingData }) {
   const [ref, inView] = useInView({ threshold: 0.2 });
 
-  const groomName = weddingData?.couple?.groom?.nickname || 'Groom';
   const brideName = weddingData?.couple?.bride?.nickname || 'Bride';
+  const groomName = weddingData?.couple?.groom?.nickname || 'Groom';
 
   const weddingDate = weddingData?.events?.[0]?.event_date
     ? new Date(weddingData.events[0].event_date).toLocaleDateString('en-GB', {
@@ -15,19 +15,16 @@ function HeroSection({ weddingData }) {
       }).replace(/\//g, '.')
     : '';
 
-  const heroImage = weddingData?.settings?.hero_image || '/hero.jpeg';
-
   return (
     <section id="home" ref={ref} className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Background image */}
       <div className="absolute inset-0">
         <img
-          src={heroImage}
+          src="/images/wedding_page_2_background.png"
           alt="Wedding Hero"
           className="w-full h-full object-cover"
           loading="eager"
         />
-        <div className="absolute inset-0 bg-[var(--color-bg)]/70 backdrop-blur-[2px]" />
       </div>
 
       {/* Content */}
@@ -37,7 +34,7 @@ function HeroSection({ weddingData }) {
         </p>
 
         <h1 className="font-couple text-6xl md:text-7xl text-[var(--color-primary)] mb-2 leading-[0.9]">
-          {groomName} & {brideName}
+          {brideName} & {groomName}
         </h1>
 
         <div className="flex items-center justify-center gap-4 mt-6">
