@@ -24,11 +24,11 @@ function CoverSection({ weddingData, guestName, onOpen }) {
         />
       </div>
 
-      <div className="max-w-[480px] mx-auto w-full h-full flex flex-col justify-between px-8 py-12 relative">
+      <div className="max-w-[480px] mx-auto w-full h-full flex flex-col justify-between px-8 py-8 relative">
         
-        {/* Top section - names and title (upper 40%) */}
-        <div className="text-center pt-4">
-          <p className="text-sm font-bold tracking-[0.25em] uppercase text-[var(--color-primary)] mb-4 fade-up" style={{ animationDelay: '0.2s' }}>
+        {/* Top section - names and title (pushed to very top) */}
+        <div className="text-center">
+          <p className="text-sm font-bold tracking-[0.25em] uppercase text-[var(--color-primary)] mb-3 fade-up" style={{ animationDelay: '0.2s' }}>
             We're Getting Married!
           </p>
 
