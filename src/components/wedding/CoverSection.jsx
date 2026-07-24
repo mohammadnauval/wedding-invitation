@@ -20,7 +20,7 @@ function CoverSection({ weddingData, guestName, onOpen }) {
         <img 
           src="/images/wedding_welcome_page_background.png" 
           alt="" 
-          className="w-full h-full object-cover object-bottom"
+          className="w-full h-full object-cover scale-125 origin-center"
         />
       </div>
 
