@@ -45,17 +45,19 @@ function CoverSection({ weddingData, guestName, onOpen }) {
         {/* Spacer - leave room for hand illustration in background */}
         <div className="flex-1" />
 
-        {/* Bottom section - date, guest name, button (pinned to bottom) */}
-        <div className="text-right pb-0 fade-up mt-auto" style={{ animationDelay: '0.8s' }}>
+        {/* Save the date - right aligned */}
+        <div className="text-right fade-up" style={{ animationDelay: '0.8s' }}>
           <p className="text-xs font-bold tracking-[0.3em] uppercase text-[var(--color-primary)] mb-0.5 text-right">
             Save the Date
           </p>
-          <p className="font-couple text-3xl text-[var(--color-primary)] mb-4 text-right">
+          <p className="font-couple text-3xl text-[var(--color-primary)] text-right">
             {weddingDate}
           </p>
+        </div>
 
-          {/* Guest info */}
-          <div className="inline-block px-5 py-2.5 rounded-2xl bg-[var(--color-primary)]/10 mb-3 mt-auto">
+        {/* Guest info + button - absolute bottom of screen */}
+        <div className="absolute bottom-6 left-0 right-0 text-center fade-up" style={{ animationDelay: '1s' }}>
+          <div className="inline-block px-5 py-2 rounded-2xl bg-[var(--color-primary)]/10 mb-3">
             <p className="text-[10px] tracking-[0.2em] uppercase text-[var(--color-text-muted)] mb-0.5">
               Dear
             </p>
