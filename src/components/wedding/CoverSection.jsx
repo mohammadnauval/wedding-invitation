@@ -15,11 +15,14 @@ function CoverSection({ weddingData, guestName, onOpen }) {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-[var(--color-bg)] lg:relative lg:min-h-screen overflow-hidden">
       
-      {/* Subtle background pattern */}
-      <div className="absolute inset-0 opacity-[0.03]" style={{
-        backgroundImage: `radial-gradient(circle, var(--color-primary) 1px, transparent 1px)`,
-        backgroundSize: '30px 30px',
-      }} />
+      {/* Background image */}
+      <div className="absolute inset-0">
+        <img 
+          src="/images/wedding_welcome_page_background.png" 
+          alt="" 
+          className="w-full h-full object-cover"
+        />
+      </div>
 
       <div className="max-w-[480px] mx-auto w-full h-full flex flex-col items-center justify-center px-8 relative">
         
