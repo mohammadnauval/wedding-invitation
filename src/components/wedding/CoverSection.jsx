@@ -1,8 +1,8 @@
 import React from 'react';
 
 function CoverSection({ weddingData, guestName, onOpen }) {
-  const groomName = weddingData?.couple?.groom?.nickname || 'Groom';
-  const brideName = weddingData?.couple?.bride?.nickname || 'Bride';
+  const groomName = weddingData?.couple?.bride?.nickname || 'Bride';
+  const brideName = weddingData?.couple?.groom?.nickname || 'Groom';
 
   const weddingDate = weddingData?.events?.[0]?.event_date
     ? new Date(weddingData.events[0].event_date).toLocaleDateString('en-GB', {
