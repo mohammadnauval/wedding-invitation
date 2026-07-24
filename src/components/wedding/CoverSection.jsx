@@ -43,7 +43,7 @@ function CoverSection({ weddingData, guestName, onOpen }) {
           Kepada Yth.
         </p>
         <p className="text-lg font-medium text-[var(--color-text)] mb-10">
-          {guestName}
+          {guestName} & Partner
         </p>
 
         <button
