@@ -42,29 +42,29 @@ function CountdownSection({ weddingData }) {
     <section ref={ref} className="py-16 bg-[var(--color-bg-soft)]">
       <div className={`section-container ${inView ? 'fade-up' : 'opacity-0'}`}>
         <h2 className="section-title">Counting Days</h2>
-        <p className="section-subtitle">Menuju Hari Bahagia</p>
+        <p className="section-subtitle">Until we say "I do"</p>
 
         {isPast ? (
           <div className="text-center">
-            <p className="font-script text-2xl text-[var(--color-primary)]">
-              {weddingData?.content?.countdown_message || 'Today is Our Special Day'}
+            <p className="font-couple text-3xl text-[var(--color-primary)]">
+              {weddingData?.content?.countdown_message || "Today is Our Day! 💍"}
             </p>
           </div>
         ) : (
           <div className="grid grid-cols-4 gap-3">
             {[
-              { value: timeLeft.days, label: 'Hari' },
-              { value: timeLeft.hours, label: 'Jam' },
-              { value: timeLeft.minutes, label: 'Menit' },
-              { value: timeLeft.seconds, label: 'Detik' },
+              { value: timeLeft.days, label: 'Days' },
+              { value: timeLeft.hours, label: 'Hours' },
+              { value: timeLeft.minutes, label: 'Min' },
+              { value: timeLeft.seconds, label: 'Sec' },
             ].map((item) => (
               <div key={item.label} className="text-center">
-                <div className="bg-[var(--color-bg)] rounded-xl p-3 shadow-sm border border-[var(--color-border)]">
-                  <span className="text-2xl md:text-3xl font-semibold text-[var(--color-primary)]">
+                <div className="bg-[var(--color-primary)] rounded-2xl p-4 shadow-lg shadow-[var(--color-primary)]/20">
+                  <span className="text-3xl md:text-4xl font-bold text-[var(--color-bg-soft)]">
                     {String(item.value).padStart(2, '0')}
                   </span>
                 </div>
-                <p className="text-[10px] tracking-wider uppercase text-[var(--color-text-muted)] mt-2">
+                <p className="text-[10px] font-bold tracking-wider uppercase text-[var(--color-primary)] mt-2">
                   {item.label}
                 </p>
               </div>

@@ -90,7 +90,7 @@ function RsvpSection({ guestData, weddingData }) {
         <p className="section-subtitle">Konfirmasi Kehadiran</p>
 
         {existingRsvp && !isEditing ? (
-          <div className="text-center p-6 bg-white rounded-2xl border border-[var(--color-border)]">
+          <div className="text-center p-6 bg-[var(--color-bg)] rounded-2xl border-2 border-[var(--color-border)]">
             <p className="text-sm text-[var(--color-text-muted)] mb-2">Konfirmasi Anda</p>
             <p className="text-lg font-medium text-[var(--color-primary)] mb-1">
               {existingRsvp.attendance_status === 'attending' ? '✓ Hadir' : '✗ Tidak Hadir'}
@@ -118,7 +118,7 @@ function RsvpSection({ guestData, weddingData }) {
                 type="text"
                 value={guestData?.name || ''}
                 disabled
-                className="w-full px-4 py-3 bg-[var(--color-bg-muted)] border border-[var(--color-border)] rounded-xl text-sm"
+                className="w-full px-4 py-3 bg-[var(--color-bg)] border-2 border-[var(--color-border)] rounded-xl text-sm"
               />
             </div>
 
@@ -134,7 +134,7 @@ function RsvpSection({ guestData, weddingData }) {
                   className={`py-3 rounded-xl text-sm border transition-all ${
                     formData.attendance_status === 'attending'
                       ? 'bg-[var(--color-primary)] text-white border-[var(--color-primary)]'
-                      : 'bg-white border-[var(--color-border)] text-[var(--color-text-muted)]'
+                      : 'bg-[var(--color-bg)] border-[var(--color-border)] text-[var(--color-text-muted)]'
                   }`}
                 >
                   Hadir
@@ -145,7 +145,7 @@ function RsvpSection({ guestData, weddingData }) {
                   className={`py-3 rounded-xl text-sm border transition-all ${
                     formData.attendance_status === 'not_attending'
                       ? 'bg-[var(--color-primary)] text-white border-[var(--color-primary)]'
-                      : 'bg-white border-[var(--color-border)] text-[var(--color-text-muted)]'
+                      : 'bg-[var(--color-bg)] border-[var(--color-border)] text-[var(--color-text-muted)]'
                   }`}
                 >
                   Tidak Hadir

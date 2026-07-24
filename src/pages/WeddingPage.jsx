@@ -111,9 +111,9 @@ function WeddingPage() {
     <div className="relative bg-[var(--color-bg)]">
       {/* Desktop decorative background */}
       <div className="hidden lg:block fixed inset-0 z-0">
-        <div className="absolute inset-0 bg-[var(--color-bg-muted)]" />
-        <div className="absolute left-0 top-0 w-1/4 h-full opacity-10 bg-gradient-to-r from-[var(--color-primary-light)] to-transparent" />
-        <div className="absolute right-0 top-0 w-1/4 h-full opacity-10 bg-gradient-to-l from-[var(--color-primary-light)] to-transparent" />
+        <div className="absolute inset-0 bg-[var(--color-bg-dark)]" />
+        <div className="absolute left-0 top-0 w-1/4 h-full opacity-20 bg-gradient-to-r from-[var(--color-primary)] to-transparent" />
+        <div className="absolute right-0 top-0 w-1/4 h-full opacity-20 bg-gradient-to-l from-[var(--color-primary)] to-transparent" />
       </div>
 
       {/* Main content - centered card on desktop */}

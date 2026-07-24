@@ -4,9 +4,8 @@ import useInView from '../../hooks/useInView';
 function HeroSection({ weddingData }) {
   const [ref, inView] = useInView({ threshold: 0.2 });
 
-  const coupleName = weddingData?.couple
-    ? `${weddingData.couple.groom?.nickname || ''} & ${weddingData.couple.bride?.nickname || ''}`
-    : 'Groom & Bride';
+  const groomName = weddingData?.couple?.groom?.nickname || 'Groom';
+  const brideName = weddingData?.couple?.bride?.nickname || 'Bride';
 
   const weddingDate = weddingData?.events?.[0]?.event_date
     ? new Date(weddingData.events[0].event_date).toLocaleDateString('en-GB', {
@@ -28,25 +27,25 @@ function HeroSection({ weddingData }) {
           className="w-full h-full object-cover"
           loading="eager"
         />
-        <div className="absolute inset-0 bg-[var(--color-bg)]/60" />
+        <div className="absolute inset-0 bg-[var(--color-bg)]/70 backdrop-blur-[2px]" />
       </div>
 
       {/* Content */}
       <div className={`relative text-center px-8 py-20 ${inView ? 'fade-up' : 'opacity-0'}`}>
-        <p className="text-xs tracking-[0.3em] uppercase text-[var(--color-text-muted)] mb-6">
+        <p className="text-xs font-bold tracking-[0.3em] uppercase text-[var(--color-primary)] mb-6">
           The Wedding of
         </p>
 
-        <h1 className="font-script text-5xl md:text-6xl text-[var(--color-primary)] mb-4">
-          {coupleName}
+        <h1 className="font-couple text-6xl md:text-7xl text-[var(--color-primary)] mb-2 leading-[0.9]">
+          {groomName} & {brideName}
         </h1>
 
-        <div className="flex items-center justify-center gap-4 mb-4">
-          <div className="w-12 h-px bg-[var(--color-primary-light)]" />
-          <p className="text-sm tracking-[0.2em] text-[var(--color-text-muted)]">
+        <div className="flex items-center justify-center gap-4 mt-6">
+          <div className="w-12 h-[2px] bg-[var(--color-primary)]" />
+          <p className="font-couple text-2xl text-[var(--color-primary)]">
             {weddingDate}
           </p>
-          <div className="w-12 h-px bg-[var(--color-primary-light)]" />
+          <div className="w-12 h-[2px] bg-[var(--color-primary)]" />
         </div>
       </div>
     </section>

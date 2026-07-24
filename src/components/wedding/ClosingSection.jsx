@@ -4,9 +4,8 @@ import useInView from '../../hooks/useInView';
 function ClosingSection({ weddingData }) {
   const [ref, inView] = useInView();
 
-  const coupleName = weddingData?.couple
-    ? `${weddingData.couple.groom?.nickname || ''} & ${weddingData.couple.bride?.nickname || ''}`
-    : '';
+  const groomName = weddingData?.couple?.groom?.nickname || '';
+  const brideName = weddingData?.couple?.bride?.nickname || '';
 
   const closingText = weddingData?.content?.closing ||
     'Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir untuk memberikan doa restu. Atas kehadiran dan doa restunya, kami mengucapkan terima kasih.';
@@ -14,21 +13,27 @@ function ClosingSection({ weddingData }) {
   return (
     <section ref={ref} className="py-20 bg-[var(--color-bg)]">
       <div className={`section-container text-center ${inView ? 'fade-up' : 'opacity-0'}`}>
-        <p className="text-xs tracking-wider text-[var(--color-text-muted)] mb-6 leading-relaxed">
+        <p className="text-xs leading-relaxed text-[var(--color-text-muted)] mb-8">
           {closingText}
         </p>
 
-        <div className="w-12 h-px bg-[var(--color-border)] mx-auto mb-6" />
+        <div className="flex items-center justify-center gap-3 mb-8">
+          <div className="w-8 h-[2px] bg-[var(--color-primary-light)]" />
+          <svg width="16" height="16" viewBox="0 0 20 20" fill="var(--color-primary)" opacity="0.5">
+            <path d="M10 18 C5 13, 0 9, 0 5 C0 2, 2 0, 5 0 C7 0, 9 1.5, 10 3 C11 1.5, 13 0, 15 0 C18 0, 20 2, 20 5 C20 9, 15 13, 10 18Z"/>
+          </svg>
+          <div className="w-8 h-[2px] bg-[var(--color-primary-light)]" />
+        </div>
 
         <p className="text-xs tracking-wider text-[var(--color-text-muted)] mb-2">
           Wassalamu'alaikum Wr. Wb.
         </p>
 
-        <p className="font-script text-3xl text-[var(--color-primary)] mt-6">
-          {coupleName}
+        <p className="font-couple text-4xl text-[var(--color-primary)] mt-6">
+          {groomName} & {brideName}
         </p>
 
-        <p className="text-[10px] text-[var(--color-text-light)] mt-12">
+        <p className="text-[10px] text-[var(--color-text-light)] mt-16 font-bold tracking-widest uppercase">
           Made with ♥
         </p>
       </div>

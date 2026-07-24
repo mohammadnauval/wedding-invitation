@@ -15,12 +15,12 @@ function LoveStorySection({ weddingData }) {
 
         <div className="relative">
           {/* Timeline line */}
-          <div className="absolute left-4 top-0 bottom-0 w-px bg-[var(--color-border)]" />
+          <div className="absolute left-4 top-0 bottom-0 w-[2px] bg-[var(--color-primary-light)]" />
 
           {stories.map((story, index) => (
             <div key={story.id || index} className="relative pl-12 pb-10 last:pb-0">
               {/* Timeline dot */}
-              <div className="absolute left-3 top-1 w-3 h-3 rounded-full bg-[var(--color-primary-light)] border-2 border-white" />
+              <div className="absolute left-3 top-1 w-3 h-3 rounded-full bg-[var(--color-primary)] border-2 border-[var(--color-bg-soft)]" />
 
               <p className="text-xs tracking-wider text-[var(--color-primary)] mb-1">
                 {story.date}

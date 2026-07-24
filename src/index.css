@@ -4,20 +4,18 @@
 
 @layer base {
   :root {
-    --color-primary: #8b6914;
-    --color-primary-light: #c9a84c;
-    --color-primary-dark: #6b5010;
-    --color-accent: #a0522d;
-    --color-bg: #fdf8f0;
-    --color-bg-soft: #faf3e6;
-    --color-bg-muted: #f5eddb;
-    --color-text: #3d2e1c;
-    --color-text-muted: #6b5a45;
-    --color-text-light: #9a8b76;
-    --color-border: #e0d4b8;
-    --color-floral: #5a7247;
-    --color-floral-dark: #3d5230;
-    --color-berry: #8b2252;
+    --color-primary: #c41e3a;
+    --color-primary-light: #e85d75;
+    --color-primary-dark: #8b1528;
+    --color-accent: #ff6b8a;
+    --color-bg: #f9c6d3;
+    --color-bg-soft: #fdd5de;
+    --color-bg-muted: #f4b8c8;
+    --color-bg-dark: #f0a3b8;
+    --color-text: #8b1528;
+    --color-text-muted: #a63d52;
+    --color-text-light: #c46b7e;
+    --color-border: #e89aad;
   }
 
   * {
@@ -47,29 +45,36 @@
   }
 
   .font-couple {
-    font-family: 'Pinyon Script', cursive;
+    font-family: 'Caveat', cursive;
+  }
+
+  .font-handwritten {
+    font-family: 'Caveat', cursive;
   }
 }
 
 @layer components {
   .btn-primary {
-    @apply px-6 py-3 rounded-full font-medium tracking-wide transition-all duration-300;
+    @apply px-8 py-3.5 rounded-full font-bold tracking-wide transition-all duration-300 uppercase text-sm;
     background-color: var(--color-primary);
-    color: white;
+    color: #fdd5de;
   }
   .btn-primary:hover {
     background-color: var(--color-primary-dark);
-    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+    box-shadow: 0 10px 30px -5px rgba(196, 30, 58, 0.4);
+    transform: translateY(-2px);
   }
 
   .btn-outline {
-    @apply px-6 py-3 rounded-full font-medium tracking-wide transition-all duration-300;
-    border: 2px solid var(--color-primary);
+    @apply px-8 py-3.5 rounded-full font-bold tracking-wide transition-all duration-300 uppercase text-sm;
+    border: 2.5px solid var(--color-primary);
     color: var(--color-primary);
   }
   .btn-outline:hover {
     background-color: var(--color-primary);
-    color: white;
+    color: #fdd5de;
+    box-shadow: 0 10px 30px -5px rgba(196, 30, 58, 0.4);
+    transform: translateY(-2px);
   }
 
   .section-container {
@@ -77,14 +82,16 @@
   }
 
   .section-title {
-    @apply text-2xl md:text-3xl font-semibold text-center mb-2;
-    font-family: 'Playfair Display', serif;
-    color: var(--color-text);
+    @apply text-2xl md:text-3xl font-bold text-center mb-2 uppercase tracking-wider;
+    font-family: 'Montserrat', sans-serif;
+    color: var(--color-primary);
   }
 
   .section-subtitle {
-    @apply text-sm text-center mb-8 tracking-wider uppercase;
+    @apply text-sm text-center mb-8 tracking-wider;
     color: var(--color-text-muted);
+    font-family: 'Caveat', cursive;
+    font-size: 1.1rem;
   }
 
   .fade-in {
@@ -95,32 +102,23 @@
   .fade-up {
     animation: fadeUp 0.8s ease-out forwards;
     opacity: 0;
-    transform: translateY(20px);
+    transform: translateY(30px);
   }
 
   .slide-in-left {
     animation: slideInLeft 0.8s ease-out forwards;
     opacity: 0;
-    transform: translateX(-20px);
+    transform: translateX(-30px);
   }
 
   .slide-in-right {
     animation: slideInRight 0.8s ease-out forwards;
     opacity: 0;
-    transform: translateX(20px);
+    transform: translateX(30px);
   }
 
-  /* Floral decorative border */
-  .floral-border {
-    border: 3px solid var(--color-primary-light);
-    position: relative;
-  }
-  .floral-border::before {
-    content: '';
-    position: absolute;
-    inset: 4px;
-    border: 1px dashed var(--color-primary-light);
-    pointer-events: none;
+  .float-animation {
+    animation: float 3s ease-in-out infinite;
   }
 }
 
@@ -138,6 +136,16 @@
 
 @keyframes slideInRight {
   to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+@keyframes sparkle {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(0.8); }
 }
 
 /* Scrollbar */

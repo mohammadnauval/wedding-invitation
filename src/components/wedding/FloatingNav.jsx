@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
 
 const navItems = [
-  { id: 'home', label: 'Home', icon: '⌂' },
-  { id: 'couple', label: 'Couple', icon: '♥' },
-  { id: 'event', label: 'Event', icon: '◈' },
+  { id: 'home', label: 'Home', icon: '♡' },
+  { id: 'couple', label: 'Couple', icon: '✦' },
+  { id: 'event', label: 'Event', icon: '◆' },
   { id: 'gallery', label: 'Gallery', icon: '▣' },
   { id: 'rsvp', label: 'RSVP', icon: '✉' },
-  { id: 'wishes', label: 'Wishes', icon: '✧' },
 ];
 
 function FloatingNav() {
@@ -41,7 +40,7 @@ function FloatingNav() {
   };
 
   return (
-    <nav className="fixed bottom-4 left-1/2 -translate-x-1/2 z-50 bg-[var(--color-bg)]/90 backdrop-blur-md border border-[var(--color-border)] rounded-full px-4 py-2 shadow-lg">
+    <nav className="fixed bottom-4 left-1/2 -translate-x-1/2 z-50 bg-[var(--color-primary)] rounded-full px-5 py-2.5 shadow-xl shadow-[var(--color-primary)]/30">
       <ul className="flex items-center gap-1">
         {navItems.map((item) => (
           <li key={item.id}>
@@ -49,8 +48,8 @@ function FloatingNav() {
               onClick={() => scrollTo(item.id)}
               className={`flex flex-col items-center px-3 py-1 rounded-full text-[10px] transition-all ${
                 activeSection === item.id
-                  ? 'text-[var(--color-primary)] bg-[var(--color-bg-muted)]'
-                  : 'text-[var(--color-text-light)]'
+                  ? 'text-[var(--color-bg)] bg-white/20'
+                  : 'text-[var(--color-bg-soft)]/70'
               }`}
               aria-label={item.label}
             >

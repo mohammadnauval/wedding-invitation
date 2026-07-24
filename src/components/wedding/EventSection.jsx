@@ -34,47 +34,47 @@ function EventSection({ weddingData }) {
   return (
     <section id="event" ref={ref} className="py-16 bg-[var(--color-bg)]">
       <div className={`section-container ${inView ? 'fade-up' : 'opacity-0'}`}>
-        <h2 className="section-title">Wedding Events</h2>
-        <p className="section-subtitle">Rangkaian Acara</p>
+        <h2 className="section-title">The Events</h2>
+        <p className="section-subtitle">Join us to celebrate our love</p>
 
-        <div className="space-y-8">
+        <div className="space-y-6">
           {events.map((event, index) => (
             <div
               key={event.id || index}
-              className="text-center p-6 border border-[var(--color-border)] rounded-2xl bg-[var(--color-bg-soft)]"
+              className="text-center p-6 rounded-3xl bg-[var(--color-bg-soft)] border-2 border-[var(--color-border)]"
             >
-              <h3 className="text-lg font-semibold text-[var(--color-text)] mb-3">
+              <h3 className="font-couple text-2xl text-[var(--color-primary)] mb-3">
                 {event.title}
               </h3>
 
-              <div className="space-y-2 text-sm text-[var(--color-text-muted)]">
-                <p>{formatDate(event.event_date)}</p>
+              <div className="space-y-1.5 text-sm text-[var(--color-text-muted)]">
+                <p className="font-medium">{formatDate(event.event_date)}</p>
                 <p>
                   {formatTime(event.start_time)}
                   {event.end_time ? ` - ${formatTime(event.end_time)}` : ' - Selesai'}
                 </p>
-                <p className="font-medium text-[var(--color-text)]">{event.venue}</p>
+                <p className="font-bold text-[var(--color-text)]">{event.venue}</p>
                 <p className="text-xs">{event.address}</p>
               </div>
 
-              <div className="flex flex-col gap-2 mt-4">
+              <div className="flex flex-col gap-2 mt-5">
                 {event.maps_url && (
                   <a
                     href={event.maps_url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="btn-outline text-xs py-2"
+                    className="btn-outline text-xs py-2.5"
                   >
-                    Buka Google Maps
+                    Open Maps
                   </a>
                 )}
                 <a
                   href={generateCalendarUrl(event)}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-xs text-[var(--color-primary)] hover:underline"
+                  className="text-xs font-bold text-[var(--color-primary)] hover:underline tracking-wider uppercase"
                 >
-                  Save the Date
+                  + Add to Calendar
                 </a>
               </div>
             </div>

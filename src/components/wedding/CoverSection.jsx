@@ -5,134 +5,131 @@ function CoverSection({ weddingData, guestName, onOpen }) {
   const brideName = weddingData?.couple?.bride?.nickname || 'Bride';
 
   const weddingDate = weddingData?.events?.[0]?.event_date
-    ? new Date(weddingData.events[0].event_date).toLocaleDateString('en-US', {
-        month: 'long',
+    ? new Date(weddingData.events[0].event_date).toLocaleDateString('en-GB', {
+        day: '2-digit',
+        month: '2-digit',
         year: 'numeric',
-      })
+      }).replace(/\//g, '.')
     : '';
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-[var(--color-bg)] lg:relative lg:min-h-screen">
-      <div className="max-w-[480px] mx-auto w-full h-full flex items-center justify-center px-6 py-8">
-        {/* Main card with floral border */}
-        <div className="relative w-full max-w-[380px] mx-auto bg-[var(--color-bg-soft)] rounded-lg p-2">
-          {/* Outer decorative border */}
-          <div className="border-[3px] border-[var(--color-primary-light)] rounded-md p-1">
-            {/* Inner dashed border */}
-            <div className="border border-dashed border-[var(--color-primary-light)] rounded p-8 md:p-10 relative overflow-hidden">
-              
-              {/* Corner floral decorations - Top Left */}
-              <div className="absolute top-3 left-3">
-                <svg width="50" height="50" viewBox="0 0 50 50" fill="none">
-                  <circle cx="8" cy="8" r="5" fill="var(--color-floral)" opacity="0.7"/>
-                  <circle cx="20" cy="5" r="3" fill="var(--color-floral)" opacity="0.5"/>
-                  <circle cx="5" cy="20" r="3" fill="var(--color-floral)" opacity="0.5"/>
-                  <circle cx="14" cy="14" r="4" fill="var(--color-berry)" opacity="0.6"/>
-                  <path d="M10 25 Q15 20, 25 22" stroke="var(--color-floral)" strokeWidth="1" fill="none" opacity="0.4"/>
-                </svg>
-              </div>
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-[var(--color-bg)] lg:relative lg:min-h-screen overflow-hidden">
+      
+      {/* Subtle background pattern */}
+      <div className="absolute inset-0 opacity-[0.03]" style={{
+        backgroundImage: `radial-gradient(circle, var(--color-primary) 1px, transparent 1px)`,
+        backgroundSize: '30px 30px',
+      }} />
 
-              {/* Corner floral decorations - Top Right */}
-              <div className="absolute top-3 right-3">
-                <svg width="50" height="50" viewBox="0 0 50 50" fill="none">
-                  <circle cx="42" cy="8" r="5" fill="var(--color-floral)" opacity="0.7"/>
-                  <circle cx="30" cy="5" r="3" fill="var(--color-floral)" opacity="0.5"/>
-                  <circle cx="45" cy="20" r="3" fill="var(--color-floral)" opacity="0.5"/>
-                  <circle cx="36" cy="14" r="4" fill="var(--color-berry)" opacity="0.6"/>
-                  <path d="M40 25 Q35 20, 25 22" stroke="var(--color-floral)" strokeWidth="1" fill="none" opacity="0.4"/>
-                </svg>
-              </div>
+      <div className="max-w-[480px] mx-auto w-full h-full flex flex-col items-center justify-center px-8 text-center relative">
+        
+        {/* Top text */}
+        <p className="text-sm font-bold tracking-[0.25em] uppercase text-[var(--color-primary)] mb-10 fade-up" style={{ animationDelay: '0.2s' }}>
+          We're Getting Married!
+        </p>
 
-              {/* Corner floral decorations - Bottom Left */}
-              <div className="absolute bottom-3 left-3">
-                <svg width="50" height="50" viewBox="0 0 50 50" fill="none">
-                  <circle cx="8" cy="42" r="5" fill="var(--color-floral)" opacity="0.7"/>
-                  <circle cx="20" cy="45" r="3" fill="var(--color-floral)" opacity="0.5"/>
-                  <circle cx="5" cy="30" r="3" fill="var(--color-floral)" opacity="0.5"/>
-                  <circle cx="14" cy="36" r="4" fill="var(--color-berry)" opacity="0.6"/>
-                </svg>
-              </div>
+        {/* Couple names - big, bold, handwritten */}
+        <div className="mb-6 fade-up" style={{ animationDelay: '0.4s' }}>
+          <h1 className="font-couple text-7xl md:text-8xl text-[var(--color-primary)] leading-[0.9] mb-0">
+            {groomName}
+          </h1>
+          <span className="font-couple text-5xl text-[var(--color-primary)] inline-block my-1">&</span>
+          <h1 className="font-couple text-7xl md:text-8xl text-[var(--color-primary)] leading-[0.9]">
+            {brideName}
+          </h1>
+        </div>
 
-              {/* Corner floral decorations - Bottom Right */}
-              <div className="absolute bottom-3 right-3">
-                <svg width="50" height="50" viewBox="0 0 50 50" fill="none">
-                  <circle cx="42" cy="42" r="5" fill="var(--color-floral)" opacity="0.7"/>
-                  <circle cx="30" cy="45" r="3" fill="var(--color-floral)" opacity="0.5"/>
-                  <circle cx="45" cy="30" r="3" fill="var(--color-floral)" opacity="0.5"/>
-                  <circle cx="36" cy="36" r="4" fill="var(--color-berry)" opacity="0.6"/>
-                </svg>
-              </div>
+        {/* Ring illustration */}
+        <div className="my-8 fade-up float-animation" style={{ animationDelay: '0.6s' }}>
+          <svg width="120" height="100" viewBox="0 0 120 100" fill="none" className="mx-auto">
+            {/* Hand holding ring */}
+            <path d="M30 70 Q35 50, 45 45 Q50 42, 55 44 L58 48 Q56 52, 52 55 L48 70" 
+                  stroke="var(--color-primary)" strokeWidth="2.5" fill="none" strokeLinecap="round"/>
+            {/* Fingers */}
+            <path d="M45 45 Q43 38, 48 32 Q52 28, 55 33 L55 44" 
+                  stroke="var(--color-primary)" strokeWidth="2.5" fill="none" strokeLinecap="round"/>
+            <path d="M50 43 Q49 35, 53 28 Q57 24, 59 30 L58 43" 
+                  stroke="var(--color-primary)" strokeWidth="2.5" fill="none" strokeLinecap="round"/>
+            {/* Ring */}
+            <ellipse cx="56" cy="25" rx="8" ry="9" stroke="var(--color-primary)" strokeWidth="2.5" fill="none"/>
+            {/* Diamond on ring */}
+            <path d="M53 17 L56 12 L59 17" stroke="var(--color-primary)" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
+            {/* Sparkles */}
+            <line x1="48" y1="10" x2="48" y2="6" stroke="var(--color-primary)" strokeWidth="1.5" strokeLinecap="round" opacity="0.7"/>
+            <line x1="64" y1="12" x2="67" y2="9" stroke="var(--color-primary)" strokeWidth="1.5" strokeLinecap="round" opacity="0.7"/>
+            <line x1="62" y1="8" x2="62" y2="4" stroke="var(--color-primary)" strokeWidth="1.5" strokeLinecap="round" opacity="0.7"/>
+            
+            {/* Other hand */}
+            <path d="M90 70 Q85 55, 78 50 Q74 47, 70 50 L68 55 Q72 57, 75 60 L80 72" 
+                  stroke="var(--color-primary)" strokeWidth="2.5" fill="none" strokeLinecap="round"/>
+            {/* Fingers of other hand */}
+            <path d="M78 50 Q80 42, 76 37 Q73 34, 70 38 L70 50" 
+                  stroke="var(--color-primary)" strokeWidth="2.5" fill="none" strokeLinecap="round"/>
+            <path d="M74 48 Q75 40, 72 35 Q69 32, 67 36 L68 48" 
+                  stroke="var(--color-primary)" strokeWidth="2.5" fill="none" strokeLinecap="round"/>
+            
+            {/* Sleeve cuffs */}
+            <path d="M25 72 Q28 68, 33 70 Q38 72, 35 76 L25 78 Z" 
+                  stroke="var(--color-primary)" strokeWidth="2" fill="none"/>
+            <path d="M95 72 Q92 68, 87 70 Q82 72, 85 76 L95 78 Z" 
+                  stroke="var(--color-primary)" strokeWidth="2" fill="none"/>
+          </svg>
+        </div>
 
-              {/* Content */}
-              <div className="text-center relative z-10">
-                <p className="font-script text-lg text-[var(--color-primary)] mb-6">
-                  A Journey Begins
-                </p>
+        {/* Save the date */}
+        <div className="mb-10 fade-up" style={{ animationDelay: '0.8s' }}>
+          <p className="text-xs font-bold tracking-[0.3em] uppercase text-[var(--color-primary)] mb-1">
+            Save the Date
+          </p>
+          <p className="font-couple text-3xl text-[var(--color-primary)]">
+            {weddingDate}
+          </p>
+        </div>
 
-                <h1 className="font-couple text-5xl md:text-6xl text-[var(--color-primary-dark)] leading-tight mb-1">
-                  {groomName}
-                </h1>
-                <p className="font-couple text-3xl text-[var(--color-primary)] mb-1">&</p>
-                <h1 className="font-couple text-5xl md:text-6xl text-[var(--color-primary-dark)] leading-tight mb-6">
-                  {brideName}
-                </h1>
-
-                <p className="text-sm tracking-wider text-[var(--color-text-muted)] mb-8">
-                  {weddingDate}
-                </p>
-
-                {/* Decorative divider */}
-                <div className="flex items-center justify-center gap-2 mb-6">
-                  <div className="w-8 h-px bg-[var(--color-primary-light)]" />
-                  <svg width="12" height="12" viewBox="0 0 12 12" fill="var(--color-primary-light)">
-                    <path d="M6 0 L7.5 4.5 L12 6 L7.5 7.5 L6 12 L4.5 7.5 L0 6 L4.5 4.5 Z"/>
-                  </svg>
-                  <div className="w-8 h-px bg-[var(--color-primary-light)]" />
-                </div>
-
-                <p className="font-script text-base text-[var(--color-text-muted)] mb-8 leading-relaxed italic">
-                  We invite you to witness<br/>our vows and joy
-                </p>
-
-                {/* Guest name */}
-                <div className="mb-8">
-                  <p className="text-[10px] tracking-[0.2em] uppercase text-[var(--color-text-light)] mb-1">
-                    Kepada Yth.
-                  </p>
-                  <p className="text-base font-medium text-[var(--color-text)]">
-                    {guestName}
-                  </p>
-                </div>
-
-                <button
-                  onClick={onOpen}
-                  className="btn-outline text-xs py-2.5 px-8 animate-pulse hover:animate-none"
-                  aria-label="Buka Undangan"
-                >
-                  Buka Undangan
-                </button>
-              </div>
-            </div>
+        {/* Guest info */}
+        <div className="mb-8 fade-up" style={{ animationDelay: '1s' }}>
+          <div className="inline-block px-6 py-3 rounded-2xl bg-[var(--color-primary)]/10">
+            <p className="text-[10px] tracking-[0.2em] uppercase text-[var(--color-text-muted)] mb-0.5">
+              Dear
+            </p>
+            <p className="text-base font-semibold text-[var(--color-primary)]">
+              {guestName}
+            </p>
           </div>
         </div>
-      </div>
 
-      {/* Side floral decorations (visible on larger screens) */}
-      <div className="hidden lg:block fixed top-1/4 left-8 opacity-30">
-        <svg width="60" height="120" viewBox="0 0 60 120" fill="none">
-          <circle cx="30" cy="20" r="15" fill="var(--color-berry)" opacity="0.3"/>
-          <circle cx="15" cy="50" r="10" fill="var(--color-floral)" opacity="0.4"/>
-          <circle cx="40" cy="80" r="12" fill="var(--color-berry)" opacity="0.3"/>
-          <circle cx="20" cy="100" r="8" fill="var(--color-floral)" opacity="0.4"/>
-        </svg>
-      </div>
-      <div className="hidden lg:block fixed top-1/4 right-8 opacity-30">
-        <svg width="60" height="120" viewBox="0 0 60 120" fill="none">
-          <circle cx="30" cy="20" r="15" fill="var(--color-berry)" opacity="0.3"/>
-          <circle cx="45" cy="50" r="10" fill="var(--color-floral)" opacity="0.4"/>
-          <circle cx="20" cy="80" r="12" fill="var(--color-berry)" opacity="0.3"/>
-          <circle cx="40" cy="100" r="8" fill="var(--color-floral)" opacity="0.4"/>
-        </svg>
+        {/* Open button */}
+        <div className="fade-up" style={{ animationDelay: '1.2s' }}>
+          <button
+            onClick={onOpen}
+            className="btn-primary"
+            aria-label="Buka Undangan"
+          >
+            Open Invitation
+          </button>
+        </div>
+
+        {/* Decorative hearts scattered */}
+        <div className="absolute top-[15%] left-[10%] opacity-20">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="var(--color-primary)">
+            <path d="M10 18 C5 13, 0 9, 0 5 C0 2, 2 0, 5 0 C7 0, 9 1.5, 10 3 C11 1.5, 13 0, 15 0 C18 0, 20 2, 20 5 C20 9, 15 13, 10 18Z"/>
+          </svg>
+        </div>
+        <div className="absolute top-[25%] right-[12%] opacity-15">
+          <svg width="14" height="14" viewBox="0 0 20 20" fill="var(--color-primary)">
+            <path d="M10 18 C5 13, 0 9, 0 5 C0 2, 2 0, 5 0 C7 0, 9 1.5, 10 3 C11 1.5, 13 0, 15 0 C18 0, 20 2, 20 5 C20 9, 15 13, 10 18Z"/>
+          </svg>
+        </div>
+        <div className="absolute bottom-[20%] left-[15%] opacity-15">
+          <svg width="16" height="16" viewBox="0 0 20 20" fill="var(--color-primary)">
+            <path d="M10 18 C5 13, 0 9, 0 5 C0 2, 2 0, 5 0 C7 0, 9 1.5, 10 3 C11 1.5, 13 0, 15 0 C18 0, 20 2, 20 5 C20 9, 15 13, 10 18Z"/>
+          </svg>
+        </div>
+        <div className="absolute bottom-[30%] right-[8%] opacity-20">
+          <svg width="12" height="12" viewBox="0 0 20 20" fill="var(--color-primary)">
+            <path d="M10 18 C5 13, 0 9, 0 5 C0 2, 2 0, 5 0 C7 0, 9 1.5, 10 3 C11 1.5, 13 0, 15 0 C18 0, 20 2, 20 5 C20 9, 15 13, 10 18Z"/>
+          </svg>
+        </div>
       </div>
     </div>
   );
