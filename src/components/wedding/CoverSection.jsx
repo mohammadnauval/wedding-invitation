@@ -39,14 +39,7 @@ function CoverSection({ weddingData, guestName, onOpen }) {
           </h1>
         </div>
 
-        {/* Hand illustration - proposal style like the reference */}
-        <div className="my-4 fade-up" style={{ animationDelay: '0.6s' }}>
-          <img 
-            src="/images/hands-ring.svg" 
-            alt="Ring proposal illustration" 
-            className="mx-auto w-[200px] h-auto"
-          />
-        </div>
+
 
         {/* Save the date + Guest name + Button - compact */}
         <div className="text-center fade-up" style={{ animationDelay: '0.8s' }}>
