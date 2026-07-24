@@ -4,7 +4,7 @@ import { Outlet, useNavigate, NavLink } from 'react-router-dom';
 const navItems = [
   { path: '/admin/dashboard', label: 'Dashboard', icon: '📊' },
   { path: '/admin/couple', label: 'Couple', icon: '💑' },
-  { path: '/admin/events', label: 'Events', icon: '📅' },
+
   { path: '/admin/love-story', label: 'Love Story', icon: '💕' },
   { path: '/admin/gallery', label: 'Gallery', icon: '🖼️' },
   { path: '/admin/music', label: 'Music', icon: '🎵' },

@@ -8,7 +8,7 @@ import GuestList from './pages/admin/GuestList';
 import RsvpManagement from './pages/admin/RsvpManagement';
 
 import CoupleManagement from './pages/admin/CoupleManagement';
-import EventManagement from './pages/admin/EventManagement';
+
 import GalleryManagement from './pages/admin/GalleryManagement';
 import MusicManagement from './pages/admin/MusicManagement';
 
@@ -34,7 +34,7 @@ function App() {
         <Route path="rsvp" element={<RsvpManagement />} />
 
         <Route path="couple" element={<CoupleManagement />} />
-        <Route path="events" element={<EventManagement />} />
+
         <Route path="gallery" element={<GalleryManagement />} />
         <Route path="music" element={<MusicManagement />} />
 

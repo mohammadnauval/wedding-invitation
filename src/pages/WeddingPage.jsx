@@ -5,7 +5,7 @@ import HeroSection from '../components/wedding/HeroSection';
 import GreetingSection from '../components/wedding/GreetingSection';
 import CoupleSection from '../components/wedding/CoupleSection';
 import LoveStorySection from '../components/wedding/LoveStorySection';
-import EventSection from '../components/wedding/EventSection';
+
 import CountdownSection from '../components/wedding/CountdownSection';
 import GallerySection from '../components/wedding/GallerySection';
 import RsvpSection from '../components/wedding/RsvpSection';
@@ -132,7 +132,7 @@ function WeddingPage() {
             {weddingData?.settings?.love_story_enabled === '1' && (
               <LoveStorySection weddingData={weddingData} />
             )}
-            <EventSection weddingData={weddingData} />
+
             <CountdownSection weddingData={weddingData} />
             {weddingData?.settings?.gallery_enabled === '1' && (
               <GallerySection weddingData={weddingData} />
