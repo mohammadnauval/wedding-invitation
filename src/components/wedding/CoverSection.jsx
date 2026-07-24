@@ -24,26 +24,25 @@ function CoverSection({ weddingData, guestName, onOpen }) {
         />
       </div>
 
-      <div className="max-w-[480px] mx-auto w-full h-full flex flex-col justify-between px-8 pt-4 pb-8 relative">
+      <div className="max-w-[480px] mx-auto w-full h-full flex flex-col justify-start px-8 pt-12 pb-8 relative">
         
-        {/* Top section - names and title (pushed to very top) */}
+        {/* Top section - names and title, positioned at top like reference */}
         <div className="text-center">
-          <p className="text-sm font-bold tracking-[0.25em] uppercase text-[var(--color-primary)] mb-2 fade-up" style={{ animationDelay: '0.2s' }}>
+          <p className="text-sm font-bold tracking-[0.25em] uppercase text-[var(--color-primary)] mb-4 fade-up" style={{ animationDelay: '0.2s' }}>
             We're Getting Married!
           </p>
 
           <div className="fade-up" style={{ animationDelay: '0.4s' }}>
-            <h1 className="font-couple text-7xl md:text-8xl text-[var(--color-primary)] leading-[0.85]">
-              {groomName}
+            <h1 className="font-couple text-7xl md:text-8xl text-[var(--color-primary)] leading-[0.85] text-left">
+              {groomName} &
             </h1>
-            <span className="font-couple text-5xl text-[var(--color-primary)] inline-block">&</span>
-            <h1 className="font-couple text-7xl md:text-8xl text-[var(--color-primary)] leading-[0.85]">
+            <h1 className="font-couple text-7xl md:text-8xl text-[var(--color-primary)] leading-[0.85] text-left pl-4">
               {brideName}
             </h1>
           </div>
         </div>
 
-        {/* Middle spacer - leave room for hand illustration in background */}
+        {/* Spacer - leave room for hand illustration in background */}
         <div className="flex-1" />
 
         {/* Bottom section - date, guest name, button (lower 30%) */}
