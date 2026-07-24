@@ -46,7 +46,7 @@ function CoverSection({ weddingData, guestName, onOpen }) {
         <div className="flex-1" />
 
         {/* Bottom section - date, guest name, button (lower 30%) */}
-        <div className="text-right pb-4 fade-up" style={{ animationDelay: '0.8s' }}>
+        <div className="text-right pb-2 fade-up" style={{ animationDelay: '0.8s' }}>
           <p className="text-xs font-bold tracking-[0.3em] uppercase text-[var(--color-primary)] mb-0.5 text-right">
             Save the Date
           </p>
@@ -55,7 +55,7 @@ function CoverSection({ weddingData, guestName, onOpen }) {
           </p>
 
           {/* Guest info */}
-          <div className="inline-block px-5 py-2.5 rounded-2xl bg-[var(--color-primary)]/10 mb-4">
+          <div className="inline-block px-5 py-2.5 rounded-2xl bg-[var(--color-primary)]/10 mb-4 mt-8">
             <p className="text-[10px] tracking-[0.2em] uppercase text-[var(--color-text-muted)] mb-0.5">
               Dear
             </p>
