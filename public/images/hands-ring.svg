@@ -1,73 +1,73 @@
-<svg width="240" height="180" viewBox="0 0 240 180" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <!-- Left hand holding ring (from sleeve) -->
-  <!-- Left sleeve -->
-  <path d="M30 180 L30 145 Q32 135, 40 130 L55 125 Q60 123, 62 118 L65 110" 
-        stroke="#c41e3a" stroke-width="3" fill="none" stroke-linecap="round"/>
-  <path d="M65 180 L65 145 Q63 138, 58 133" 
-        stroke="#c41e3a" stroke-width="3" fill="none" stroke-linecap="round"/>
-  <!-- Cuff line -->
-  <path d="M30 145 Q47 140, 65 145" 
-        stroke="#c41e3a" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+<svg width="260" height="200" viewBox="0 0 260 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Left arm coming from top-left with sleeve/cuff -->
+  <!-- Arm -->
+  <path d="M20 10 L55 45 Q60 50, 65 55 L80 70" 
+        stroke="#c41e3a" stroke-width="4" fill="none" stroke-linecap="round"/>
+  <path d="M10 25 L45 60 Q50 65, 58 68" 
+        stroke="#c41e3a" stroke-width="4" fill="none" stroke-linecap="round"/>
   
-  <!-- Left hand - fingers curled holding ring -->
-  <!-- Index finger -->
-  <path d="M50 120 Q48 105, 52 92 Q54 85, 58 80 Q62 76, 65 74" 
-        stroke="#c41e3a" stroke-width="3" fill="none" stroke-linecap="round"/>
-  <!-- Middle finger -->  
-  <path d="M55 118 Q54 100, 58 88 Q61 80, 66 75 Q70 71, 73 69" 
-        stroke="#c41e3a" stroke-width="3" fill="none" stroke-linecap="round"/>
-  <!-- Ring finger (holding) -->
-  <path d="M60 116 Q60 100, 65 90 Q68 84, 72 80" 
-        stroke="#c41e3a" stroke-width="3" fill="none" stroke-linecap="round"/>
-  <!-- Thumb -->
-  <path d="M45 122 Q50 115, 58 108 Q65 100, 72 96 Q78 93, 82 92" 
-        stroke="#c41e3a" stroke-width="3" fill="none" stroke-linecap="round"/>
+  <!-- Square cuff/sleeve -->
+  <rect x="55" y="48" width="30" height="25" rx="2" stroke="#c41e3a" stroke-width="4" fill="none"/>
   
-  <!-- The Ring (held between fingers) -->
-  <ellipse cx="80" cy="72" rx="14" ry="16" stroke="#c41e3a" stroke-width="3" fill="none"/>
+  <!-- Left hand - OK gesture holding ring -->
+  <!-- Thumb and index making circle (holding ring) -->
+  <path d="M85 58 Q95 50, 105 52 Q112 55, 115 62 Q117 68, 114 75 Q110 80, 104 82 Q97 83, 92 78 Q87 73, 85 65" 
+        stroke="#c41e3a" stroke-width="4" fill="none" stroke-linecap="round"/>
   
-  <!-- Bow/ribbon on ring -->
-  <path d="M72 58 Q76 52, 80 50 Q84 52, 88 58" 
-        stroke="#c41e3a" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-  <path d="M75 56 Q72 50, 68 48 Q66 47, 64 48" 
-        stroke="#c41e3a" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-  <path d="M85 56 Q88 50, 92 48 Q94 47, 96 48" 
-        stroke="#c41e3a" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-  <circle cx="80" cy="52" r="4" stroke="#c41e3a" stroke-width="2.5" fill="none"/>
+  <!-- Middle finger pointing up -->
+  <path d="M100 52 Q102 42, 105 34 Q107 28, 110 24" 
+        stroke="#c41e3a" stroke-width="4" fill="none" stroke-linecap="round"/>
+  <!-- Ring finger -->
+  <path d="M106 50 Q110 40, 115 32 Q118 26, 120 22" 
+        stroke="#c41e3a" stroke-width="4" fill="none" stroke-linecap="round"/>
+  <!-- Pinky finger -->
+  <path d="M112 53 Q118 44, 124 38 Q128 33, 130 30" 
+        stroke="#c41e3a" stroke-width="4" fill="none" stroke-linecap="round"/>
+
+  <!-- The Ring with bow (held in OK gesture) -->
+  <!-- Ring circle -->
+  <ellipse cx="100" cy="72" rx="10" ry="11" stroke="#c41e3a" stroke-width="3.5" fill="none"/>
+  
+  <!-- Bow on ring -->
+  <path d="M94 62 Q90 56, 86 54 Q84 53, 82 55" 
+        stroke="#c41e3a" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+  <path d="M106 62 Q110 56, 114 54 Q116 53, 118 55" 
+        stroke="#c41e3a" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+  <path d="M94 62 Q100 58, 106 62" 
+        stroke="#c41e3a" stroke-width="3" fill="none" stroke-linecap="round"/>
   
   <!-- Sparkle lines from ring -->
-  <line x1="80" y1="40" x2="80" y2="33" stroke="#c41e3a" stroke-width="2.5" stroke-linecap="round"/>
-  <line x1="70" y1="42" x2="66" y2="37" stroke="#c41e3a" stroke-width="2" stroke-linecap="round"/>
-  <line x1="90" y1="42" x2="94" y2="37" stroke="#c41e3a" stroke-width="2" stroke-linecap="round"/>
+  <line x1="118" y1="58" x2="125" y2="53" stroke="#c41e3a" stroke-width="3" stroke-linecap="round"/>
+  <line x1="122" y1="65" x2="130" y2="63" stroke="#c41e3a" stroke-width="3" stroke-linecap="round"/>
+  <line x1="120" y1="50" x2="126" y2="45" stroke="#c41e3a" stroke-width="3" stroke-linecap="round"/>
 
-  <!-- Right hand (open, palm facing up, receiving) -->
-  <!-- Right sleeve -->
-  <path d="M170 180 L170 148 Q172 140, 178 136 L188 130 Q192 128, 194 124" 
-        stroke="#c41e3a" stroke-width="3" fill="none" stroke-linecap="round"/>
-  <path d="M210 180 L210 148 Q208 140, 202 136" 
-        stroke="#c41e3a" stroke-width="3" fill="none" stroke-linecap="round"/>
-  <!-- Cuff line -->
-  <path d="M170 148 Q190 143, 210 148" 
-        stroke="#c41e3a" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  <!-- Right hand - open palm facing up, from bottom-right -->
+  <!-- Arm coming from bottom right -->
+  <path d="M220 200 Q215 185, 210 172 Q205 160, 198 150 L190 138" 
+        stroke="#c41e3a" stroke-width="4" fill="none" stroke-linecap="round"/>
+  <path d="M240 190 Q232 178, 225 168 Q218 158, 212 148 L205 138" 
+        stroke="#c41e3a" stroke-width="4" fill="none" stroke-linecap="round"/>
   
-  <!-- Right palm -->
-  <path d="M185 126 Q183 118, 180 112 Q177 106, 174 102" 
-        stroke="#c41e3a" stroke-width="3" fill="none" stroke-linecap="round"/>
+  <!-- Right palm - cupped/open -->
+  <path d="M190 138 Q185 130, 180 125 Q175 120, 170 118" 
+        stroke="#c41e3a" stroke-width="4" fill="none" stroke-linecap="round"/>
+  <path d="M205 138 Q200 128, 195 122 Q190 118, 186 116" 
+        stroke="#c41e3a" stroke-width="4" fill="none" stroke-linecap="round"/>
   
-  <!-- Fingers spread open -->
+  <!-- Fingers of right hand (spread, cupped) -->
+  <!-- Index -->
+  <path d="M170 118 Q165 110, 162 102 Q160 96, 160 90" 
+        stroke="#c41e3a" stroke-width="4" fill="none" stroke-linecap="round"/>
+  <!-- Middle -->
+  <path d="M175 115 Q172 106, 170 97 Q168 90, 168 84" 
+        stroke="#c41e3a" stroke-width="4" fill="none" stroke-linecap="round"/>
+  <!-- Ring -->
+  <path d="M180 114 Q178 105, 177 97 Q176 90, 177 84" 
+        stroke="#c41e3a" stroke-width="4" fill="none" stroke-linecap="round"/>
   <!-- Pinky -->
-  <path d="M174 104 Q170 96, 168 88 Q167 82, 168 78" 
-        stroke="#c41e3a" stroke-width="3" fill="none" stroke-linecap="round"/>
-  <!-- Ring finger -->
-  <path d="M178 100 Q176 90, 174 82 Q173 76, 174 72" 
-        stroke="#c41e3a" stroke-width="3" fill="none" stroke-linecap="round"/>
-  <!-- Middle finger -->
-  <path d="M183 98 Q182 88, 180 78 Q179 72, 180 66" 
-        stroke="#c41e3a" stroke-width="3" fill="none" stroke-linecap="round"/>
-  <!-- Index finger -->
-  <path d="M188 100 Q188 90, 187 80 Q186 74, 187 68" 
-        stroke="#c41e3a" stroke-width="3" fill="none" stroke-linecap="round"/>
-  <!-- Thumb (curving outward) -->
-  <path d="M192 122 Q198 116, 204 112 Q210 108, 214 106 Q218 105, 220 107" 
-        stroke="#c41e3a" stroke-width="3" fill="none" stroke-linecap="round"/>
+  <path d="M186 116 Q185 108, 185 100 Q185 94, 186 88" 
+        stroke="#c41e3a" stroke-width="4" fill="none" stroke-linecap="round"/>
+  <!-- Thumb (curving out to left) -->
+  <path d="M168 122 Q160 126, 152 128 Q146 130, 140 130 Q136 129, 134 126" 
+        stroke="#c41e3a" stroke-width="4" fill="none" stroke-linecap="round"/>
 </svg>
