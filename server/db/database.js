@@ -19,10 +19,14 @@ async function query(text, params) {
 }
 
 async function initDB() {
-  // Ensure uploads directory exists
-  const uploadsDir = path.join(__dirname, '../../uploads');
-  if (!fs.existsSync(uploadsDir)) {
-    fs.mkdirSync(uploadsDir, { recursive: true });
+  // Ensure uploads directory exists (skip on serverless)
+  try {
+    const uploadsDir = path.join(__dirname, '../../uploads');
+    if (!fs.existsSync(uploadsDir)) {
+      fs.mkdirSync(uploadsDir, { recursive: true });
+    }
+  } catch (e) {
+    // Read-only filesystem (Vercel), skip
   }
 
   // Create tables

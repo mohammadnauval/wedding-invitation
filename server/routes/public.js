@@ -64,15 +64,19 @@ router.get('/invitations/:slugOrToken?', async (req, res) => {
     const giftsResult = await query('SELECT * FROM gifts ORDER BY sort_order');
 
     // Get music info
-    const fs = require('fs');
-    const path = require('path');
-    const musicDir = path.join(__dirname, '../../uploads');
     let music = null;
-    if (settings.music_enabled === '1' && fs.existsSync(musicDir)) {
-      const musicFiles = fs.readdirSync(musicDir).filter(f => f.startsWith('music'));
-      if (musicFiles.length > 0) {
-        music = { url: `/uploads/${musicFiles[0]}`, filename: musicFiles[0] };
+    try {
+      const fs = require('fs');
+      const path = require('path');
+      const musicDir = path.join(__dirname, '../../uploads');
+      if (settings.music_enabled === '1' && fs.existsSync(musicDir)) {
+        const musicFiles = fs.readdirSync(musicDir).filter(f => f.startsWith('music'));
+        if (musicFiles.length > 0) {
+          music = { url: `/uploads/${musicFiles[0]}`, filename: musicFiles[0] };
+        }
       }
+    } catch (e) {
+      // Skip on serverless
     }
 
     // Content
