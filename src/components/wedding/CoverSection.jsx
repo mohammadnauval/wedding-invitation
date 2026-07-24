@@ -42,7 +42,7 @@ function CoverSection({ weddingData, guestName, onOpen }) {
         {/* Hand illustration */}
         <div className="my-4 fade-up" style={{ animationDelay: '0.6s' }}>
           <img 
-            src="/images/hands-ring.svg" 
+            src="/images/proposal-hands.svg" 
             alt="" 
             className="mx-auto w-[180px] h-auto"
           />
