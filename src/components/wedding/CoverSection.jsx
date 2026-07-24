@@ -44,7 +44,7 @@ function CoverSection({ weddingData, guestName, onOpen }) {
         </div>
 
         {/* Save the Date - positioned to avoid hands */}
-        <div className="absolute top-[42%] sm:top-[45%] right-6 sm:right-8 text-right fade-up" style={{ animationDelay: '0.6s' }}>
+        <div className="absolute top-[32%] sm:top-[38%] md:top-[45%] right-6 sm:right-8 text-right fade-up" style={{ animationDelay: '0.6s' }}>
           <p className="text-[10px] sm:text-xs font-bold tracking-[0.2em] sm:tracking-[0.3em] uppercase text-[var(--color-primary)] mb-0.5">
             Save the Date
           </p>
