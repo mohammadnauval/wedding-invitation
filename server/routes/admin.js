@@ -175,6 +175,34 @@ router.delete('/guests/:id', async (req, res) => {
   }
 });
 
+// Mark WA as sent
+router.put('/guests/:id/wa-sent', async (req, res) => {
+  try {
+    await query(
+      'UPDATE guests SET wa_sent = TRUE, wa_sent_at = CURRENT_TIMESTAMP WHERE id = $1',
+      [req.params.id]
+    );
+    res.json({ success: true });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+// Reset WA sent flag
+router.put('/guests/:id/wa-unsent', async (req, res) => {
+  try {
+    await query(
+      'UPDATE guests SET wa_sent = FALSE, wa_sent_at = NULL WHERE id = $1',
+      [req.params.id]
+    );
+    res.json({ success: true });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
 // Guest export
 router.get('/guests/export', async (req, res) => {
   try {

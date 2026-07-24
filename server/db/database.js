@@ -58,10 +58,16 @@ async function initDB() {
       category_id INTEGER REFERENCES guest_categories(id) ON DELETE SET NULL,
       max_pax INTEGER DEFAULT 2,
       notes TEXT,
+      wa_sent BOOLEAN DEFAULT FALSE,
+      wa_sent_at TIMESTAMP,
       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
       updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     );
   `);
+
+  // Add wa_sent columns if not exist (migration for existing tables)
+  await query(`ALTER TABLE guests ADD COLUMN IF NOT EXISTS wa_sent BOOLEAN DEFAULT FALSE`);
+  await query(`ALTER TABLE guests ADD COLUMN IF NOT EXISTS wa_sent_at TIMESTAMP`);
 
   await query(`
     CREATE TABLE IF NOT EXISTS rsvp (

@@ -107,7 +107,7 @@ Merupakan suatu kehormatan bagi kami apabila Bapak/Ibu/Saudara/i dapat hadir. Te
       .replace(/{link}/g, link);
   };
 
-  const sendWhatsApp = (guest) => {
+  const sendWhatsApp = async (guest) => {
     if (!guest.phone) {
       alert('Nomor telepon belum diisi untuk tamu ini.');
       return;
@@ -122,6 +122,14 @@ Merupakan suatu kehormatan bagi kami apabila Bapak/Ibu/Saudara/i dapat hadir. Te
     }
     const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
     window.open(url, '_blank');
+
+    // Mark as sent
+    try {
+      await adminFetch(`/guests/${guest.id}/wa-sent`, { method: 'PUT' });
+      setGuests(prev => prev.map(g => g.id === guest.id ? { ...g, wa_sent: true } : g));
+    } catch (err) {
+      // Silent fail
+    }
   };
 
   const copyWhatsApp = (guest) => {
@@ -223,6 +231,7 @@ Merupakan suatu kehormatan bagi kami apabila Bapak/Ibu/Saudara/i dapat hadir. Te
                 <th className="text-left px-4 py-3 font-medium text-gray-600">Category</th>
                 <th className="text-center px-4 py-3 font-medium text-gray-600">Max Pax</th>
                 <th className="text-center px-4 py-3 font-medium text-gray-600">RSVP</th>
+                <th className="text-center px-4 py-3 font-medium text-gray-600">WA</th>
                 <th className="text-right px-4 py-3 font-medium text-gray-600">Actions</th>
               </tr>
             </thead>
@@ -247,6 +256,13 @@ Merupakan suatu kehormatan bagi kami apabila Bapak/Ibu/Saudara/i dapat hadir. Te
                         : guest.rsvp_status === 'not_attending' ? 'Tidak Hadir'
                         : 'Pending'}
                     </span>
+                  </td>
+                  <td className="px-4 py-3 text-center">
+                    {guest.wa_sent ? (
+                      <span className="text-xs px-2 py-1 rounded-full bg-green-50 text-green-700">✓ Sent</span>
+                    ) : (
+                      <span className="text-xs px-2 py-1 rounded-full bg-gray-100 text-gray-400">—</span>
+                    )}
                   </td>
                   <td className="px-4 py-3 text-right">
                     <div className="flex items-center justify-end gap-1">
