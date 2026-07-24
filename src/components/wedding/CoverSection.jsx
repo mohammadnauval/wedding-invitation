@@ -56,7 +56,7 @@ function CoverSection({ weddingData, guestName, onOpen }) {
               Dear
             </p>
             <p className="text-sm font-semibold text-[var(--color-primary)]">
-              {guestName}
+              {guestName} & Partner
             </p>
           </div>
 
