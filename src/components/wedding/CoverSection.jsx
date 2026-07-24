@@ -24,11 +24,11 @@ function CoverSection({ weddingData, guestName, onOpen }) {
         />
       </div>
 
-      <div className="max-w-[480px] mx-auto w-full h-full flex flex-col justify-start px-8 pt-0 pb-8 relative">
+      <div className="max-w-[480px] mx-auto w-full h-full flex flex-col justify-between px-8 pt-0 pb-4 relative">
         
-        {/* Top section - names and title, positioned at top like reference */}
-        <div className="text-center -mt-6">
-          <p className="text-sm font-bold tracking-[0.25em] uppercase text-[var(--color-primary)] mb-2 fade-up" style={{ animationDelay: '0.2s' }}>
+        {/* Top section - title + names + date */}
+        <div className="-mt-4">
+          <p className="text-sm font-bold tracking-[0.25em] uppercase text-[var(--color-primary)] mb-2 text-center fade-up" style={{ animationDelay: '0.2s' }}>
             We're Getting Married!
           </p>
 
@@ -42,20 +42,10 @@ function CoverSection({ weddingData, guestName, onOpen }) {
           </div>
         </div>
 
-        {/* Spacer - leave room for hand illustration in background */}
-        <div className="flex-1" />
-
-        {/* Bottom section - date, guest name, button (pinned to bottom) */}
-        <div className="text-right pb-0 fade-up mt-auto" style={{ animationDelay: '0.8s' }}>
-          <p className="text-xs font-bold tracking-[0.3em] uppercase text-[var(--color-primary)] mb-0.5 text-right">
-            Save the Date
-          </p>
-          <p className="font-couple text-3xl text-[var(--color-primary)] mb-4 text-right">
-            {weddingDate}
-          </p>
-
+        {/* Bottom section - guest name + button only, pinned to very bottom */}
+        <div className="text-center fade-up" style={{ animationDelay: '0.8s' }}>
           {/* Guest info */}
-          <div className="inline-block px-5 py-2.5 rounded-2xl bg-[var(--color-primary)]/10 mb-3 mt-auto">
+          <div className="inline-block px-5 py-2 rounded-2xl bg-[var(--color-primary)]/10 mb-3">
             <p className="text-[10px] tracking-[0.2em] uppercase text-[var(--color-text-muted)] mb-0.5">
               Dear
             </p>
@@ -73,6 +63,10 @@ function CoverSection({ weddingData, guestName, onOpen }) {
               Open Invitation
             </button>
           </div>
+
+          <p className="text-xs font-bold tracking-[0.3em] uppercase text-[var(--color-primary)] mt-4">
+            Save the Date — {weddingDate}
+          </p>
         </div>
       </div>
     </div>
