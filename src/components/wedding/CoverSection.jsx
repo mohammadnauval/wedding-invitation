@@ -21,111 +21,144 @@ function CoverSection({ weddingData, guestName, onOpen }) {
         backgroundSize: '30px 30px',
       }} />
 
-      <div className="max-w-[480px] mx-auto w-full h-full flex flex-col items-center justify-center px-8 text-center relative">
+      <div className="max-w-[480px] mx-auto w-full h-full flex flex-col items-center justify-center px-8 relative">
         
         {/* Top text */}
-        <p className="text-sm font-bold tracking-[0.25em] uppercase text-[var(--color-primary)] mb-10 fade-up" style={{ animationDelay: '0.2s' }}>
+        <p className="text-sm font-bold tracking-[0.25em] uppercase text-[var(--color-primary)] mb-6 fade-up" style={{ animationDelay: '0.2s' }}>
           We're Getting Married!
         </p>
 
         {/* Couple names - big, bold, handwritten */}
-        <div className="mb-6 fade-up" style={{ animationDelay: '0.4s' }}>
-          <h1 className="font-couple text-7xl md:text-8xl text-[var(--color-primary)] leading-[0.9] mb-0">
+        <div className="mb-4 text-center fade-up" style={{ animationDelay: '0.4s' }}>
+          <h1 className="font-couple text-7xl md:text-8xl text-[var(--color-primary)] leading-[0.85]">
             {groomName}
           </h1>
-          <span className="font-couple text-5xl text-[var(--color-primary)] inline-block my-1">&</span>
-          <h1 className="font-couple text-7xl md:text-8xl text-[var(--color-primary)] leading-[0.9]">
+          <span className="font-couple text-5xl text-[var(--color-primary)] inline-block">&</span>
+          <h1 className="font-couple text-7xl md:text-8xl text-[var(--color-primary)] leading-[0.85]">
             {brideName}
           </h1>
         </div>
 
-        {/* Ring illustration */}
-        <div className="my-8 fade-up float-animation" style={{ animationDelay: '0.6s' }}>
-          <svg width="120" height="100" viewBox="0 0 120 100" fill="none" className="mx-auto">
-            {/* Hand holding ring */}
-            <path d="M30 70 Q35 50, 45 45 Q50 42, 55 44 L58 48 Q56 52, 52 55 L48 70" 
+        {/* Hand illustration - proposal style like the reference */}
+        <div className="my-4 fade-up" style={{ animationDelay: '0.6s' }}>
+          <svg width="200" height="140" viewBox="0 0 200 140" fill="none" className="mx-auto">
+            {/* Left hand (from left sleeve, holding ring) */}
+            {/* Sleeve/cuff */}
+            <path d="M20 130 L20 105 Q20 100, 25 98 L45 95 Q50 94, 50 90 L50 85" 
                   stroke="var(--color-primary)" strokeWidth="2.5" fill="none" strokeLinecap="round"/>
-            {/* Fingers */}
-            <path d="M45 45 Q43 38, 48 32 Q52 28, 55 33 L55 44" 
+            <path d="M50 130 L50 105 Q50 100, 45 98" 
                   stroke="var(--color-primary)" strokeWidth="2.5" fill="none" strokeLinecap="round"/>
-            <path d="M50 43 Q49 35, 53 28 Q57 24, 59 30 L58 43" 
-                  stroke="var(--color-primary)" strokeWidth="2.5" fill="none" strokeLinecap="round"/>
-            {/* Ring */}
-            <ellipse cx="56" cy="25" rx="8" ry="9" stroke="var(--color-primary)" strokeWidth="2.5" fill="none"/>
-            {/* Diamond on ring */}
-            <path d="M53 17 L56 12 L59 17" stroke="var(--color-primary)" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
-            {/* Sparkles */}
-            <line x1="48" y1="10" x2="48" y2="6" stroke="var(--color-primary)" strokeWidth="1.5" strokeLinecap="round" opacity="0.7"/>
-            <line x1="64" y1="12" x2="67" y2="9" stroke="var(--color-primary)" strokeWidth="1.5" strokeLinecap="round" opacity="0.7"/>
-            <line x1="62" y1="8" x2="62" y2="4" stroke="var(--color-primary)" strokeWidth="1.5" strokeLinecap="round" opacity="0.7"/>
+            {/* Cuff detail */}
+            <path d="M20 105 Q35 102, 50 105" 
+                  stroke="var(--color-primary)" strokeWidth="2" fill="none" strokeLinecap="round"/>
             
-            {/* Other hand */}
-            <path d="M90 70 Q85 55, 78 50 Q74 47, 70 50 L68 55 Q72 57, 75 60 L80 72" 
+            {/* Left hand fingers going up */}
+            <path d="M30 95 Q28 80, 32 70 Q34 65, 38 63" 
                   stroke="var(--color-primary)" strokeWidth="2.5" fill="none" strokeLinecap="round"/>
-            {/* Fingers of other hand */}
-            <path d="M78 50 Q80 42, 76 37 Q73 34, 70 38 L70 50" 
+            <path d="M36 93 Q35 75, 40 62 Q42 58, 45 56" 
                   stroke="var(--color-primary)" strokeWidth="2.5" fill="none" strokeLinecap="round"/>
-            <path d="M74 48 Q75 40, 72 35 Q69 32, 67 36 L68 48" 
+            {/* Thumb holding ring */}
+            <path d="M45 90 Q50 82, 55 75 Q58 70, 60 68" 
+                  stroke="var(--color-primary)" strokeWidth="2.5" fill="none" strokeLinecap="round"/>
+            {/* Index finger */}
+            <path d="M42 92 Q42 78, 48 65 Q50 60, 53 57" 
                   stroke="var(--color-primary)" strokeWidth="2.5" fill="none" strokeLinecap="round"/>
             
-            {/* Sleeve cuffs */}
-            <path d="M25 72 Q28 68, 33 70 Q38 72, 35 76 L25 78 Z" 
-                  stroke="var(--color-primary)" strokeWidth="2" fill="none"/>
-            <path d="M95 72 Q92 68, 87 70 Q82 72, 85 76 L95 78 Z" 
-                  stroke="var(--color-primary)" strokeWidth="2" fill="none"/>
+            {/* The Ring */}
+            <ellipse cx="56" cy="48" rx="12" ry="14" stroke="var(--color-primary)" strokeWidth="2.5" fill="none"/>
+            {/* Ring band thickness */}
+            <ellipse cx="56" cy="48" rx="9" ry="11" stroke="var(--color-primary)" strokeWidth="1" fill="none" opacity="0.4"/>
+            
+            {/* Diamond/gem on top */}
+            <path d="M49 34 L52 28 L56 25 L60 28 L63 34" 
+                  stroke="var(--color-primary)" strokeWidth="2.5" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
+            <path d="M49 34 L63 34" stroke="var(--color-primary)" strokeWidth="2" strokeLinecap="round"/>
+            <path d="M56 25 L56 34" stroke="var(--color-primary)" strokeWidth="1.5" strokeLinecap="round" opacity="0.5"/>
+            
+            {/* Sparkles around diamond */}
+            <line x1="56" y1="18" x2="56" y2="13" stroke="var(--color-primary)" strokeWidth="2" strokeLinecap="round"/>
+            <line x1="44" y1="22" x2="41" y2="18" stroke="var(--color-primary)" strokeWidth="2" strokeLinecap="round"/>
+            <line x1="68" y1="22" x2="71" y2="18" stroke="var(--color-primary)" strokeWidth="2" strokeLinecap="round"/>
+            <line x1="40" y1="30" x2="36" y2="28" stroke="var(--color-primary)" strokeWidth="1.5" strokeLinecap="round" opacity="0.6"/>
+            <line x1="72" y1="30" x2="76" y2="28" stroke="var(--color-primary)" strokeWidth="1.5" strokeLinecap="round" opacity="0.6"/>
+            
+            {/* Right hand (open, receiving) */}
+            {/* Sleeve/cuff */}
+            <path d="M150 130 L150 108 Q150 103, 155 100 L165 96 Q168 95, 168 92" 
+                  stroke="var(--color-primary)" strokeWidth="2.5" fill="none" strokeLinecap="round"/>
+            <path d="M180 130 L180 108 Q180 103, 175 100" 
+                  stroke="var(--color-primary)" strokeWidth="2.5" fill="none" strokeLinecap="round"/>
+            {/* Cuff detail */}
+            <path d="M150 108 Q165 105, 180 108" 
+                  stroke="var(--color-primary)" strokeWidth="2" fill="none" strokeLinecap="round"/>
+            
+            {/* Right hand palm and fingers - open/reaching */}
+            <path d="M160 96 Q158 85, 155 78 Q153 73, 150 70" 
+                  stroke="var(--color-primary)" strokeWidth="2.5" fill="none" strokeLinecap="round"/>
+            <path d="M163 94 Q162 82, 158 72 Q156 67, 153 63" 
+                  stroke="var(--color-primary)" strokeWidth="2.5" fill="none" strokeLinecap="round"/>
+            <path d="M167 93 Q167 80, 163 70 Q161 65, 158 60" 
+                  stroke="var(--color-primary)" strokeWidth="2.5" fill="none" strokeLinecap="round"/>
+            <path d="M170 94 Q172 82, 170 72 Q168 67, 165 63" 
+                  stroke="var(--color-primary)" strokeWidth="2.5" fill="none" strokeLinecap="round"/>
+            {/* Thumb */}
+            <path d="M158 96 Q152 92, 147 88 Q143 85, 140 83" 
+                  stroke="var(--color-primary)" strokeWidth="2.5" fill="none" strokeLinecap="round"/>
+            
+            {/* Small sparkle between hands */}
+            <circle cx="105" cy="55" r="2" fill="var(--color-primary)" opacity="0.4"/>
+            <circle cx="98" cy="70" r="1.5" fill="var(--color-primary)" opacity="0.3"/>
+            <circle cx="112" cy="68" r="1.5" fill="var(--color-primary)" opacity="0.3"/>
           </svg>
         </div>
 
-        {/* Save the date */}
-        <div className="mb-10 fade-up" style={{ animationDelay: '0.8s' }}>
-          <p className="text-xs font-bold tracking-[0.3em] uppercase text-[var(--color-primary)] mb-1">
+        {/* Save the date + Guest name + Button - compact */}
+        <div className="text-center fade-up" style={{ animationDelay: '0.8s' }}>
+          <p className="text-xs font-bold tracking-[0.3em] uppercase text-[var(--color-primary)] mb-0.5">
             Save the Date
           </p>
-          <p className="font-couple text-3xl text-[var(--color-primary)]">
+          <p className="font-couple text-3xl text-[var(--color-primary)] mb-5">
             {weddingDate}
           </p>
-        </div>
 
-        {/* Guest info */}
-        <div className="mb-8 fade-up" style={{ animationDelay: '1s' }}>
-          <div className="inline-block px-6 py-3 rounded-2xl bg-[var(--color-primary)]/10">
+          {/* Guest info */}
+          <div className="inline-block px-5 py-2.5 rounded-2xl bg-[var(--color-primary)]/10 mb-5">
             <p className="text-[10px] tracking-[0.2em] uppercase text-[var(--color-text-muted)] mb-0.5">
               Dear
             </p>
-            <p className="text-base font-semibold text-[var(--color-primary)]">
+            <p className="text-sm font-semibold text-[var(--color-primary)]">
               {guestName}
             </p>
           </div>
-        </div>
 
-        {/* Open button */}
-        <div className="fade-up" style={{ animationDelay: '1.2s' }}>
-          <button
-            onClick={onOpen}
-            className="btn-primary"
-            aria-label="Buka Undangan"
-          >
-            Open Invitation
-          </button>
+          <div className="block">
+            <button
+              onClick={onOpen}
+              className="btn-primary"
+              aria-label="Buka Undangan"
+            >
+              Open Invitation
+            </button>
+          </div>
         </div>
 
         {/* Decorative hearts scattered */}
-        <div className="absolute top-[15%] left-[10%] opacity-20">
+        <div className="absolute top-[12%] left-[8%] opacity-20">
           <svg width="20" height="20" viewBox="0 0 20 20" fill="var(--color-primary)">
             <path d="M10 18 C5 13, 0 9, 0 5 C0 2, 2 0, 5 0 C7 0, 9 1.5, 10 3 C11 1.5, 13 0, 15 0 C18 0, 20 2, 20 5 C20 9, 15 13, 10 18Z"/>
           </svg>
         </div>
-        <div className="absolute top-[25%] right-[12%] opacity-15">
+        <div className="absolute top-[20%] right-[10%] opacity-15">
           <svg width="14" height="14" viewBox="0 0 20 20" fill="var(--color-primary)">
             <path d="M10 18 C5 13, 0 9, 0 5 C0 2, 2 0, 5 0 C7 0, 9 1.5, 10 3 C11 1.5, 13 0, 15 0 C18 0, 20 2, 20 5 C20 9, 15 13, 10 18Z"/>
           </svg>
         </div>
-        <div className="absolute bottom-[20%] left-[15%] opacity-15">
+        <div className="absolute bottom-[15%] left-[12%] opacity-15">
           <svg width="16" height="16" viewBox="0 0 20 20" fill="var(--color-primary)">
             <path d="M10 18 C5 13, 0 9, 0 5 C0 2, 2 0, 5 0 C7 0, 9 1.5, 10 3 C11 1.5, 13 0, 15 0 C18 0, 20 2, 20 5 C20 9, 15 13, 10 18Z"/>
           </svg>
         </div>
-        <div className="absolute bottom-[30%] right-[8%] opacity-20">
+        <div className="absolute bottom-[22%] right-[7%] opacity-20">
           <svg width="12" height="12" viewBox="0 0 20 20" fill="var(--color-primary)">
             <path d="M10 18 C5 13, 0 9, 0 5 C0 2, 2 0, 5 0 C7 0, 9 1.5, 10 3 C11 1.5, 13 0, 15 0 C18 0, 20 2, 20 5 C20 9, 15 13, 10 18Z"/>
           </svg>
