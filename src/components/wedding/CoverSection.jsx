@@ -16,12 +16,11 @@ function CoverSection({ weddingData, guestName, onOpen }) {
     <div className="fixed inset-0 z-50 bg-[var(--color-bg)] lg:relative lg:min-h-screen overflow-hidden">
       
       {/* Background image */}
-      <div className="absolute inset-0">
+      <div className="absolute inset-0 overflow-hidden">
         <img 
           src="/images/wedding_welcome_page_background.png" 
           alt="" 
-          className="w-full h-full object-cover"
-          style={{ objectPosition: 'center 65%' }}
+          className="absolute w-[130%] h-[130%] object-cover -left-[15%] -top-[5%]"
         />
       </div>
 
