@@ -16,7 +16,7 @@ function HeroSection({ weddingData }) {
       }).replace(/\//g, '.')
     : '';
 
-  const heroImage = weddingData?.settings?.hero_image || '/uploads/hero-default.jpg';
+  const heroImage = weddingData?.settings?.hero_image || '/hero.jpeg';
 
   return (
     <section id="home" ref={ref} className="relative min-h-screen flex items-center justify-center overflow-hidden">
