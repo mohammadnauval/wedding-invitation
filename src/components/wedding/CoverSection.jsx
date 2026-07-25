@@ -24,11 +24,11 @@ function CoverSection({ weddingData, guestName, onOpen }) {
       <div className="absolute inset-0 max-w-[480px] mx-auto">
         {/* Dear + Button - pinned to bottom */}
         <div className="absolute bottom-[4vh] left-0 right-0 text-center px-6 fade-up" style={{ animationDelay: '0.4s' }}>
-          <div className="inline-block px-5 py-2 rounded-2xl bg-[var(--color-primary)]/10 mb-3">
-            <p className="text-[9px] sm:text-[10px] tracking-[0.2em] uppercase text-[var(--color-text-muted)] mb-0.5">
+          <div className="inline-block px-5 py-2 rounded-2xl bg-white/70 backdrop-blur-sm mb-3">
+            <p className="text-[9px] sm:text-[10px] tracking-[0.2em] uppercase text-[var(--color-primary)] mb-0.5 font-bold">
               Dear
             </p>
-            <p className="text-xs sm:text-sm font-semibold text-[var(--color-primary)]">
+            <p className="text-sm sm:text-base font-bold text-[var(--color-primary)]">
               {guestName} & Partner
             </p>
           </div>
