@@ -192,10 +192,18 @@ async function initDB() {
   // Insert default categories
   const { rows: existingCats } = await query('SELECT id FROM guest_categories LIMIT 1');
   if (existingCats.length === 0) {
-    const cats = ['Family Groom', 'Family Bride', 'Friend', 'Office', 'VIP', 'Other'];
+    const cats = ['Family Groom', 'Family Bride', 'Friend Groom', 'Friend Bride', 'Office Groom', 'Office Bride', 'VIP', 'Other'];
     for (const c of cats) {
       await query('INSERT INTO guest_categories (name) VALUES ($1)', [c]);
     }
+  } else {
+    // Migration: rename Friend -> Friend Groom, add Friend Bride, rename Office -> Office Groom, add Office Bride
+    await query("UPDATE guest_categories SET name = 'Friend Groom' WHERE name = 'Friend'");
+    await query("UPDATE guest_categories SET name = 'Office Groom' WHERE name = 'Office'");
+    const { rows: fbCheck } = await query("SELECT id FROM guest_categories WHERE name = 'Friend Bride'");
+    if (fbCheck.length === 0) await query("INSERT INTO guest_categories (name) VALUES ('Friend Bride')");
+    const { rows: obCheck } = await query("SELECT id FROM guest_categories WHERE name = 'Office Bride'");
+    if (obCheck.length === 0) await query("INSERT INTO guest_categories (name) VALUES ('Office Bride')");
   }
 
   // Insert default couple data
