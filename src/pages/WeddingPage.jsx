@@ -127,17 +127,17 @@ function WeddingPage() {
         ) : (
           <>
             <HeroSection weddingData={weddingData} />
-            <SectionDivider variant="hearts" />
+            <SectionDivider variant="floral" />
             <GreetingSection weddingData={weddingData} />
             <SectionDivider variant="hearts" />
             <CoupleSection weddingData={weddingData} />
-            <SectionDivider variant="hearts" />
+            <SectionDivider variant="floral" />
             <EventSection weddingData={weddingData} />
             <SectionDivider variant="hearts" />
             <CountdownSection weddingData={weddingData} />
             {weddingData?.settings?.gallery_enabled === '1' && (
               <>
-                <SectionDivider variant="hearts" />
+                <SectionDivider variant="floral" />
                 <GallerySection weddingData={weddingData} />
               </>
             )}
@@ -147,7 +147,7 @@ function WeddingPage() {
                 <RsvpSection guestData={guestData} weddingData={weddingData} />
               </>
             )}
-            <SectionDivider variant="hearts" />
+            <SectionDivider variant="floral" />
             <ClosingSection weddingData={weddingData} />
             <FloatingNav />
             <MusicPlayer audioRef={audioRef} weddingData={weddingData} />

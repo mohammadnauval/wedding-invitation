@@ -1,5 +1,6 @@
 import React from 'react';
 import useInView from '../../hooks/useInView';
+import { FloralCorner, LeafBranch } from './FloralOrnament';
 
 function ClosingSection({ weddingData }) {
   const [ref, inView] = useInView();
@@ -17,27 +18,11 @@ function ClosingSection({ weddingData }) {
         <img src="/images/wedding_page_2_background.png" alt="" className="w-full h-full object-cover" />
       </div>
 
-      {/* Scattered hearts */}
-      <div className="absolute top-[10%] left-[5%] opacity-10">
-        <svg width="30" height="30" viewBox="0 0 20 20" fill="var(--color-primary)">
-          <path d="M10 18 C5 13, 0 9, 0 5 C0 2, 2 0, 5 0 C7 0, 9 1.5, 10 3 C11 1.5, 13 0, 15 0 C18 0, 20 2, 20 5 C20 9, 15 13, 10 18Z"/>
-        </svg>
-      </div>
-      <div className="absolute top-[20%] right-[8%] opacity-10">
-        <svg width="20" height="20" viewBox="0 0 20 20" fill="var(--color-primary)">
-          <path d="M10 18 C5 13, 0 9, 0 5 C0 2, 2 0, 5 0 C7 0, 9 1.5, 10 3 C11 1.5, 13 0, 15 0 C18 0, 20 2, 20 5 C20 9, 15 13, 10 18Z"/>
-        </svg>
-      </div>
-      <div className="absolute bottom-[15%] left-[10%] opacity-10">
-        <svg width="24" height="24" viewBox="0 0 20 20" fill="var(--color-primary)">
-          <path d="M10 18 C5 13, 0 9, 0 5 C0 2, 2 0, 5 0 C7 0, 9 1.5, 10 3 C11 1.5, 13 0, 15 0 C18 0, 20 2, 20 5 C20 9, 15 13, 10 18Z"/>
-        </svg>
-      </div>
-      <div className="absolute bottom-[25%] right-[5%] opacity-10">
-        <svg width="16" height="16" viewBox="0 0 20 20" fill="var(--color-primary)">
-          <path d="M10 18 C5 13, 0 9, 0 5 C0 2, 2 0, 5 0 C7 0, 9 1.5, 10 3 C11 1.5, 13 0, 15 0 C18 0, 20 2, 20 5 C20 9, 15 13, 10 18Z"/>
-        </svg>
-      </div>
+      {/* Floral decorations */}
+      <FloralCorner className="absolute top-4 left-2" size={60} />
+      <FloralCorner className="absolute top-4 right-2 -scale-x-100" size={60} />
+      <LeafBranch className="absolute bottom-8 -left-6 opacity-50 rotate-6" />
+      <LeafBranch className="absolute bottom-8 -right-6 opacity-50 -rotate-6" flip />
 
       <div className={`section-container relative z-10 text-center ${inView ? 'fade-up' : 'opacity-0'}`}>
         <p className="text-xs leading-relaxed text-[var(--color-text-muted)] mb-8">

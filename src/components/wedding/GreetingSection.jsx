@@ -1,5 +1,6 @@
 import React from 'react';
 import useInView from '../../hooks/useInView';
+import { FloralCorner, LeafBranch } from './FloralOrnament';
 
 function GreetingSection({ weddingData }) {
   const [ref, inView] = useInView();
@@ -18,17 +19,15 @@ function GreetingSection({ weddingData }) {
         <img src="/images/wedding_page_2_background.png" alt="" className="w-full h-full object-cover" />
       </div>
 
-      {/* Decorative corner elements */}
-      <div className="absolute top-4 left-4 opacity-20">
-        <svg width="40" height="40" viewBox="0 0 20 20" fill="var(--color-primary)">
-          <path d="M10 18 C5 13, 0 9, 0 5 C0 2, 2 0, 5 0 C7 0, 9 1.5, 10 3 C11 1.5, 13 0, 15 0 C18 0, 20 2, 20 5 C20 9, 15 13, 10 18Z"/>
-        </svg>
-      </div>
-      <div className="absolute bottom-4 right-4 opacity-20">
-        <svg width="40" height="40" viewBox="0 0 20 20" fill="var(--color-primary)">
-          <path d="M10 18 C5 13, 0 9, 0 5 C0 2, 2 0, 5 0 C7 0, 9 1.5, 10 3 C11 1.5, 13 0, 15 0 C18 0, 20 2, 20 5 C20 9, 15 13, 10 18Z"/>
-        </svg>
-      </div>
+      {/* Floral corners */}
+      <FloralCorner className="absolute top-2 left-2" size={70} />
+      <FloralCorner className="absolute top-2 right-2 -scale-x-100" size={70} />
+      <FloralCorner className="absolute bottom-2 left-2 -scale-y-100" size={70} />
+      <FloralCorner className="absolute bottom-2 right-2 -scale-x-100 -scale-y-100" size={70} />
+
+      {/* Leaf branches on sides */}
+      <LeafBranch className="absolute top-1/3 -left-4 opacity-60" />
+      <LeafBranch className="absolute bottom-1/3 -right-4 opacity-60" flip />
 
       <div className={`section-container relative z-10 ${inView ? 'fade-up' : 'opacity-0'}`}>
         <p className="text-center font-couple text-2xl text-[var(--color-primary)] mb-8">

@@ -1,5 +1,6 @@
 import React from 'react';
 import useInView from '../../hooks/useInView';
+import { LeafBranch, SmallFlower } from './FloralOrnament';
 
 function CoupleSection({ weddingData }) {
   const [ref, inView] = useInView();
@@ -8,7 +9,11 @@ function CoupleSection({ weddingData }) {
   const bride = weddingData?.couple?.bride || {};
 
   return (
-    <section id="couple" ref={ref} className="py-16 bg-[var(--color-bg)]">
+    <section id="couple" ref={ref} className="relative py-16 bg-[var(--color-bg)] overflow-hidden">
+      {/* Decorative florals */}
+      <SmallFlower className="absolute top-8 right-8" size={32} />
+      <SmallFlower className="absolute bottom-12 left-6" size={28} />
+      <LeafBranch className="absolute -bottom-2 -right-8 opacity-50 rotate-12" />
       <div className={`section-container ${inView ? 'fade-up' : 'opacity-0'}`}>
         <h2 className="section-title">The Couple</h2>
         <p className="section-subtitle">Two hearts, one love story</p>

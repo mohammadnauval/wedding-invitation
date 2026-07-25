@@ -1,4 +1,5 @@
 import React from 'react';
+import { FloralDivider } from './FloralOrnament';
 
 function SectionDivider({ variant = 'wave' }) {
   if (variant === 'wave') {
@@ -25,6 +26,10 @@ function SectionDivider({ variant = 'wave' }) {
         </svg>
       </div>
     );
+  }
+
+  if (variant === 'floral') {
+    return <FloralDivider className="py-4" />;
   }
 
   if (variant === 'hearts') {
