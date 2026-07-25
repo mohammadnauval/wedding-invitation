@@ -37,7 +37,7 @@ function HeroSection({ weddingData }) {
           {brideName} & {groomName}
         </h1>
 
-        <p className="font-script text-lg text-[var(--color-primary)] mt-4 italic">
+        <p className="text-sm tracking-wide text-[var(--color-primary)] mt-4 italic font-medium">
           We invite you to witness our vows and share in our joy
         </p>
 
