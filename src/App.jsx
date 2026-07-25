@@ -12,7 +12,7 @@ import CoupleManagement from './pages/admin/CoupleManagement';
 import GalleryManagement from './pages/admin/GalleryManagement';
 import MusicManagement from './pages/admin/MusicManagement';
 
-import LoveStoryManagement from './pages/admin/LoveStoryManagement';
+
 import ContentManagement from './pages/admin/ContentManagement';
 import SettingsManagement from './pages/admin/SettingsManagement';
 import NotFound from './pages/NotFound';
@@ -38,7 +38,7 @@ function App() {
         <Route path="gallery" element={<GalleryManagement />} />
         <Route path="music" element={<MusicManagement />} />
 
-        <Route path="love-story" element={<LoveStoryManagement />} />
+
         <Route path="content" element={<ContentManagement />} />
         <Route path="settings" element={<SettingsManagement />} />
       </Route>
