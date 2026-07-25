@@ -1,6 +1,6 @@
 import React from 'react';
 import useInView from '../../hooks/useInView';
-import { LeafBranch, SmallFlower } from './FloralOrnament';
+import { LeafBranch, FloralCorner, SmallFlower } from './FloralOrnament';
 
 function CoupleSection({ weddingData }) {
   const [ref, inView] = useInView();
@@ -9,86 +9,102 @@ function CoupleSection({ weddingData }) {
   const bride = weddingData?.couple?.bride || {};
 
   return (
-    <section id="couple" ref={ref} className="relative py-16 bg-[var(--color-bg)] overflow-hidden">
-      {/* Decorative florals */}
-      <SmallFlower className="absolute top-8 right-8" size={32} />
-      <SmallFlower className="absolute bottom-12 left-6" size={28} />
-      <LeafBranch className="absolute -bottom-2 -right-8 opacity-50 rotate-12" />
-      <div className={`section-container ${inView ? 'fade-up' : 'opacity-0'}`}>
+    <section id="couple" ref={ref} className="relative py-16 overflow-hidden" style={{
+      background: 'linear-gradient(180deg, var(--color-bg) 0%, var(--color-bg-soft) 50%, var(--color-bg) 100%)'
+    }}>
+      {/* Background pattern */}
+      <div className="absolute inset-0 opacity-[0.04]" style={{
+        backgroundImage: `radial-gradient(circle, var(--color-primary) 1px, transparent 1px)`,
+        backgroundSize: '20px 20px',
+      }} />
+
+      {/* Floral decorations */}
+      <FloralCorner className="absolute top-0 left-0" size={90} />
+      <FloralCorner className="absolute top-0 right-0 -scale-x-100" size={90} />
+      <LeafBranch className="absolute top-1/2 -translate-y-1/2 -left-10 opacity-40 rotate-45" />
+      <LeafBranch className="absolute top-1/2 -translate-y-1/2 -right-10 opacity-40 -rotate-45" flip />
+      <SmallFlower className="absolute bottom-6 left-1/4 opacity-70" size={20} />
+      <SmallFlower className="absolute top-10 right-1/4 opacity-70" size={18} />
+
+      <div className={`section-container relative z-10 ${inView ? 'fade-up' : 'opacity-0'}`}>
         <h2 className="section-title">The Couple</h2>
         <p className="section-subtitle">Two hearts, one love story</p>
 
-        <div className="space-y-6">
-          {/* Bride - left aligned */}
-          <div className="flex items-center gap-4">
-            <div className="w-24 h-24 shrink-0 rounded-full overflow-hidden border-3 border-[var(--color-primary-light)]/30 shadow-lg shadow-[var(--color-primary)]/10">
-              <img
-                src={bride.photo || '/uploads/bride-default.jpg'}
-                alt={bride.full_name || 'Bride'}
-                className="w-full h-full object-cover"
-                loading="lazy"
-              />
-            </div>
-            <div className="text-left">
-              <h3 className="font-couple text-3xl text-[var(--color-primary)] mb-0.5">
-                {bride.nickname || 'Bride'}
-              </h3>
-              <p className="text-xs font-medium text-[var(--color-text)]">
-                {bride.full_name || ''}
-              </p>
-              <p className="text-[10px] text-[var(--color-text-muted)] mt-0.5">
-                {bride.child_order ? `Putri ${bride.child_order} dari` : 'Putri dari'} Bapak {bride.father_name || '-'} & Ibu {bride.mother_name || '-'}
-              </p>
-              {bride.instagram && (
-                <a
-                  href={`https://instagram.com/${bride.instagram}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center text-[10px] text-[var(--color-primary)] mt-1 hover:underline font-semibold"
-                >
-                  @{bride.instagram}
-                </a>
-              )}
+        <div className="space-y-5">
+          {/* Bride - card style, left aligned */}
+          <div className="bg-white/50 backdrop-blur-sm rounded-2xl p-5 border border-[var(--color-primary-light)]/20 shadow-sm">
+            <div className="flex items-center gap-4">
+              <div className="w-20 h-20 shrink-0 rounded-full overflow-hidden ring-3 ring-[var(--color-primary)]/20 ring-offset-2 ring-offset-[var(--color-bg-soft)]">
+                <img
+                  src={bride.photo || '/uploads/bride-default.jpg'}
+                  alt={bride.full_name || 'Bride'}
+                  className="w-full h-full object-cover"
+                  loading="lazy"
+                />
+              </div>
+              <div className="text-left flex-1">
+                <h3 className="font-couple text-3xl text-[var(--color-primary)] leading-tight">
+                  {bride.nickname || 'Bride'}
+                </h3>
+                <p className="text-xs font-medium text-[var(--color-text)] mt-0.5">
+                  {bride.full_name || ''}
+                </p>
+                <p className="text-[10px] text-[var(--color-text-muted)] mt-1 leading-relaxed">
+                  {bride.child_order ? `Putri ${bride.child_order} dari` : 'Putri dari'} Bapak {bride.father_name || '-'} & Ibu {bride.mother_name || '-'}
+                </p>
+                {bride.instagram && (
+                  <a
+                    href={`https://instagram.com/${bride.instagram}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center text-[10px] text-[var(--color-primary)] mt-1.5 hover:underline font-bold tracking-wide"
+                  >
+                    @{bride.instagram}
+                  </a>
+                )}
+              </div>
             </div>
           </div>
 
-          {/* Heart divider */}
-          <div className="text-center">
-            <svg width="28" height="26" viewBox="0 0 20 20" fill="var(--color-primary)" className="mx-auto opacity-50">
-              <path d="M10 18 C5 13, 0 9, 0 5 C0 2, 2 0, 5 0 C7 0, 9 1.5, 10 3 C11 1.5, 13 0, 15 0 C18 0, 20 2, 20 5 C20 9, 15 13, 10 18Z"/>
-            </svg>
+          {/* Ampersand divider */}
+          <div className="flex items-center justify-center gap-3 py-1">
+            <div className="w-10 h-[1px] bg-[var(--color-primary)]/20" />
+            <span className="font-couple text-4xl text-[var(--color-primary)] opacity-60">&</span>
+            <div className="w-10 h-[1px] bg-[var(--color-primary)]/20" />
           </div>
 
-          {/* Groom - right aligned */}
-          <div className="flex items-center gap-4 flex-row-reverse">
-            <div className="w-24 h-24 shrink-0 rounded-full overflow-hidden border-3 border-[var(--color-primary-light)]/30 shadow-lg shadow-[var(--color-primary)]/10">
-              <img
-                src={groom.photo || '/uploads/groom-default.jpg'}
-                alt={groom.full_name || 'Groom'}
-                className="w-full h-full object-cover"
-                loading="lazy"
-              />
-            </div>
-            <div className="text-right">
-              <h3 className="font-couple text-3xl text-[var(--color-primary)] mb-0.5">
-                {groom.nickname || 'Groom'}
-              </h3>
-              <p className="text-xs font-medium text-[var(--color-text)]">
-                {groom.full_name || ''}
-              </p>
-              <p className="text-[10px] text-[var(--color-text-muted)] mt-0.5">
-                {groom.child_order ? `Putra ${groom.child_order} dari` : 'Putra dari'} Bapak {groom.father_name || '-'} & Ibu {groom.mother_name || '-'}
-              </p>
-              {groom.instagram && (
-                <a
-                  href={`https://instagram.com/${groom.instagram}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center text-[10px] text-[var(--color-primary)] mt-1 hover:underline font-semibold"
-                >
-                  @{groom.instagram}
-                </a>
-              )}
+          {/* Groom - card style, right aligned */}
+          <div className="bg-white/50 backdrop-blur-sm rounded-2xl p-5 border border-[var(--color-primary-light)]/20 shadow-sm">
+            <div className="flex items-center gap-4 flex-row-reverse">
+              <div className="w-20 h-20 shrink-0 rounded-full overflow-hidden ring-3 ring-[var(--color-primary)]/20 ring-offset-2 ring-offset-[var(--color-bg-soft)]">
+                <img
+                  src={groom.photo || '/uploads/groom-default.jpg'}
+                  alt={groom.full_name || 'Groom'}
+                  className="w-full h-full object-cover"
+                  loading="lazy"
+                />
+              </div>
+              <div className="text-right flex-1">
+                <h3 className="font-couple text-3xl text-[var(--color-primary)] leading-tight">
+                  {groom.nickname || 'Groom'}
+                </h3>
+                <p className="text-xs font-medium text-[var(--color-text)] mt-0.5">
+                  {groom.full_name || ''}
+                </p>
+                <p className="text-[10px] text-[var(--color-text-muted)] mt-1 leading-relaxed">
+                  {groom.child_order ? `Putra ${groom.child_order} dari` : 'Putra dari'} Bapak {groom.father_name || '-'} & Ibu {groom.mother_name || '-'}
+                </p>
+                {groom.instagram && (
+                  <a
+                    href={`https://instagram.com/${groom.instagram}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center text-[10px] text-[var(--color-primary)] mt-1.5 hover:underline font-bold tracking-wide"
+                  >
+                    @{groom.instagram}
+                  </a>
+                )}
+              </div>
             </div>
           </div>
         </div>
