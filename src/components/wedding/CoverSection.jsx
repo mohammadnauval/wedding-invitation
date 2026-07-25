@@ -1,62 +1,23 @@
 import React from 'react';
 
 function CoverSection({ weddingData, guestName, onOpen }) {
-  const groomName = weddingData?.couple?.bride?.nickname || 'Bride';
-  const brideName = weddingData?.couple?.groom?.nickname || 'Groom';
-
-  const weddingDate = weddingData?.events?.[0]?.event_date
-    ? new Date(weddingData.events[0].event_date).toLocaleDateString('en-GB', {
-        day: '2-digit',
-        month: '2-digit',
-        year: 'numeric',
-      }).replace(/\//g, '.')
-    : '';
-
   return (
     <div className="fixed inset-0 z-50 bg-[var(--color-bg)] lg:relative lg:min-h-screen overflow-hidden">
       
       {/* Background image */}
       <div className="absolute inset-0">
         <img 
-          src="/images/wedding_welcome_page_background.png" 
+          src="/images/wedding_welcome_page_background_2.png" 
           alt="" 
           className="w-full h-full object-cover"
-          style={{ objectPosition: 'center 65%' }}
         />
       </div>
 
       {/* Content wrapper */}
       <div className="absolute inset-0 max-w-[480px] mx-auto">
-
-        {/* Top section - title + names + save the date, all grouped together */}
-        <div className="absolute top-[2vh] left-0 right-0 px-6 sm:px-8">
-          <p className="text-xs sm:text-sm font-bold tracking-[0.2em] sm:tracking-[0.25em] uppercase text-[var(--color-primary)] mb-1 text-center fade-up" style={{ animationDelay: '0.2s' }}>
-            We're Getting Married!
-          </p>
-
-          <div className="fade-up" style={{ animationDelay: '0.4s' }}>
-            <h1 className="font-couple text-[3.5rem] sm:text-7xl md:text-8xl text-[var(--color-primary)] leading-[0.85] text-left">
-              {groomName} &
-            </h1>
-            <h1 className="font-couple text-[3.5rem] sm:text-7xl md:text-8xl text-[var(--color-primary)] leading-[0.85] text-left pl-2 sm:pl-4">
-              {brideName}
-            </h1>
-          </div>
-
-          {/* Save the Date - right below names */}
-          <div className="text-right mt-3 fade-up" style={{ animationDelay: '0.6s' }}>
-            <p className="text-[10px] sm:text-xs font-bold tracking-[0.2em] sm:tracking-[0.3em] uppercase text-[var(--color-primary)] mb-0.5">
-              Save the Date
-            </p>
-            <p className="font-couple text-2xl sm:text-3xl text-[var(--color-primary)]">
-              {weddingDate}
-            </p>
-          </div>
-        </div>
-
         {/* Dear + Button - pinned to bottom */}
-        <div className="absolute bottom-[3vh] left-0 right-0 text-center px-6 fade-up" style={{ animationDelay: '0.8s' }}>
-          <div className="inline-block px-4 sm:px-5 py-2 rounded-2xl bg-[var(--color-primary)]/10 mb-2 sm:mb-3">
+        <div className="absolute bottom-[4vh] left-0 right-0 text-center px-6 fade-up" style={{ animationDelay: '0.4s' }}>
+          <div className="inline-block px-5 py-2 rounded-2xl bg-[var(--color-primary)]/10 mb-3">
             <p className="text-[9px] sm:text-[10px] tracking-[0.2em] uppercase text-[var(--color-text-muted)] mb-0.5">
               Dear
             </p>
@@ -75,7 +36,6 @@ function CoverSection({ weddingData, guestName, onOpen }) {
             </button>
           </div>
         </div>
-
       </div>
     </div>
   );
