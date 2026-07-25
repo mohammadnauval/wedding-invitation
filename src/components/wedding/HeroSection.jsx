@@ -38,7 +38,7 @@ function HeroSection({ weddingData }) {
         </h1>
 
         <p className="font-script text-lg text-[var(--color-primary)] mt-4 italic">
-          We invite you to witness our vow and joy
+          We invite you to witness our vows and share in our joy
         </p>
 
         <div className="flex items-center justify-center gap-4 mt-6">
