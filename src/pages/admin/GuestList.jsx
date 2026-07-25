@@ -190,12 +190,19 @@ Merupakan suatu kehormatan bagi kami apabila Bapak/Ibu/Saudara/i dapat hadir. Te
     }
   };
 
+  const [filterRsvp, setFilterRsvp] = useState('');
+
   const filteredGuests = guests.filter((g) => {
     const matchSearch = g.name.toLowerCase().includes(search.toLowerCase()) ||
       (g.phone && g.phone.includes(search));
     const matchCategory = !filterCategory || String(g.category_id) === filterCategory;
-    return matchSearch && matchCategory;
+    const matchRsvp = !filterRsvp || (g.rsvp_status || 'pending') === filterRsvp;
+    return matchSearch && matchCategory && matchRsvp;
   });
+
+  const totalGuests = guests.length;
+  const confirmedAttending = guests.filter(g => g.rsvp_status === 'attending').length;
+  const totalPax = guests.filter(g => g.rsvp_status === 'attending').reduce((sum, g) => sum + (g.rsvp_pax || 0), 0);
 
   if (loading) return <div className="text-center py-8 text-gray-500">Loading...</div>;
 
@@ -219,6 +226,22 @@ Merupakan suatu kehormatan bagi kami apabila Bapak/Ibu/Saudara/i dapat hadir. Te
         </div>
       </div>
 
+      {/* Stats */}
+      <div className="grid grid-cols-3 gap-3 mb-4">
+        <div className="bg-white p-3 rounded-xl border border-gray-100 text-center">
+          <p className="text-xl font-bold text-gray-800">{totalGuests}</p>
+          <p className="text-[10px] text-gray-500">Total Tamu</p>
+        </div>
+        <div className="bg-green-50 p-3 rounded-xl border border-green-100 text-center">
+          <p className="text-xl font-bold text-green-700">{confirmedAttending}</p>
+          <p className="text-[10px] text-green-600">Confirmed Hadir</p>
+        </div>
+        <div className="bg-purple-50 p-3 rounded-xl border border-purple-100 text-center">
+          <p className="text-xl font-bold text-purple-700">{totalPax}</p>
+          <p className="text-[10px] text-purple-600">Total Pax</p>
+        </div>
+      </div>
+
       {/* Filters */}
       <div className="flex gap-3 mb-4">
         <input
@@ -237,6 +260,16 @@ Merupakan suatu kehormatan bagi kami apabila Bapak/Ibu/Saudara/i dapat hadir. Te
           {categories.map((cat) => (
             <option key={cat.id} value={cat.id}>{cat.name}</option>
           ))}
+        </select>
+        <select
+          value={filterRsvp}
+          onChange={(e) => setFilterRsvp(e.target.value)}
+          className="px-4 py-2 border border-gray-200 rounded-lg text-sm"
+        >
+          <option value="">All RSVP</option>
+          <option value="attending">Hadir</option>
+          <option value="not_attending">Tidak Hadir</option>
+          <option value="pending">Pending</option>
         </select>
       </div>
 
