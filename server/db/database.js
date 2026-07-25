@@ -69,6 +69,7 @@ async function initDB() {
   await query(`ALTER TABLE guests ADD COLUMN IF NOT EXISTS wa_sent BOOLEAN DEFAULT FALSE`);
   await query(`ALTER TABLE guests ADD COLUMN IF NOT EXISTS wa_sent_at TIMESTAMP`);
   await query(`ALTER TABLE guests ADD COLUMN IF NOT EXISTS wa_type TEXT DEFAULT 'muslim'`);
+  await query(`ALTER TABLE couple ADD COLUMN IF NOT EXISTS child_order TEXT`);
 
   await query(`
     CREATE TABLE IF NOT EXISTS rsvp (

@@ -112,6 +112,26 @@ function CoupleManagement() {
                 className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm"
               />
             </div>
+            <div>
+              <label className="text-xs text-gray-600">Anak ke-</label>
+              <select
+                value={person.child_order || ''}
+                onChange={(e) => updateField(type, 'child_order', e.target.value)}
+                className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm"
+              >
+                <option value="">-</option>
+                <option value="pertama">Pertama</option>
+                <option value="kedua">Kedua</option>
+                <option value="ketiga">Ketiga</option>
+                <option value="keempat">Keempat</option>
+                <option value="kelima">Kelima</option>
+                <option value="keenam">Keenam</option>
+                <option value="ketujuh">Ketujuh</option>
+                <option value="kedelapan">Kedelapan</option>
+                <option value="kesembilan">Kesembilan</option>
+                <option value="kesepuluh">Kesepuluh</option>
+              </select>
+            </div>
             <div className="col-span-2">
               <label className="text-xs text-gray-600">Instagram (without @)</label>
               <input

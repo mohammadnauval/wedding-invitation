@@ -356,18 +356,10 @@ router.put('/couple', async (req, res) => {
   try {
     const { groom, bride } = req.body;
 
-    if (groom) {
-      await query(
-        'UPDATE couple SET full_name = $1, nickname = $2, father_name = $3, mother_name = $4, instagram = $5 WHERE type = $6',
-        [groom.full_name, groom.nickname, groom.father_name, groom.mother_name, groom.instagram || null, 'groom']
-      );
-    }
-    if (bride) {
-      await query(
-        'UPDATE couple SET full_name = $1, nickname = $2, father_name = $3, mother_name = $4, instagram = $5 WHERE type = $6',
-        [bride.full_name, bride.nickname, bride.father_name, bride.mother_name, bride.instagram || null, 'bride']
-      );
-    }
+    const updateCouple = 'UPDATE couple SET full_name = $1, nickname = $2, father_name = $3, mother_name = $4, instagram = $5, child_order = $6 WHERE type = $7';
+
+    if (groom) await query(updateCouple, [groom.full_name, groom.nickname, groom.father_name, groom.mother_name, groom.instagram || null, groom.child_order || null, 'groom']);
+    if (bride) await query(updateCouple, [bride.full_name, bride.nickname, bride.father_name, bride.mother_name, bride.instagram || null, bride.child_order || null, 'bride']);
 
     res.json({ success: true });
   } catch (err) {

@@ -30,7 +30,7 @@ function CoupleSection({ weddingData }) {
             {bride.full_name || ''}
           </p>
           <p className="text-xs text-[var(--color-text-muted)] mt-1">
-            Putri dari Bapak {bride.father_name || '-'} & Ibu {bride.mother_name || '-'}
+            {bride.child_order ? `Putri ${bride.child_order} dari` : 'Putri dari'} Bapak {bride.father_name || '-'} & Ibu {bride.mother_name || '-'}
           </p>
           {bride.instagram && (
             <a
@@ -68,7 +68,7 @@ function CoupleSection({ weddingData }) {
             {groom.full_name || ''}
           </p>
           <p className="text-xs text-[var(--color-text-muted)] mt-1">
-            Putra dari Bapak {groom.father_name || '-'} & Ibu {groom.mother_name || '-'}
+            {groom.child_order ? `Putra ${groom.child_order} dari` : 'Putra dari'} Bapak {groom.father_name || '-'} & Ibu {groom.mother_name || '-'}
           </p>
           {groom.instagram && (
             <a
