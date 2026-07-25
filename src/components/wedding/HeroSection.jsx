@@ -22,7 +22,7 @@ function HeroSection({ weddingData }) {
         <img
           src="/images/wedding_page_2_background.png"
           alt="Wedding Hero"
-          className="w-full h-full object-cover opacity-40"
+          className="w-full h-full object-cover opacity-25"
           loading="eager"
         />
       </div>
