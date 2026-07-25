@@ -197,16 +197,25 @@ async function initDB() {
       await query('INSERT INTO guest_categories (name) VALUES ($1)', [c]);
     }
   } else {
-    // Migration: rename Friend -> Friend Groom, add Friend Bride, rename Office -> Office Groom, add Office Bride
+    // Migration: rename and add new categories (idempotent)
     await query("UPDATE guest_categories SET name = 'Friend Groom' WHERE name = 'Friend'");
     await query("UPDATE guest_categories SET name = 'Office Groom' WHERE name = 'Office'");
-    const { rows: fbCheck } = await query("SELECT id FROM guest_categories WHERE name = 'Friend Bride'");
-    if (fbCheck.length === 0) await query("INSERT INTO guest_categories (name) VALUES ('Friend Bride')");
-    const { rows: obCheck } = await query("SELECT id FROM guest_categories WHERE name = 'Office Bride'");
-    if (obCheck.length === 0) await query("INSERT INTO guest_categories (name) VALUES ('Office Bride')");
     await query("UPDATE guest_categories SET name = 'VIP Groom' WHERE name = 'VIP'");
-    const { rows: vbCheck } = await query("SELECT id FROM guest_categories WHERE name = 'VIP Bride'");
-    if (vbCheck.length === 0) await query("INSERT INTO guest_categories (name) VALUES ('VIP Bride')");
+    
+    // Insert only if not exists
+    const newCats = ['Friend Bride', 'Office Bride', 'VIP Bride'];
+    for (const cat of newCats) {
+      const { rows } = await query("SELECT id FROM guest_categories WHERE name = $1", [cat]);
+      if (rows.length === 0) await query("INSERT INTO guest_categories (name) VALUES ($1)", [cat]);
+    }
+
+    // Remove duplicates (keep lowest id)
+    await query(`
+      DELETE FROM guest_categories 
+      WHERE id NOT IN (
+        SELECT MIN(id) FROM guest_categories GROUP BY name
+      )
+    `);
   }
 
   // Insert default couple data
