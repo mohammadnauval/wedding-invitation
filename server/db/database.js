@@ -68,6 +68,7 @@ async function initDB() {
   // Add wa_sent columns if not exist (migration for existing tables)
   await query(`ALTER TABLE guests ADD COLUMN IF NOT EXISTS wa_sent BOOLEAN DEFAULT FALSE`);
   await query(`ALTER TABLE guests ADD COLUMN IF NOT EXISTS wa_sent_at TIMESTAMP`);
+  await query(`ALTER TABLE guests ADD COLUMN IF NOT EXISTS wa_type TEXT DEFAULT 'muslim'`);
 
   await query(`
     CREATE TABLE IF NOT EXISTS rsvp (

@@ -4,7 +4,8 @@ import { adminFetch } from '../../hooks/useAdmin';
 function GuestList() {
   const [guests, setGuests] = useState([]);
   const [categories, setCategories] = useState([]);
-  const [waTemplate, setWaTemplate] = useState('');
+  const [waTemplateMuslim, setWaTemplateMuslim] = useState('');
+  const [waTemplateNonMuslim, setWaTemplateNonMuslim] = useState('');
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
   const [showWaTemplate, setShowWaTemplate] = useState(false);
@@ -12,8 +13,9 @@ function GuestList() {
   const [search, setSearch] = useState('');
   const [filterCategory, setFilterCategory] = useState('');
   const [copiedId, setCopiedId] = useState(null);
+  const [activeTemplateTab, setActiveTemplateTab] = useState('muslim');
   const [formData, setFormData] = useState({
-    name: '', phone: '', category_id: '', max_pax: 2, notes: '',
+    name: '', phone: '', category_id: '', max_pax: 2, notes: '', wa_type: 'muslim',
   });
 
   useEffect(() => { loadData(); }, []);
@@ -27,9 +29,24 @@ function GuestList() {
       ]);
       setGuests(guestsData.guests || []);
       setCategories(catsData.categories || []);
-      setWaTemplate(settingsData.settings?.wa_template || `Assalamu'alaikum {nama},
 
-Dengan penuh kebahagiaan kami mengundang Bapak/Ibu/Saudara/i untuk hadir dalam acara pernikahan kami.
+      const settings = settingsData.settings || {};
+      setWaTemplateMuslim(settings.wa_template_muslim || `Assalamu'alaikum Wr. Wb.
+
+Kepada Yth. {nama},
+
+Dengan memohon rahmat dan ridho Allah SWT, kami bermaksud mengundang Bapak/Ibu/Saudara/i untuk hadir dalam acara pernikahan kami.
+
+Silakan membuka undangan melalui link berikut:
+{link}
+
+Merupakan suatu kehormatan bagi kami apabila Bapak/Ibu/Saudara/i dapat hadir.
+
+Wassalamu'alaikum Wr. Wb.`);
+
+      setWaTemplateNonMuslim(settings.wa_template_non_muslim || `Kepada Yth. {nama},
+
+Dengan penuh kebahagiaan, kami bermaksud mengundang Bapak/Ibu/Saudara/i untuk hadir dalam acara pernikahan kami.
 
 Silakan membuka undangan melalui link berikut:
 {link}
@@ -83,12 +100,13 @@ Merupakan suatu kehormatan bagi kami apabila Bapak/Ibu/Saudara/i dapat hadir. Te
       category_id: guest.category_id || '',
       max_pax: guest.max_pax,
       notes: guest.notes || '',
+      wa_type: guest.wa_type || 'muslim',
     });
     setShowForm(true);
   };
 
   const resetForm = () => {
-    setFormData({ name: '', phone: '', category_id: '', max_pax: 2, notes: '' });
+    setFormData({ name: '', phone: '', category_id: '', max_pax: 2, notes: '', wa_type: 'muslim' });
   };
 
   const copyInviteLink = (guest) => {
@@ -102,7 +120,8 @@ Merupakan suatu kehormatan bagi kami apabila Bapak/Ibu/Saudara/i dapat hadir. Te
   const getWaMessage = (guest) => {
     const baseUrl = window.location.origin;
     const link = `${baseUrl}/invite/${guest.slug}`;
-    return waTemplate
+    const template = (guest.wa_type === 'non_muslim') ? waTemplateNonMuslim : waTemplateMuslim;
+    return template
       .replace(/{nama}/g, guest.name)
       .replace(/{link}/g, link);
   };
@@ -113,7 +132,6 @@ Merupakan suatu kehormatan bagi kami apabila Bapak/Ibu/Saudara/i dapat hadir. Te
       return;
     }
     const message = getWaMessage(guest);
-    // Format phone: remove leading 0, add 62
     let phone = guest.phone.replace(/\D/g, '');
     if (phone.startsWith('0')) {
       phone = '62' + phone.substring(1);
@@ -123,7 +141,6 @@ Merupakan suatu kehormatan bagi kami apabila Bapak/Ibu/Saudara/i dapat hadir. Te
     const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
     window.open(url, '_blank');
 
-    // Mark as sent
     try {
       await adminFetch(`/guests/${guest.id}/wa-sent`, { method: 'PUT' });
       setGuests(prev => prev.map(g => g.id === guest.id ? { ...g, wa_sent: true } : g));
@@ -139,11 +156,14 @@ Merupakan suatu kehormatan bagi kami apabila Bapak/Ibu/Saudara/i dapat hadir. Te
     setTimeout(() => setCopiedId(null), 2000);
   };
 
-  const saveWaTemplate = async () => {
+  const saveWaTemplates = async () => {
     try {
       await adminFetch('/settings', {
         method: 'PUT',
-        body: JSON.stringify({ wa_template: waTemplate }),
+        body: JSON.stringify({
+          wa_template_muslim: waTemplateMuslim,
+          wa_template_non_muslim: waTemplateNonMuslim,
+        }),
       });
       setShowWaTemplate(false);
       alert('Template berhasil disimpan!');
@@ -229,7 +249,7 @@ Merupakan suatu kehormatan bagi kami apabila Bapak/Ibu/Saudara/i dapat hadir. Te
                 <th className="text-left px-4 py-3 font-medium text-gray-600">Name</th>
                 <th className="text-left px-4 py-3 font-medium text-gray-600">Phone</th>
                 <th className="text-left px-4 py-3 font-medium text-gray-600">Category</th>
-                <th className="text-center px-4 py-3 font-medium text-gray-600">Max Pax</th>
+                <th className="text-center px-4 py-3 font-medium text-gray-600">Type</th>
                 <th className="text-center px-4 py-3 font-medium text-gray-600">RSVP</th>
                 <th className="text-center px-4 py-3 font-medium text-gray-600">WA</th>
                 <th className="text-right px-4 py-3 font-medium text-gray-600">Actions</th>
@@ -243,7 +263,15 @@ Merupakan suatu kehormatan bagi kami apabila Bapak/Ibu/Saudara/i dapat hadir. Te
                   </td>
                   <td className="px-4 py-3 text-gray-600 text-xs">{guest.phone || '-'}</td>
                   <td className="px-4 py-3 text-gray-600">{guest.category_name || '-'}</td>
-                  <td className="px-4 py-3 text-center">{guest.max_pax}</td>
+                  <td className="px-4 py-3 text-center">
+                    <span className={`text-[10px] px-2 py-0.5 rounded-full ${
+                      guest.wa_type === 'non_muslim'
+                        ? 'bg-blue-50 text-blue-700'
+                        : 'bg-emerald-50 text-emerald-700'
+                    }`}>
+                      {guest.wa_type === 'non_muslim' ? 'Non-Muslim' : 'Muslim'}
+                    </span>
+                  </td>
                   <td className="px-4 py-3 text-center">
                     <span className={`text-xs px-2 py-1 rounded-full ${
                       guest.rsvp_status === 'attending'
@@ -316,7 +344,7 @@ Merupakan suatu kehormatan bagi kami apabila Bapak/Ibu/Saudara/i dapat hadir. Te
       {/* Add/Edit Guest Modal */}
       {showForm && (
         <div className="fixed inset-0 bg-black/30 z-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl p-6 w-full max-w-md">
+          <div className="bg-white rounded-2xl p-6 w-full max-w-md max-h-[90vh] overflow-y-auto">
             <h3 className="text-lg font-semibold mb-4">
               {editingGuest ? 'Edit Guest' : 'Add Guest'}
             </h3>
@@ -332,7 +360,7 @@ Merupakan suatu kehormatan bagi kami apabila Bapak/Ibu/Saudara/i dapat hadir. Te
                 />
               </div>
               <div>
-                <label className="text-xs text-gray-600">Phone (WhatsApp) *</label>
+                <label className="text-xs text-gray-600">Phone (WhatsApp)</label>
                 <input
                   type="text"
                   value={formData.phone}
@@ -352,6 +380,17 @@ Merupakan suatu kehormatan bagi kami apabila Bapak/Ibu/Saudara/i dapat hadir. Te
                   {categories.map((cat) => (
                     <option key={cat.id} value={cat.id}>{cat.name}</option>
                   ))}
+                </select>
+              </div>
+              <div>
+                <label className="text-xs text-gray-600">WA Template Type</label>
+                <select
+                  value={formData.wa_type}
+                  onChange={(e) => setFormData({ ...formData, wa_type: e.target.value })}
+                  className="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm"
+                >
+                  <option value="muslim">Muslim (dengan salam)</option>
+                  <option value="non_muslim">Non-Muslim (tanpa salam)</option>
                 </select>
               </div>
               <div>
@@ -394,26 +433,73 @@ Merupakan suatu kehormatan bagi kami apabila Bapak/Ibu/Saudara/i dapat hadir. Te
         </div>
       )}
 
-      {/* WA Template Modal */}
+      {/* WA Template Modal - Dual tabs */}
       {showWaTemplate && (
         <div className="fixed inset-0 bg-black/30 z-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl p-6 w-full max-w-lg">
-            <h3 className="text-lg font-semibold mb-2">WhatsApp Template</h3>
+          <div className="bg-white rounded-2xl p-6 w-full max-w-lg max-h-[90vh] overflow-y-auto">
+            <h3 className="text-lg font-semibold mb-2">WhatsApp Templates</h3>
             <p className="text-xs text-gray-500 mb-4">
               Gunakan <code className="bg-gray-100 px-1 rounded">{'{nama}'}</code> untuk nama tamu dan <code className="bg-gray-100 px-1 rounded">{'{link}'}</code> untuk link undangan.
             </p>
-            <textarea
-              value={waTemplate}
-              onChange={(e) => setWaTemplate(e.target.value)}
-              className="w-full px-4 py-3 border border-gray-200 rounded-lg text-sm resize-none font-mono"
-              rows={10}
-            />
-            <div className="mt-4 p-3 bg-gray-50 rounded-lg">
-              <p className="text-[10px] text-gray-500 mb-1">Preview:</p>
-              <p className="text-xs text-gray-700 whitespace-pre-wrap">
-                {waTemplate.replace(/{nama}/g, 'Budi Santoso').replace(/{link}/g, 'https://domain.com/invite/budi-santoso')}
-              </p>
+
+            {/* Tabs */}
+            <div className="flex gap-2 mb-4">
+              <button
+                onClick={() => setActiveTemplateTab('muslim')}
+                className={`px-4 py-2 text-xs rounded-lg transition-colors ${
+                  activeTemplateTab === 'muslim' ? 'bg-emerald-100 text-emerald-700 font-medium' : 'bg-gray-100 text-gray-600'
+                }`}
+              >
+                🕌 Muslim
+              </button>
+              <button
+                onClick={() => setActiveTemplateTab('non_muslim')}
+                className={`px-4 py-2 text-xs rounded-lg transition-colors ${
+                  activeTemplateTab === 'non_muslim' ? 'bg-blue-100 text-blue-700 font-medium' : 'bg-gray-100 text-gray-600'
+                }`}
+              >
+                📨 Non-Muslim
+              </button>
             </div>
+
+            {/* Muslim template */}
+            {activeTemplateTab === 'muslim' && (
+              <>
+                <label className="text-xs text-gray-600 mb-1 block">Template Muslim (dengan salam Islam)</label>
+                <textarea
+                  value={waTemplateMuslim}
+                  onChange={(e) => setWaTemplateMuslim(e.target.value)}
+                  className="w-full px-4 py-3 border border-gray-200 rounded-lg text-sm resize-none font-mono"
+                  rows={8}
+                />
+                <div className="mt-3 p-3 bg-gray-50 rounded-lg">
+                  <p className="text-[10px] text-gray-500 mb-1">Preview:</p>
+                  <p className="text-xs text-gray-700 whitespace-pre-wrap">
+                    {waTemplateMuslim.replace(/{nama}/g, 'Budi Santoso').replace(/{link}/g, 'https://domain.com/invite/budi-santoso')}
+                  </p>
+                </div>
+              </>
+            )}
+
+            {/* Non-Muslim template */}
+            {activeTemplateTab === 'non_muslim' && (
+              <>
+                <label className="text-xs text-gray-600 mb-1 block">Template Non-Muslim (tanpa salam)</label>
+                <textarea
+                  value={waTemplateNonMuslim}
+                  onChange={(e) => setWaTemplateNonMuslim(e.target.value)}
+                  className="w-full px-4 py-3 border border-gray-200 rounded-lg text-sm resize-none font-mono"
+                  rows={8}
+                />
+                <div className="mt-3 p-3 bg-gray-50 rounded-lg">
+                  <p className="text-[10px] text-gray-500 mb-1">Preview:</p>
+                  <p className="text-xs text-gray-700 whitespace-pre-wrap">
+                    {waTemplateNonMuslim.replace(/{nama}/g, 'John Doe').replace(/{link}/g, 'https://domain.com/invite/john-doe')}
+                  </p>
+                </div>
+              </>
+            )}
+
             <div className="flex gap-2 mt-4">
               <button
                 onClick={() => setShowWaTemplate(false)}
@@ -422,10 +508,10 @@ Merupakan suatu kehormatan bagi kami apabila Bapak/Ibu/Saudara/i dapat hadir. Te
                 Batal
               </button>
               <button
-                onClick={saveWaTemplate}
+                onClick={saveWaTemplates}
                 className="flex-1 py-2.5 bg-[var(--color-primary)] text-white rounded-lg text-sm hover:bg-[var(--color-primary-dark)]"
               >
-                Simpan Template
+                Simpan Templates
               </button>
             </div>
           </div>
