@@ -242,6 +242,31 @@ Merupakan suatu kehormatan bagi kami apabila Bapak/Ibu/Saudara/i dapat hadir. Te
         </div>
       </div>
 
+      {/* Category breakdown */}
+      <div className="bg-white p-4 rounded-xl border border-gray-100 mb-4">
+        <p className="text-xs font-medium text-gray-600 mb-2">Jumlah Tamu per Kategori</p>
+        <div className="flex flex-wrap gap-2">
+          {categories.map((cat) => {
+            const count = guests.filter(g => g.category_id === cat.id).length;
+            const attendingCount = guests.filter(g => g.category_id === cat.id && g.rsvp_status === 'attending').length;
+            return (
+              <button
+                key={cat.id}
+                onClick={() => setFilterCategory(filterCategory === String(cat.id) ? '' : String(cat.id))}
+                className={`px-3 py-1.5 rounded-lg text-xs transition-colors ${
+                  filterCategory === String(cat.id)
+                    ? 'bg-[var(--color-primary)] text-white'
+                    : 'bg-gray-50 text-gray-700 hover:bg-gray-100'
+                }`}
+              >
+                {cat.name} <span className="font-bold">{count}</span>
+                <span className="opacity-60 ml-1">({attendingCount} hadir)</span>
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
       {/* Filters */}
       <div className="flex gap-3 mb-4">
         <input
