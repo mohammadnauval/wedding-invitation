@@ -39,8 +39,16 @@ function CountdownSection({ weddingData }) {
   if (!targetDate) return null;
 
   return (
-    <section ref={ref} className="py-16 bg-[var(--color-bg-soft)]">
-      <div className={`section-container ${inView ? 'fade-up' : 'opacity-0'}`}>
+    <section ref={ref} className="relative py-16 overflow-hidden" style={{
+      background: 'linear-gradient(135deg, var(--color-bg-soft) 0%, var(--color-bg-muted) 50%, var(--color-bg-soft) 100%)'
+    }}>
+      {/* Subtle dot pattern */}
+      <div className="absolute inset-0 opacity-[0.06]" style={{
+        backgroundImage: `radial-gradient(circle, var(--color-primary) 1px, transparent 1px)`,
+        backgroundSize: '24px 24px',
+      }} />
+
+      <div className={`section-container relative z-10 ${inView ? 'fade-up' : 'opacity-0'}`}>
         <h2 className="section-title">Counting Days</h2>
         <p className="section-subtitle">Until we say "I do"</p>
 
@@ -59,7 +67,7 @@ function CountdownSection({ weddingData }) {
               { value: timeLeft.seconds, label: 'Sec' },
             ].map((item) => (
               <div key={item.label} className="text-center">
-                <div className="bg-[var(--color-primary)] rounded-2xl p-4 shadow-lg shadow-[var(--color-primary)]/20">
+                <div className="bg-[var(--color-primary)] rounded-2xl p-4 shadow-lg shadow-[var(--color-primary)]/20 border border-[var(--color-primary-dark)]/20">
                   <span className="text-3xl md:text-4xl font-bold text-[var(--color-bg-soft)]">
                     {String(item.value).padStart(2, '0')}
                   </span>
