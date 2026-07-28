@@ -15,7 +15,7 @@ function GuestList() {
   const [copiedId, setCopiedId] = useState(null);
   const [activeTemplateTab, setActiveTemplateTab] = useState('muslim');
   const [formData, setFormData] = useState({
-    name: '', phone: '', category_id: '', max_pax: 2, notes: '', wa_type: 'muslim',
+    name: '', phone: '', category_id: '', max_pax: 2, notes: '', wa_type: 'muslim', invite_type: 'partner',
   });
 
   useEffect(() => { loadData(); }, []);
@@ -101,12 +101,13 @@ Merupakan suatu kehormatan bagi kami apabila Bapak/Ibu/Saudara/i dapat hadir. Te
       max_pax: guest.max_pax,
       notes: guest.notes || '',
       wa_type: guest.wa_type || 'muslim',
+      invite_type: guest.invite_type || 'partner',
     });
     setShowForm(true);
   };
 
   const resetForm = () => {
-    setFormData({ name: '', phone: '', category_id: '', max_pax: 2, notes: '', wa_type: 'muslim' });
+    setFormData({ name: '', phone: '', category_id: '', max_pax: 2, notes: '', wa_type: 'muslim', invite_type: 'partner' });
   };
 
   const copyInviteLink = (guest) => {
@@ -449,6 +450,17 @@ Merupakan suatu kehormatan bagi kami apabila Bapak/Ibu/Saudara/i dapat hadir. Te
                 >
                   <option value="muslim">Muslim (dengan salam)</option>
                   <option value="non_muslim">Non-Muslim (tanpa salam)</option>
+                </select>
+              </div>
+              <div>
+                <label className="text-xs text-gray-600">Tipe Undangan</label>
+                <select
+                  value={formData.invite_type}
+                  onChange={(e) => setFormData({ ...formData, invite_type: e.target.value })}
+                  className="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm"
+                >
+                  <option value="partner">& Partner</option>
+                  <option value="keluarga">& Keluarga</option>
                 </select>
               </div>
               <div>

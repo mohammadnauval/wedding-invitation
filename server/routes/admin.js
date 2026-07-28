@@ -125,7 +125,7 @@ router.get('/guests', async (req, res) => {
 
 router.post('/guests', async (req, res) => {
   try {
-    const { name, phone, category_id, max_pax, notes, wa_type } = req.body;
+    const { name, phone, category_id, max_pax, notes, wa_type, invite_type } = req.body;
 
     if (!name) return res.status(400).json({ message: 'Nama wajib diisi' });
 
@@ -137,8 +137,8 @@ router.post('/guests', async (req, res) => {
     const finalSlug = existingSlug.rows.length > 0 ? `${slug}-${Date.now().toString(36)}` : slug;
 
     await query(
-      'INSERT INTO guests (name, slug, invitation_token, phone, category_id, max_pax, notes, wa_type) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)',
-      [name, finalSlug, invitation_token, phone || null, category_id || null, max_pax || 2, notes || null, wa_type || 'muslim']
+      'INSERT INTO guests (name, slug, invitation_token, phone, category_id, max_pax, notes, wa_type, invite_type) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)',
+      [name, finalSlug, invitation_token, phone || null, category_id || null, max_pax || 2, notes || null, wa_type || 'muslim', invite_type || 'partner']
     );
 
     res.json({ success: true });
@@ -151,11 +151,11 @@ router.post('/guests', async (req, res) => {
 router.put('/guests/:id', async (req, res) => {
   try {
     const { id } = req.params;
-    const { name, phone, category_id, max_pax, notes, wa_type } = req.body;
+    const { name, phone, category_id, max_pax, notes, wa_type, invite_type } = req.body;
 
     await query(
-      'UPDATE guests SET name = $1, phone = $2, category_id = $3, max_pax = $4, notes = $5, wa_type = $6, updated_at = CURRENT_TIMESTAMP WHERE id = $7',
-      [name, phone || null, category_id || null, max_pax || 2, notes || null, wa_type || 'muslim', id]
+      'UPDATE guests SET name = $1, phone = $2, category_id = $3, max_pax = $4, notes = $5, wa_type = $6, invite_type = $7, updated_at = CURRENT_TIMESTAMP WHERE id = $8',
+      [name, phone || null, category_id || null, max_pax || 2, notes || null, wa_type || 'muslim', invite_type || 'partner', id]
     );
 
     res.json({ success: true });

@@ -1,6 +1,9 @@
 import React from 'react';
 
-function CoverSection({ weddingData, guestName, onOpen }) {
+function CoverSection({ weddingData, guestName, guestData, onOpen }) {
+  const inviteType = guestData?.invite_type || 'partner';
+  const suffix = inviteType === 'keluarga' ? '& Keluarga' : '& Partner';
+
   return (
     <div className="fixed inset-0 z-50 bg-[var(--color-bg)] lg:relative lg:min-h-screen overflow-hidden">
       
@@ -29,7 +32,7 @@ function CoverSection({ weddingData, guestName, onOpen }) {
               Dear
             </p>
             <p className="text-sm sm:text-base font-bold text-[var(--color-primary)]">
-              {guestName} & Partner
+              {guestName} {suffix}
             </p>
           </div>
 

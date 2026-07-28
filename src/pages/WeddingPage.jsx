@@ -122,6 +122,7 @@ function WeddingPage() {
           <CoverSection
             weddingData={weddingData}
             guestName={displayName}
+            guestData={guestData}
             onOpen={handleOpenInvitation}
           />
         ) : (
