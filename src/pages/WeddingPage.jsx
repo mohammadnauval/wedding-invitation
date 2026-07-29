@@ -14,6 +14,7 @@ import ClosingSection from '../components/wedding/ClosingSection';
 import SectionDivider from '../components/wedding/SectionDivider';
 import FloatingNav from '../components/wedding/FloatingNav';
 import MusicPlayer from '../components/wedding/MusicPlayer';
+import FallingHearts from '../components/wedding/FallingHearts';
 import LoadingScreen from '../components/wedding/LoadingScreen';
 
 function WeddingPage() {
@@ -152,6 +153,7 @@ function WeddingPage() {
             <ClosingSection weddingData={weddingData} />
             <FloatingNav />
             <MusicPlayer audioRef={audioRef} weddingData={weddingData} />
+            <FallingHearts />
           </>
         )}
       </div>
