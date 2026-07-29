@@ -31,8 +31,8 @@ function CoupleSection({ weddingData }) {
         <p className="section-subtitle">Two hearts, one love story</p>
 
         <div className="space-y-5">
-          {/* Bride - card style, left aligned */}
-          <div className="bg-white/50 backdrop-blur-sm rounded-2xl p-5 border border-[var(--color-primary-light)]/20 shadow-sm">
+          {/* Bride - left aligned */}
+          <div className="py-2">
             <div className="flex items-center gap-4">
               <div className="w-20 h-20 shrink-0 rounded-full overflow-hidden ring-3 ring-[var(--color-primary)]/20 ring-offset-2 ring-offset-[var(--color-bg-soft)]">
                 <img
@@ -73,8 +73,8 @@ function CoupleSection({ weddingData }) {
             <div className="w-10 h-[1px] bg-[var(--color-primary)]/20" />
           </div>
 
-          {/* Groom - card style, right aligned */}
-          <div className="bg-white/50 backdrop-blur-sm rounded-2xl p-5 border border-[var(--color-primary-light)]/20 shadow-sm">
+          {/* Groom - right aligned */}
+          <div className="py-2">
             <div className="flex items-center gap-4 flex-row-reverse">
               <div className="w-20 h-20 shrink-0 rounded-full overflow-hidden ring-3 ring-[var(--color-primary)]/20 ring-offset-2 ring-offset-[var(--color-bg-soft)]">
                 <img
