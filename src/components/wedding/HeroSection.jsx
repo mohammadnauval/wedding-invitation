@@ -25,16 +25,16 @@ function HeroSection({ weddingData }) {
     }}>
 
       {/* Content */}
-      <div className={`relative text-center px-8 py-20 ${inView ? 'fade-up' : 'opacity-0'}`}>
-        <p className="text-xs font-bold tracking-[0.3em] uppercase text-[var(--color-primary)] mb-6">
+      <div className={`relative text-center px-12 py-20 ${inView ? 'fade-up' : 'opacity-0'}`}>
+        <p className="text-[10px] font-bold tracking-[0.3em] uppercase text-[var(--color-primary)] mb-4">
           The Wedding of
         </p>
 
-        <h1 className="font-couple text-6xl md:text-7xl text-[var(--color-primary)] mb-2 leading-[0.9]">
+        <h1 className="font-couple text-5xl md:text-6xl text-[var(--color-primary)] mb-2 leading-[0.9]">
           {brideName} & {groomName}
         </h1>
 
-        <p className="text-sm tracking-wide text-[var(--color-primary)] mt-4 italic font-medium">
+        <p className="text-xs tracking-wide text-[var(--color-primary)] mt-3 italic font-medium">
           We invite you to witness our vows and share in our joy
         </p>
 
