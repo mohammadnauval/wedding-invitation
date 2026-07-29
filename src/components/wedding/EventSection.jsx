@@ -68,8 +68,8 @@ function EventSection({ weddingData }) {
                   {formatTime(event.start_time)}
                   {event.end_time ? ` - ${formatTime(event.end_time)}` : ' - Selesai'}
                 </p>
-                <p className="font-bold text-[var(--color-text)]">{event.venue}</p>
-                <p className="text-xs">{event.address}</p>
+                <p className="font-bold text-[var(--color-primary)]">{event.venue}</p>
+                <p className="text-xs font-medium text-[var(--color-text)]">{event.address}</p>
               </div>
 
               <div className="flex flex-col gap-2 mt-5">
