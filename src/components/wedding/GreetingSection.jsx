@@ -14,11 +14,6 @@ function GreetingSection({ weddingData }) {
 
   return (
     <section ref={ref} className="relative py-16 bg-[var(--color-bg-soft)] overflow-hidden">
-      {/* Subtle watermark background */}
-      <div className="absolute inset-0 opacity-[0.04]">
-        <img src="/images/wedding_page_2_background.png" alt="" className="w-full h-full object-cover" />
-      </div>
-
       {/* Floral corners */}
       <FloralCorner className="absolute top-2 left-2" size={70} />
       <FloralCorner className="absolute top-2 right-2 -scale-x-100" size={70} />
