@@ -16,14 +16,13 @@ function HeroSection({ weddingData }) {
     : '';
 
   return (
-    <section id="home" ref={ref} className="relative h-screen flex items-center justify-center overflow-hidden bg-[var(--color-bg)]">
-      {/* Border as full background */}
-      <div className="absolute inset-0 z-10 pointer-events-none" style={{
-        backgroundImage: 'url(/images/borders.png)',
-        backgroundSize: '100% 100%',
-        backgroundPosition: 'center',
-        backgroundRepeat: 'no-repeat',
-      }} />
+    <section id="home" ref={ref} className="relative h-screen flex items-center justify-center overflow-hidden" style={{
+      backgroundImage: 'url(/images/borders.png)',
+      backgroundSize: '100% 100%',
+      backgroundPosition: 'center',
+      backgroundRepeat: 'no-repeat',
+      backgroundColor: 'var(--color-bg)',
+    }}>
 
       {/* Content */}
       <div className={`relative text-center px-8 py-20 ${inView ? 'fade-up' : 'opacity-0'}`}>
