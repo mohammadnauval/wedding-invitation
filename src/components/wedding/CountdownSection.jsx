@@ -83,7 +83,7 @@ function CountdownSection({ weddingData }) {
             </p>
           </div>
         ) : (
-          <div className="grid grid-cols-4 gap-3">
+          <div className="grid grid-cols-4 gap-2">
             {[
               { value: timeLeft.days, label: 'Days' },
               { value: timeLeft.hours, label: 'Hours' },
@@ -91,18 +91,27 @@ function CountdownSection({ weddingData }) {
               { value: timeLeft.seconds, label: 'Sec' },
             ].map((item) => (
               <div key={item.label} className="text-center">
-                <div className="bg-[var(--color-primary)] rounded-2xl p-4 shadow-lg shadow-[var(--color-primary)]/20 border border-[var(--color-primary-dark)]/20">
-                  <span className="text-3xl md:text-4xl font-bold text-[var(--color-bg-soft)]">
+                <div className="bg-[var(--color-primary)] rounded-xl p-2.5 shadow-md shadow-[var(--color-primary)]/20">
+                  <span className="text-xl md:text-2xl font-bold text-[var(--color-bg-soft)]">
                     {String(item.value).padStart(2, '0')}
                   </span>
                 </div>
-                <p className="text-[10px] font-bold tracking-wider uppercase text-[var(--color-primary)] mt-2">
+                <p className="text-[9px] font-bold tracking-wider uppercase text-[var(--color-primary)] mt-1.5">
                   {item.label}
                 </p>
               </div>
             ))}
           </div>
         )}
+
+        {/* Illustration */}
+        <div className="mt-8 flex justify-center">
+          <img
+            src="/images/hands_string_hearts.svg"
+            alt=""
+            className="w-[220px] h-auto opacity-90"
+          />
+        </div>
       </div>
     </section>
   );
