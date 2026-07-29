@@ -15,7 +15,7 @@ function ClosingSection({ weddingData }) {
     <section ref={ref} className="relative py-20 bg-[var(--color-bg)] overflow-hidden">
       {/* Background image */}
       <div className="absolute inset-0">
-        <img src="/images/thank_you_image.png" alt="" className="w-full h-full object-contain opacity-30" />
+        <img src="/images/thank_you_image.png" alt="" className="w-full h-full object-contain opacity-15" />
         <div className="absolute inset-0 bg-[var(--color-bg)]/50" />
       </div>
 
