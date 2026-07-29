@@ -13,6 +13,12 @@ function ClosingSection({ weddingData }) {
 
   return (
     <section ref={ref} className="relative py-20 bg-[var(--color-bg)] overflow-hidden">
+      {/* Background image */}
+      <div className="absolute inset-0">
+        <img src="/images/thank_you_image.png" alt="" className="w-full h-full object-cover" />
+        <div className="absolute inset-0 bg-[var(--color-bg)]/50" />
+      </div>
+
       {/* Floral decorations */}
       <FloralCorner className="absolute top-4 left-2" size={60} />
       <FloralCorner className="absolute top-4 right-2 -scale-x-100" size={60} />
