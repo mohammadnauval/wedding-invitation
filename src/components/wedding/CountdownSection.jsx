@@ -62,11 +62,15 @@ function CountdownSection({ weddingData }) {
   const calendar = getCalendarWeek();
 
   return (
-    <section ref={ref} className="relative py-16 overflow-hidden" style={{
-      background: 'linear-gradient(135deg, var(--color-bg-soft) 0%, var(--color-bg-muted) 50%, var(--color-bg-soft) 100%)'
-    }}>
+    <section ref={ref} className="relative py-16 overflow-hidden">
+      {/* Background image */}
+      <div className="absolute inset-0">
+        <img src="/images/counting_days_background.png" alt="" className="w-full h-full object-cover" />
+        <div className="absolute inset-0 bg-[var(--color-bg)]/60" />
+      </div>
+
       {/* Subtle dot pattern */}
-      <div className="absolute inset-0 opacity-[0.06]" style={{
+      <div className="absolute inset-0 opacity-[0.04]" style={{
         backgroundImage: `radial-gradient(circle, var(--color-primary) 1px, transparent 1px)`,
         backgroundSize: '24px 24px',
       }} />
