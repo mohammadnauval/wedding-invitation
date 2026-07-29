@@ -109,7 +109,7 @@ function CountdownSection({ weddingData }) {
           <img
             src="/images/counting_days_background.png"
             alt=""
-            className="w-[220px] h-auto opacity-90"
+            className="w-[320px] h-auto opacity-90"
           />
         </div>
       </div>
