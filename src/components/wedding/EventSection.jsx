@@ -50,7 +50,7 @@ function EventSection({ weddingData }) {
 
       <div className={`section-container relative z-10 ${inView ? 'fade-up' : 'opacity-0'}`}>
         <h2 className="section-title text-white drop-shadow-md">The Events</h2>
-        <p className="text-white text-sm font-bold tracking-wider drop-shadow-md mb-8">Join us to celebrate our love</p>
+        <p className="section-subtitle text-white drop-shadow-md">Join us to celebrate our love</p>
 
         <div className="space-y-6">
           {events.map((event, index) => (
