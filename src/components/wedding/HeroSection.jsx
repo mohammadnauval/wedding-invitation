@@ -18,8 +18,8 @@ function HeroSection({ weddingData }) {
   return (
     <section id="home" ref={ref} className="relative h-screen flex items-center justify-center overflow-hidden" style={{
       backgroundImage: 'url(/images/borders.png)',
-      backgroundSize: '112% 155%',
-      backgroundPosition: 'center 52%',
+      backgroundSize: '112% 150%',
+      backgroundPosition: 'center 48%',
       backgroundRepeat: 'no-repeat',
       backgroundColor: 'var(--color-bg)',
     }}>
