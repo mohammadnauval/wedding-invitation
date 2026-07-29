@@ -37,7 +37,7 @@ function EventSection({ weddingData }) {
       {/* Venue background image */}
       <div className="absolute inset-0">
         <img src="/images/venue_background.jpg.jpg" alt="" className="w-full h-full object-cover" />
-        <div className="absolute inset-0 bg-[var(--color-bg)]/60" />
+        <div className="absolute inset-0 bg-black/40" />
       </div>
 
       {/* Floral ornaments */}
@@ -49,8 +49,8 @@ function EventSection({ weddingData }) {
       <SmallFlower className="absolute bottom-16 left-8 opacity-60" size={18} />
 
       <div className={`section-container relative z-10 ${inView ? 'fade-up' : 'opacity-0'}`}>
-        <h2 className="section-title drop-shadow-sm">The Events</h2>
-        <p className="section-subtitle text-[var(--color-primary)] font-semibold drop-shadow-sm">Join us to celebrate our love</p>
+        <h2 className="section-title text-white drop-shadow-md">The Events</h2>
+        <p className="text-white text-sm font-bold tracking-wider drop-shadow-md mb-8">Join us to celebrate our love</p>
 
         <div className="space-y-6">
           {events.map((event, index) => (
