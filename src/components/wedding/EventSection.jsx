@@ -49,8 +49,8 @@ function EventSection({ weddingData }) {
       <SmallFlower className="absolute bottom-16 left-8 opacity-60" size={18} />
 
       <div className={`section-container relative z-10 ${inView ? 'fade-up' : 'opacity-0'}`}>
-        <h2 className="section-title">The Events</h2>
-        <p className="section-subtitle">Join us to celebrate our love</p>
+        <h2 className="section-title drop-shadow-sm">The Events</h2>
+        <p className="section-subtitle text-[var(--color-primary)] font-semibold drop-shadow-sm">Join us to celebrate our love</p>
 
         <div className="space-y-6">
           {events.map((event, index) => (
