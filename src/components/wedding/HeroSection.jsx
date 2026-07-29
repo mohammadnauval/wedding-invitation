@@ -17,6 +17,11 @@ function HeroSection({ weddingData }) {
 
   return (
     <section id="home" ref={ref} className="relative min-h-screen flex items-center justify-center overflow-hidden bg-[var(--color-bg)]">
+      {/* Border image */}
+      <div className="absolute inset-0 pointer-events-none">
+        <img src="/images/borders.png" alt="" className="w-full h-full object-fill" />
+      </div>
+
       {/* Content */}
       <div className={`relative text-center px-8 py-20 ${inView ? 'fade-up' : 'opacity-0'}`}>
         <p className="text-xs font-bold tracking-[0.3em] uppercase text-[var(--color-primary)] mb-6">
