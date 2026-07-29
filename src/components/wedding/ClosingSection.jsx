@@ -13,11 +13,6 @@ function ClosingSection({ weddingData }) {
 
   return (
     <section ref={ref} className="relative py-20 bg-[var(--color-bg)] overflow-hidden">
-      {/* Subtle watermark */}
-      <div className="absolute inset-0 opacity-[0.03]">
-        <img src="/images/wedding_page_2_background.png" alt="" className="w-full h-full object-cover" />
-      </div>
-
       {/* Floral decorations */}
       <FloralCorner className="absolute top-4 left-2" size={60} />
       <FloralCorner className="absolute top-4 right-2 -scale-x-100" size={60} />
