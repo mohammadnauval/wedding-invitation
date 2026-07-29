@@ -19,7 +19,7 @@ function CoupleSection({ weddingData }) {
       }} />
 
       {/* Floral decorations */}
-      <img src="/images/rings_illustration.png" alt="" className="absolute top-10 -left-6 w-28 opacity-70 z-10" />
+      <img src="/images/rings_illustration.png" alt="" className="absolute top-16 -left-8 w-44 opacity-70 z-10" />
       <img src="/images/candle_illustration.png" alt="" className="absolute top-10 -right-6 w-28 opacity-70 z-10" />
       <FloralCorner className="absolute top-0 left-0" size={90} />
       <FloralCorner className="absolute top-0 right-0 -scale-x-100" size={90} />
