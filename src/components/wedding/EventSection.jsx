@@ -37,7 +37,7 @@ function EventSection({ weddingData }) {
       {/* Venue background image */}
       <div className="absolute inset-0">
         <img src="/images/venue_background.jpg.jpg" alt="" className="w-full h-full object-cover" />
-        <div className="absolute inset-0 bg-[var(--color-bg)]/85" />
+        <div className="absolute inset-0 bg-[var(--color-bg)]/60" />
       </div>
 
       {/* Floral ornaments */}
@@ -56,7 +56,7 @@ function EventSection({ weddingData }) {
           {events.map((event, index) => (
             <div
               key={event.id || index}
-              className="text-center p-6 rounded-3xl bg-[var(--color-bg-soft)] border-2 border-[var(--color-border)]"
+              className="text-center p-6 rounded-3xl bg-white/70 backdrop-blur-sm border border-white/50"
             >
               <h3 className="font-couple text-2xl text-[var(--color-primary)] mb-3">
                 {event.title}
