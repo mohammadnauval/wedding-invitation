@@ -33,7 +33,13 @@ function EventSection({ weddingData }) {
   };
 
   return (
-    <section id="event" ref={ref} className="relative py-16 bg-[var(--color-bg-soft)] overflow-hidden">
+    <section id="event" ref={ref} className="relative py-16 overflow-hidden">
+      {/* Venue background image */}
+      <div className="absolute inset-0">
+        <img src="/images/venue_background.jpg.jpg" alt="" className="w-full h-full object-cover" />
+        <div className="absolute inset-0 bg-[var(--color-bg)]/85" />
+      </div>
+
       {/* Floral ornaments */}
       <LeafBranch className="absolute top-6 -left-6 opacity-50 rotate-12" />
       <LeafBranch className="absolute bottom-6 -right-6 opacity-50 -rotate-12" flip />
