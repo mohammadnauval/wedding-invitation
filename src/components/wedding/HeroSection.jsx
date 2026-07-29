@@ -16,10 +16,10 @@ function HeroSection({ weddingData }) {
     : '';
 
   return (
-    <section id="home" ref={ref} className="relative min-h-screen flex items-center justify-center overflow-hidden bg-[var(--color-bg)]">
+    <section id="home" ref={ref} className="relative h-screen flex items-center justify-center overflow-hidden bg-[var(--color-bg)]">
       {/* Border image */}
-      <div className="absolute inset-0 pointer-events-none z-10">
-        <img src="/images/borders.png" alt="" className="w-full h-full object-cover" />
+      <div className="absolute top-0 left-0 right-0 bottom-0 pointer-events-none z-10">
+        <img src="/images/borders.png" alt="" className="absolute top-0 left-0 w-full h-full" style={{ objectFit: 'fill' }} />
       </div>
 
       {/* Content */}
