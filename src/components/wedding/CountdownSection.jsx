@@ -101,15 +101,6 @@ function CountdownSection({ weddingData }) {
             ))}
           </div>
         )}
-
-        {/* Illustration */}
-        <div className="mt-8 flex justify-center">
-          <img
-            src="/images/counting_days_background.png"
-            alt=""
-            className="w-full max-w-[420px] h-auto opacity-90"
-          />
-        </div>
       </div>
     </section>
   );
