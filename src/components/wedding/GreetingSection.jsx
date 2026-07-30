@@ -30,7 +30,7 @@ function GreetingSection({ weddingData }) {
       <LeafBranch className="absolute bottom-1/3 -right-4 opacity-60" flip />
 
       <div className={`section-container relative z-10 pt-32 px-10 ${inView ? 'fade-up' : 'opacity-0'}`}>
-        <p className="text-center font-couple text-2xl text-[var(--color-primary)] mb-8">
+        <p className="text-center font-couple text-2xl text-[var(--color-primary)] mb-8 font-bold drop-shadow-sm">
           {greeting.opening}
         </p>
 
