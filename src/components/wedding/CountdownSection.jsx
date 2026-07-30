@@ -69,9 +69,9 @@ function CountdownSection({ weddingData }) {
         <div className="absolute inset-0 bg-[var(--color-bg)]/50" />
       </div>
 
-      <div className={`section-container relative z-10 ${inView ? 'fade-up' : 'opacity-0'}`}>
-        <h2 className="section-title">Counting Days</h2>
-        <p className="section-subtitle">Until we say "I do"</p>
+      <div className={`section-container relative z-10 pt-6 ${inView ? 'fade-up' : 'opacity-0'}`}>
+        <h2 className="section-title text-lg">Counting Days</h2>
+        <p className="section-subtitle text-sm mb-4">Until we say "I do"</p>
 
 
         {isPast ? (
@@ -81,7 +81,7 @@ function CountdownSection({ weddingData }) {
             </p>
           </div>
         ) : (
-          <div className="grid grid-cols-4 gap-2">
+          <div className="grid grid-cols-4 gap-1.5 max-w-[280px] mx-auto">
             {[
               { value: timeLeft.days, label: 'Days' },
               { value: timeLeft.hours, label: 'Hours' },
@@ -89,12 +89,12 @@ function CountdownSection({ weddingData }) {
               { value: timeLeft.seconds, label: 'Sec' },
             ].map((item) => (
               <div key={item.label} className="text-center">
-                <div className="bg-[var(--color-primary)] rounded-xl p-2.5 shadow-md shadow-[var(--color-primary)]/20">
-                  <span className="text-xl md:text-2xl font-bold text-[var(--color-bg-soft)]">
+                <div className="bg-[var(--color-primary)] rounded-lg p-2 shadow-md shadow-[var(--color-primary)]/20">
+                  <span className="text-lg font-bold text-[var(--color-bg-soft)]">
                     {String(item.value).padStart(2, '0')}
                   </span>
                 </div>
-                <p className="text-[9px] font-bold tracking-wider uppercase text-[var(--color-primary)] mt-1.5">
+                <p className="text-[8px] font-bold tracking-wider uppercase text-[var(--color-primary)] mt-1">
                   {item.label}
                 </p>
               </div>
