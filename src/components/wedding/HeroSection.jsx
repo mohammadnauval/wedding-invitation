@@ -18,8 +18,8 @@ function HeroSection({ weddingData }) {
   return (
     <section id="home" ref={ref} className="relative h-screen flex items-center justify-center bg-[var(--color-bg)]">
       {/* Background border */}
-      <div className="absolute inset-0">
-        <img src="/images/background_border.PNG" alt="" className="w-full h-full object-fill" />
+      <div className="absolute inset-0 p-3">
+        <img src="/images/background_border.PNG" alt="" className="w-full h-full object-cover rounded-lg" />
       </div>
 
       {/* Content */}
