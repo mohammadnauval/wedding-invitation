@@ -1,6 +1,5 @@
 import React from 'react';
 import useInView from '../../hooks/useInView';
-import { FloralCorner, LeafBranch } from './FloralOrnament';
 
 function ClosingSection({ weddingData }) {
   const [ref, inView] = useInView();
@@ -18,12 +17,6 @@ function ClosingSection({ weddingData }) {
         <img src="/images/thank_you_image.png" alt="" className="w-full h-full object-contain opacity-15" />
         <div className="absolute inset-0 bg-[var(--color-bg)]/50" />
       </div>
-
-      {/* Floral decorations */}
-      <FloralCorner className="absolute top-4 left-2" size={60} />
-      <FloralCorner className="absolute top-4 right-2 -scale-x-100" size={60} />
-      <LeafBranch className="absolute bottom-8 -left-6 opacity-50 rotate-6" />
-      <LeafBranch className="absolute bottom-8 -right-6 opacity-50 -rotate-6" flip />
 
       <div className={`section-container relative z-10 text-center ${inView ? 'fade-up' : 'opacity-0'}`}>
         <p className="text-xs leading-relaxed text-[var(--color-text-muted)] mb-8">

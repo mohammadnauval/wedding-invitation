@@ -1,6 +1,5 @@
 import React from 'react';
 import useInView from '../../hooks/useInView';
-import { FloralCorner, LeafBranch } from './FloralOrnament';
 
 function GreetingSection({ weddingData }) {
   const [ref, inView] = useInView();
@@ -18,16 +17,6 @@ function GreetingSection({ weddingData }) {
       <div className="absolute inset-0">
         <img src="/images/background_border_fix.png" alt="" className="w-full h-full object-fill" />
       </div>
-
-      {/* Floral corners */}
-      <FloralCorner className="absolute top-2 left-2" size={70} />
-      <FloralCorner className="absolute top-2 right-2 -scale-x-100" size={70} />
-      <FloralCorner className="absolute bottom-2 left-2 -scale-y-100" size={70} />
-      <FloralCorner className="absolute bottom-2 right-2 -scale-x-100 -scale-y-100" size={70} />
-
-      {/* Leaf branches on sides */}
-      <LeafBranch className="absolute top-1/3 -left-4 opacity-60" />
-      <LeafBranch className="absolute bottom-1/3 -right-4 opacity-60" flip />
 
       <div className={`section-container relative z-10 pt-32 px-10 ${inView ? 'fade-up' : 'opacity-0'}`}>
         <p className="text-center font-couple text-2xl text-[var(--color-primary)] mb-8 font-bold drop-shadow-sm">

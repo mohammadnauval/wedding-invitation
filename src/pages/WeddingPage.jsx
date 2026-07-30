@@ -11,7 +11,6 @@ import RsvpSection from '../components/wedding/RsvpSection';
 
 
 import ClosingSection from '../components/wedding/ClosingSection';
-import SectionDivider from '../components/wedding/SectionDivider';
 import FloatingNav from '../components/wedding/FloatingNav';
 import MusicPlayer from '../components/wedding/MusicPlayer';
 import FallingHearts from '../components/wedding/FallingHearts';
@@ -129,27 +128,16 @@ function WeddingPage() {
         ) : (
           <>
             <HeroSection weddingData={weddingData} />
-            <SectionDivider variant="floral" />
             <GreetingSection weddingData={weddingData} />
-            <SectionDivider variant="hearts" />
             <CoupleSection weddingData={weddingData} />
-            <SectionDivider variant="floral" />
             <EventSection weddingData={weddingData} />
-            <SectionDivider variant="hearts" />
             <CountdownSection weddingData={weddingData} />
             {weddingData?.settings?.gallery_enabled === '1' && (
-              <>
-                <SectionDivider variant="floral" />
-                <GallerySection weddingData={weddingData} />
-              </>
+              <GallerySection weddingData={weddingData} />
             )}
             {weddingData?.settings?.rsvp_enabled === '1' && (
-              <>
-                <SectionDivider variant="hearts" />
-                <RsvpSection guestData={guestData} weddingData={weddingData} />
-              </>
+              <RsvpSection guestData={guestData} weddingData={weddingData} />
             )}
-            <SectionDivider variant="floral" />
             <ClosingSection weddingData={weddingData} />
             <FloatingNav />
             <MusicPlayer audioRef={audioRef} weddingData={weddingData} />
