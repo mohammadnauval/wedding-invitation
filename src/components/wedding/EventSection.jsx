@@ -32,16 +32,15 @@ function EventSection({ weddingData }) {
   };
 
   return (
-    <section id="event" ref={ref} className="relative py-16 overflow-hidden">
-      {/* Venue background image */}
+    <section id="event" ref={ref} className="relative py-16 overflow-hidden bg-[var(--color-bg-soft)]">
+      {/* Background border */}
       <div className="absolute inset-0">
-        <img src="/images/event_background_portrait.png" alt="" className="w-full h-full object-cover" />
-        <div className="absolute inset-0 bg-black/40" />
+        <img src="/images/background_border_fix.png" alt="" className="w-full h-full object-fill" />
       </div>
 
       <div className={`section-container relative z-10 ${inView ? 'fade-up' : 'opacity-0'}`}>
-        <h2 className="section-title text-white drop-shadow-md">The Events</h2>
-        <p className="section-subtitle text-white drop-shadow-md">Join us to celebrate our love</p>
+        <h2 className="section-title">The Events</h2>
+        <p className="section-subtitle font-bold drop-shadow-sm">Join us to celebrate our love</p>
 
         <div className="space-y-6">
           {events.map((event, index) => (
