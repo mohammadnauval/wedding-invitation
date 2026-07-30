@@ -16,7 +16,7 @@ function HeroSection({ weddingData }) {
     : '';
 
   return (
-    <section id="home" ref={ref} className="relative py-28 flex items-center justify-center bg-[var(--color-bg)]">
+    <section id="home" ref={ref} className="relative py-40 flex items-center justify-center bg-[var(--color-bg)]">
       {/* Background border */}
       <div className="absolute inset-0">
         {/* Mobile */}
