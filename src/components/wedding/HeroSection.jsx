@@ -20,9 +20,9 @@ function HeroSection({ weddingData }) {
       {/* Background border */}
       <div className="absolute inset-0">
         {/* Mobile */}
-        <img src="/images/background_border_new_phone_2.png" alt="" className="w-full h-full object-fill md:hidden" />
+        <img src="/images/background_border_fix.png" alt="" className="w-full h-full object-fill md:hidden" />
         {/* Desktop/Tablet */}
-        <img src="/images/background_border_new_phone_2.png" alt="" className="w-full h-full object-fill hidden md:block" />
+        <img src="/images/background_border_fix.png" alt="" className="w-full h-full object-fill hidden md:block" />
       </div>
 
       {/* Content */}
