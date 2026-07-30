@@ -12,10 +12,9 @@ function ClosingSection({ weddingData }) {
 
   return (
     <section ref={ref} className="relative py-20 bg-[var(--color-bg)] overflow-hidden">
-      {/* Background image */}
+      {/* Background border */}
       <div className="absolute inset-0">
-        <img src="/images/thank_you_image.png" alt="" className="w-full h-full object-contain opacity-15" />
-        <div className="absolute inset-0 bg-[var(--color-bg)]/50" />
+        <img src="/images/background_border_fix.png" alt="" className="w-full h-full object-fill" />
       </div>
 
       <div className={`section-container relative z-10 text-center ${inView ? 'fade-up' : 'opacity-0'}`}>

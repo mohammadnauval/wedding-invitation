@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import useInView from '../../hooks/useInView';
 
 function RsvpSection({ guestData, weddingData }) {
@@ -72,8 +72,11 @@ function RsvpSection({ guestData, weddingData }) {
 
   if (isDeadlinePassed && !existingRsvp) {
     return (
-      <section id="rsvp" ref={ref} className="py-16 bg-[var(--color-bg-soft)]">
-        <div className="section-container text-center">
+      <section id="rsvp" ref={ref} className="relative py-16 bg-[var(--color-bg-soft)] overflow-hidden">
+        <div className="absolute inset-0">
+          <img src="/images/background_border_fix.png" alt="" className="w-full h-full object-fill" />
+        </div>
+        <div className="section-container text-center relative z-10">
           <h2 className="section-title">RSVP</h2>
           <p className="text-sm text-[var(--color-text-muted)] mt-4">
             Mohon maaf, periode konfirmasi kehadiran telah berakhir.
@@ -84,8 +87,11 @@ function RsvpSection({ guestData, weddingData }) {
   }
 
   return (
-    <section id="rsvp" ref={ref} className="py-16 bg-[var(--color-bg-soft)]">
-      <div className={`section-container ${inView ? 'fade-up' : 'opacity-0'}`}>
+    <section id="rsvp" ref={ref} className="relative py-16 bg-[var(--color-bg-soft)] overflow-hidden">
+      <div className="absolute inset-0">
+        <img src="/images/background_border_fix.png" alt="" className="w-full h-full object-fill" />
+      </div>
+      <div className={`section-container relative z-10 ${inView ? 'fade-up' : 'opacity-0'}`}>
         <h2 className="section-title">RSVP</h2>
         <p className="section-subtitle">Konfirmasi Kehadiran</p>
 
@@ -93,7 +99,7 @@ function RsvpSection({ guestData, weddingData }) {
           <div className="text-center p-6 bg-[var(--color-bg)] rounded-2xl border-2 border-[var(--color-border)]">
             <p className="text-sm text-[var(--color-text-muted)] mb-2">Konfirmasi Anda</p>
             <p className="text-lg font-medium text-[var(--color-primary)] mb-1">
-              {existingRsvp.attendance_status === 'attending' ? '✓ Hadir' : '✗ Tidak Hadir'}
+              {existingRsvp.attendance_status === 'attending' ? 'âœ“ Hadir' : 'âœ— Tidak Hadir'}
             </p>
             {existingRsvp.attendance_status === 'attending' && (
               <p className="text-sm text-[var(--color-text-muted)]">
