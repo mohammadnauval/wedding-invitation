@@ -17,7 +17,7 @@ function ClosingSection({ weddingData }) {
         <img src="/images/background_border_fix.png" alt="" className="w-full h-full object-fill" />
       </div>
 
-      <div className={`section-container relative z-10 text-center ${inView ? 'fade-up' : 'opacity-0'}`}>
+      <div className={`section-container relative z-10 text-center pt-32 ${inView ? 'fade-up' : 'opacity-0'}`}>
         <p className="text-xs leading-relaxed text-[var(--color-text-muted)] mb-8">
           {closingText}
         </p>
