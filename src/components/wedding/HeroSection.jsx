@@ -16,13 +16,7 @@ function HeroSection({ weddingData }) {
     : '';
 
   return (
-    <section id="home" ref={ref} className="relative h-screen flex items-center justify-center" style={{
-      backgroundImage: 'url(/images/borders.png)',
-      backgroundSize: '120% 150%',
-      backgroundPosition: 'center 48%',
-      backgroundRepeat: 'no-repeat',
-      backgroundColor: 'var(--color-bg)',
-    }}>
+    <section id="home" ref={ref} className="relative h-screen flex items-center justify-center bg-[var(--color-bg)]">
 
       {/* Content */}
       <div className={`relative text-center px-12 py-20 ${inView ? 'fade-up' : 'opacity-0'}`}>
