@@ -36,7 +36,7 @@ function EventSection({ weddingData }) {
     <section id="event" ref={ref} className="relative py-16 overflow-hidden">
       {/* Venue background image */}
       <div className="absolute inset-0">
-        <img src="/images/venue_background.jpg.jpg" alt="" className="w-full h-full object-contain" />
+        <img src="/images/event_background_portrait.png" alt="" className="w-full h-full object-cover" />
         <div className="absolute inset-0 bg-black/40" />
       </div>
 
