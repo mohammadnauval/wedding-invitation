@@ -17,6 +17,10 @@ function HeroSection({ weddingData }) {
 
   return (
     <section id="home" ref={ref} className="relative h-screen flex items-center justify-center bg-[var(--color-bg)]">
+      {/* Background border */}
+      <div className="absolute inset-0">
+        <img src="/images/background_border.PNG" alt="" className="w-full h-full object-contain" />
+      </div>
 
       {/* Content */}
       <div className={`relative text-center px-12 py-20 ${inView ? 'fade-up' : 'opacity-0'}`}>
