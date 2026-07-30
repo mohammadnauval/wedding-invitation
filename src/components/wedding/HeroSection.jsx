@@ -22,7 +22,7 @@ function HeroSection({ weddingData }) {
         {/* Mobile */}
         <img src="/images/background_border_new_phone_2.png" alt="" className="w-full h-full object-fill md:hidden" />
         {/* Desktop/Tablet */}
-        <img src="/images/background_border_new.PNG" alt="" className="w-full h-full object-fill hidden md:block" />
+        <img src="/images/background_border_new_phone_2.png" alt="" className="w-full h-full object-fill hidden md:block" />
       </div>
 
       {/* Content */}
