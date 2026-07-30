@@ -13,13 +13,13 @@ function CoverSection({ weddingData, guestName, guestData, onOpen }) {
         <img 
           src="/images/new_welcome_page_background.PNG" 
           alt="" 
-          className="w-full h-full object-cover md:hidden"
+          className="w-full h-full object-contain md:hidden"
         />
         {/* Desktop/Tablet */}
         <img 
           src="/images/new_welcome_page_background.PNG" 
           alt="" 
-          className="w-full h-full object-cover hidden md:block"
+          className="w-full h-full object-contain hidden md:block"
         />
       </div>
 
