@@ -29,18 +29,18 @@ function GreetingSection({ weddingData }) {
       <LeafBranch className="absolute top-1/3 -left-4 opacity-60" />
       <LeafBranch className="absolute bottom-1/3 -right-4 opacity-60" flip />
 
-      <div className={`section-container relative z-10 pt-24 ${inView ? 'fade-up' : 'opacity-0'}`}>
+      <div className={`section-container relative z-10 pt-24 px-10 ${inView ? 'fade-up' : 'opacity-0'}`}>
         <p className="text-center font-couple text-2xl text-[var(--color-primary)] mb-8">
           {greeting.opening}
         </p>
 
         {/* Quote card */}
-        <div className="bg-white/40 backdrop-blur-sm rounded-2xl p-6 mb-6 border border-[var(--color-primary-light)]/20">
-          <blockquote className="text-center text-sm leading-relaxed text-[var(--color-text-muted)] italic">
+        <div className="bg-white/40 backdrop-blur-sm rounded-2xl p-4 mb-5 border border-[var(--color-primary-light)]/20">
+          <blockquote className="text-center text-xs leading-relaxed text-[var(--color-text-muted)] italic">
             "{greeting.quote}"
           </blockquote>
 
-          <p className="text-center text-xs font-bold tracking-wider text-[var(--color-primary)] mt-4 uppercase">
+          <p className="text-center text-[10px] font-bold tracking-wider text-[var(--color-primary)] mt-3 uppercase">
             — {greeting.source}
           </p>
         </div>
@@ -53,7 +53,7 @@ function GreetingSection({ weddingData }) {
           <div className="w-8 h-[2px] bg-[var(--color-primary-light)]" />
         </div>
 
-        <p className="text-center text-sm leading-relaxed text-[var(--color-text-muted)]">
+        <p className="text-center text-xs leading-relaxed text-[var(--color-text-muted)]">
           {greeting.closing}
         </p>
       </div>
