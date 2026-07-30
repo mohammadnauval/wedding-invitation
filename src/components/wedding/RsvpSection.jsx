@@ -99,7 +99,7 @@ function RsvpSection({ guestData, weddingData }) {
           <div className="text-center p-6 bg-[var(--color-bg)] rounded-2xl border-2 border-[var(--color-border)]">
             <p className="text-sm text-[var(--color-text-muted)] mb-2">Konfirmasi Anda</p>
             <p className="text-lg font-medium text-[var(--color-primary)] mb-1">
-              {existingRsvp.attendance_status === 'attending' ? 'âœ“ Hadir' : 'âœ— Tidak Hadir'}
+              {existingRsvp.attendance_status === 'attending' ? 'Hadir' : 'Tidak Hadir'}
             </p>
             {existingRsvp.attendance_status === 'attending' && (
               <p className="text-sm text-[var(--color-text-muted)]">
@@ -214,3 +214,4 @@ function RsvpSection({ guestData, weddingData }) {
 }
 
 export default RsvpSection;
+
