@@ -85,15 +85,6 @@ function EventSection({ weddingData }) {
             </div>
           ))}
         </div>
-
-        {/* Venue illustration */}
-        <div className="mt-8 flex justify-center">
-          <img
-            src="/images/event_background_pencil.png"
-            alt="Venue illustration"
-            className="w-full max-w-[360px] h-auto rounded-xl opacity-90"
-          />
-        </div>
       </div>
     </section>
   );
