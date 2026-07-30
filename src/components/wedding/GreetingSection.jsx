@@ -14,6 +14,11 @@ function GreetingSection({ weddingData }) {
 
   return (
     <section ref={ref} className="relative py-16 bg-[var(--color-bg-soft)] overflow-hidden">
+      {/* Background border */}
+      <div className="absolute inset-0">
+        <img src="/images/background_border_fix.png" alt="" className="w-full h-full object-fill" />
+      </div>
+
       {/* Floral corners */}
       <FloralCorner className="absolute top-2 left-2" size={70} />
       <FloralCorner className="absolute top-2 right-2 -scale-x-100" size={70} />
