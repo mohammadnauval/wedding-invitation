@@ -9,9 +9,11 @@ function CoupleSection({ weddingData }) {
   const bride = weddingData?.couple?.bride || {};
 
   return (
-    <section id="couple" ref={ref} className="relative py-16 overflow-hidden" style={{
-      background: 'linear-gradient(180deg, var(--color-bg) 0%, var(--color-bg-soft) 50%, var(--color-bg) 100%)'
-    }}>
+    <section id="couple" ref={ref} className="relative py-16 overflow-hidden bg-[var(--color-bg)]">
+      {/* Background border */}
+      <div className="absolute inset-0">
+        <img src="/images/background_border_fix.png" alt="" className="w-full h-full object-fill" />
+      </div>
       {/* Background pattern */}
       <div className="absolute inset-0 opacity-[0.04]" style={{
         backgroundImage: `radial-gradient(circle, var(--color-primary) 1px, transparent 1px)`,
