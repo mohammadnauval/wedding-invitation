@@ -32,7 +32,7 @@ function EventSection({ weddingData }) {
   };
 
   return (
-    <section id="event" ref={ref} className="relative py-16 overflow-hidden bg-[var(--color-bg-soft)]">
+    <section id="event" ref={ref} className="relative py-16 pb-24 overflow-hidden bg-[var(--color-bg-soft)]">
       {/* Background border */}
       <div className="absolute inset-0">
         <img src="/images/background_border_fix.png" alt="" className="w-full h-full object-fill" />
@@ -84,6 +84,15 @@ function EventSection({ weddingData }) {
               </div>
             </div>
           ))}
+        </div>
+
+        {/* Venue illustration */}
+        <div className="mt-8 flex justify-center">
+          <img
+            src="/images/event_background_pencil.png"
+            alt="Venue illustration"
+            className="w-full max-w-[360px] h-auto rounded-xl opacity-90"
+          />
         </div>
       </div>
     </section>
