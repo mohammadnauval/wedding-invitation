@@ -69,7 +69,7 @@ function CountdownSection({ weddingData }) {
         <div className="absolute inset-0 bg-[var(--color-bg)]/50" />
       </div>
 
-      <div className={`section-container relative z-10 pt-6 ${inView ? 'fade-up' : 'opacity-0'}`}>
+      <div className={`max-w-lg mx-auto px-6 pt-0 pb-16 relative z-10 ${inView ? 'fade-up' : 'opacity-0'}`}>
         <h2 className="section-title text-lg">Counting Days</h2>
         <p className="section-subtitle text-sm mb-4">Until we say "I do"</p>
 
