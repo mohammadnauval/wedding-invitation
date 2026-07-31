@@ -42,15 +42,6 @@ function CoupleSection({ weddingData }) {
                 <p className="text-[10px] text-[var(--color-text-muted)] mt-1 leading-relaxed">
                   {bride.child_order ? `Putri ${bride.child_order} dari` : 'Putri dari'}<br/>Bapak {bride.father_name || '-'} & Ibu {bride.mother_name || '-'}
                 </p>
-                  <a
-                    href={`https://instagram.com/${bride.instagram}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center text-[10px] text-[var(--color-primary)] mt-1.5 hover:underline font-bold tracking-wide"
-                  >
-                    @{bride.instagram}
-                  </a>
-                )}
               </div>
             </div>
           </div>
@@ -82,16 +73,6 @@ function CoupleSection({ weddingData }) {
                 <p className="text-[10px] text-[var(--color-text-muted)] mt-1 leading-relaxed">
                   {groom.child_order ? `Putra ${groom.child_order} dari` : 'Putra dari'}<br/>Bapak {groom.father_name || '-'} & Ibu {groom.mother_name || '-'}
                 </p>
-                {groom.instagram && (
-                  <a
-                    href={`https://instagram.com/${groom.instagram}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center text-[10px] text-[var(--color-primary)] mt-1.5 hover:underline font-bold tracking-wide"
-                  >
-                    @{groom.instagram}
-                  </a>
-                )}
               </div>
             </div>
           </div>
