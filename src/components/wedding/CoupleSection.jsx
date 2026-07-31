@@ -15,7 +15,7 @@ function CoupleSection({ weddingData }) {
         <img src="/images/background_border_fix.png" alt="" className="w-full h-full object-fill" />
       </div>
 
-      <img src="/images/rings_illustration.png" alt="" className="absolute top-28 left-0 w-44 opacity-70 z-10" />
+      <img src="/images/rings_illustration.png" alt="" className="absolute top-44 left-0 w-44 opacity-70 z-10" />
 
       <div className={`section-container relative z-10 pt-52 ${inView ? 'fade-up' : 'opacity-0'}`}>
         <h2 className="section-title">The Couple</h2>
