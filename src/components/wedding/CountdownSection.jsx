@@ -65,7 +65,7 @@ function CountdownSection({ weddingData }) {
     <section ref={ref} className="relative pt-12 pb-72 overflow-hidden bg-[var(--color-bg)]">
       {/* Background image */}
       <div className="absolute inset-0">
-        <img src="/images/counting_days_background_without_border.PNG" alt="" className="w-full h-full object-cover" />
+        <img src="/images/counting_days_background_without_border_2.PNG" alt="" className="w-full h-full object-cover" />
         <div className="absolute inset-0 bg-[var(--color-bg)]/50" />
       </div>
 
