@@ -35,7 +35,7 @@ function EventSection({ weddingData }) {
     <section id="event" ref={ref} className="relative pt-16 pb-0 overflow-hidden bg-[var(--color-bg-soft)]">
       {/* Background border */}
       <div className="absolute inset-0">
-        <img src="/images/counting_days_background_without_border.PNG" alt="" className="w-full h-full object-cover" />
+        <img src="/images/background_border_fix.png" alt="" className="w-full h-full object-fill" />
       </div>
 
       <div className={`section-container relative z-10 px-10 ${inView ? 'fade-up' : 'opacity-0'}`}>
