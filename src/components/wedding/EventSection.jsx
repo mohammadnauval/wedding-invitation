@@ -53,7 +53,7 @@ function EventSection({ weddingData }) {
           {events.map((event, index) => (
             <div
               key={event.id || index}
-              className="text-center p-6 rounded-3xl bg-white/70 backdrop-blur-sm border border-white/50"
+              className="text-center p-6 rounded-3xl bg-white/40 backdrop-blur-sm border border-white/30"
             >
               <h3 className="font-couple text-2xl text-[var(--color-primary)] mb-3">
                 {event.title}
