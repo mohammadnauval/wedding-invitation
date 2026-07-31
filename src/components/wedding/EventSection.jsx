@@ -45,7 +45,7 @@ function EventSection({ weddingData }) {
         <div className="relative">
           {/* Venue image behind cards with fade */}
           <div className="absolute inset-0 rounded-3xl overflow-hidden">
-            <img src="/images/venue_background.jpg.jpg" alt="" className="w-full h-full object-cover opacity-30" />
+            <img src="/images/venue_background.jpg.jpg" alt="" className="w-full h-full object-cover opacity-50" />
             <div className="absolute inset-0 bg-gradient-to-b from-[var(--color-bg-soft)]/30 via-transparent to-[var(--color-bg-soft)]/30" />
           </div>
 
