@@ -9,7 +9,7 @@ function CoupleSection({ weddingData }) {
   const bride = weddingData?.couple?.bride || {};
 
   return (
-    <section id="couple" ref={ref} className="relative pt-16 pb-32 overflow-hidden bg-[var(--color-bg)]">
+    <section id="couple" ref={ref} className="relative py-16 overflow-hidden bg-[var(--color-bg)]">
       {/* Background border */}
       <div className="absolute inset-0">
         <img src="/images/background_border_fix.png" alt="" className="w-full h-full object-fill" />
