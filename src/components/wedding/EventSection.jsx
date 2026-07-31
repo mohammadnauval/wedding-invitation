@@ -32,7 +32,7 @@ function EventSection({ weddingData }) {
   };
 
   return (
-    <section id="event" ref={ref} className="relative pt-16 pb-0 overflow-hidden bg-[var(--color-bg-soft)]">
+    <section id="event" ref={ref} className="relative pt-32 pb-16 overflow-hidden bg-[var(--color-bg-soft)]">
       {/* Background border */}
       <div className="absolute inset-0">
         <img src="/images/background_border_fix.png" alt="" className="w-full h-full object-fill" />
@@ -84,15 +84,6 @@ function EventSection({ weddingData }) {
               </div>
             </div>
           ))}
-        </div>
-
-        {/* Venue illustration */}
-        <div className="mt-4 -mb-4 flex justify-center">
-          <img
-            src="/images/event_pencil.png"
-            alt="Venue illustration"
-            className="w-full max-w-[360px] h-auto rounded-xl"
-          />
         </div>
       </div>
     </section>
