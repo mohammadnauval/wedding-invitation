@@ -38,7 +38,7 @@ function EventSection({ weddingData }) {
         <img src="/images/background_border_fix.png" alt="" className="w-full h-full object-fill" />
       </div>
 
-      <div className={`section-container relative z-10 ${inView ? 'fade-up' : 'opacity-0'}`}>
+      <div className={`section-container relative z-10 px-10 ${inView ? 'fade-up' : 'opacity-0'}`}>
         <h2 className="section-title">The Events</h2>
         <p className="section-subtitle font-bold drop-shadow-sm">Join us to celebrate our love</p>
 
