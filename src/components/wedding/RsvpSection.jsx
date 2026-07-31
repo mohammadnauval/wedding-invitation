@@ -91,7 +91,7 @@ function RsvpSection({ guestData, weddingData }) {
       <div className="absolute inset-0">
         <img src="/images/background_border_fix.png" alt="" className="w-full h-full object-fill" />
       </div>
-      <div className={`section-container relative z-10 ${inView ? 'fade-up' : 'opacity-0'}`}>
+      <div className={`section-container relative z-10 px-10 ${inView ? 'fade-up' : 'opacity-0'}`}>
         <h2 className="section-title">RSVP</h2>
         <p className="section-subtitle">Konfirmasi Kehadiran</p>
 
