@@ -24,7 +24,7 @@ function CoupleSection({ weddingData }) {
         <div className="space-y-5">
           {/* Bride - left aligned */}
           <div className="py-2">
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-4 ml-4">
               <div className="w-20 h-20 shrink-0 rounded-full overflow-hidden ring-3 ring-[var(--color-primary)]/20 ring-offset-2 ring-offset-[var(--color-bg-soft)]">
                 <LivePhoto
                   photos={['/images/bride_1.png', '/images/bride_2.png']}
@@ -40,9 +40,8 @@ function CoupleSection({ weddingData }) {
                   {bride.full_name || ''}
                 </p>
                 <p className="text-[10px] text-[var(--color-text-muted)] mt-1 leading-relaxed">
-                  {bride.child_order ? `Putri ${bride.child_order} dari` : 'Putri dari'} Bapak {bride.father_name || '-'} & Ibu {bride.mother_name || '-'}
+                  {bride.child_order ? `Putri ${bride.child_order} dari` : 'Putri dari'}<br/>Bapak {bride.father_name || '-'} & Ibu {bride.mother_name || '-'}
                 </p>
-                {bride.instagram && (
                   <a
                     href={`https://instagram.com/${bride.instagram}`}
                     target="_blank"
@@ -65,7 +64,7 @@ function CoupleSection({ weddingData }) {
 
           {/* Groom - right aligned */}
           <div className="py-2">
-            <div className="flex items-center gap-4 flex-row-reverse">
+            <div className="flex items-center gap-4 flex-row-reverse mr-4">
               <div className="w-20 h-20 shrink-0 rounded-full overflow-hidden ring-3 ring-[var(--color-primary)]/20 ring-offset-2 ring-offset-[var(--color-bg-soft)]">
                 <LivePhoto
                   photos={['/images/groom_1.png', '/images/groom_2.png']}
@@ -81,7 +80,7 @@ function CoupleSection({ weddingData }) {
                   {groom.full_name || ''}
                 </p>
                 <p className="text-[10px] text-[var(--color-text-muted)] mt-1 leading-relaxed">
-                  {groom.child_order ? `Putra ${groom.child_order} dari` : 'Putra dari'} Bapak {groom.father_name || '-'} & Ibu {groom.mother_name || '-'}
+                  {groom.child_order ? `Putra ${groom.child_order} dari` : 'Putra dari'}<br/>Bapak {groom.father_name || '-'} & Ibu {groom.mother_name || '-'}
                 </p>
                 {groom.instagram && (
                   <a
