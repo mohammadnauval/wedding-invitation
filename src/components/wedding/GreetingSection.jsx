@@ -18,7 +18,7 @@ function GreetingSection({ weddingData }) {
         <img src="/images/background_border_fix.png" alt="" className="w-full h-full object-fill" />
       </div>
 
-      <div className={`section-container relative z-10 pt-32 px-10 ${inView ? 'fade-up' : 'opacity-0'}`}>
+      <div className={`section-container relative z-10 pt-40 pb-8 px-10 ${inView ? 'fade-up' : 'opacity-0'}`}>
         <p className="text-center font-couple text-2xl text-[var(--color-primary)] mb-8 font-bold drop-shadow-sm">
           {greeting.opening}
         </p>
