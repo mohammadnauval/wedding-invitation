@@ -72,7 +72,7 @@ function RsvpSection({ guestData, weddingData }) {
 
   if (isDeadlinePassed && !existingRsvp) {
     return (
-      <section id="rsvp" ref={ref} className="relative pt-32 pb-16 bg-[var(--color-bg-soft)] overflow-hidden">
+      <section id="rsvp" ref={ref} className="relative pt-32 pb-32 bg-[var(--color-bg-soft)] overflow-hidden">
         <div className="absolute inset-0">
           <img src="/images/background_border_fix.png" alt="" className="w-full h-full object-fill" />
         </div>
@@ -87,7 +87,7 @@ function RsvpSection({ guestData, weddingData }) {
   }
 
   return (
-    <section id="rsvp" ref={ref} className="relative pt-32 pb-16 bg-[var(--color-bg-soft)] overflow-hidden">
+    <section id="rsvp" ref={ref} className="relative pt-32 pb-32 bg-[var(--color-bg-soft)] overflow-hidden">
       <div className="absolute inset-0">
         <img src="/images/background_border_fix.png" alt="" className="w-full h-full object-fill" />
       </div>
