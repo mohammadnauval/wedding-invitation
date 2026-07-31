@@ -70,8 +70,8 @@ function CountdownSection({ weddingData }) {
       </div>
 
       <div className={`max-w-lg mx-auto px-6 pt-0 pb-16 relative z-10 ${inView ? 'fade-up' : 'opacity-0'}`}>
-        <h2 className="section-title text-lg">Counting Days</h2>
-        <p className="section-subtitle text-sm mb-4">Until we say "I do"</p>
+        <h2 className="section-title text-2xl">Counting Days</h2>
+        <p className="section-subtitle text-base mb-4">Until we say "I do"</p>
 
 
         {isPast ? (
