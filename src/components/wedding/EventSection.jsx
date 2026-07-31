@@ -42,6 +42,12 @@ function EventSection({ weddingData }) {
         <h2 className="section-title">The Events</h2>
         <p className="section-subtitle font-bold drop-shadow-sm">Join us to celebrate our love</p>
 
+        {/* Venue image with fade */}
+        <div className="relative rounded-3xl overflow-hidden mb-6">
+          <img src="/images/venue_background.jpg.jpg" alt="Venue" className="w-full h-48 object-cover" />
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[var(--color-bg-soft)]" />
+        </div>
+
         <div className="space-y-6">
           {events.map((event, index) => (
             <div
