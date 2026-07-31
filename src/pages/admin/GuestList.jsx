@@ -461,6 +461,7 @@ Merupakan suatu kehormatan bagi kami apabila Bapak/Ibu/Saudara/i dapat hadir. Te
                 >
                   <option value="partner">& Partner</option>
                   <option value="keluarga">& Keluarga</option>
+                  <option value="solo">Tanpa plus one</option>
                 </select>
               </div>
               <div>
