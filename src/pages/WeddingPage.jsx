@@ -27,6 +27,34 @@ function WeddingPage() {
   const [error, setError] = useState(null);
   const audioRef = useRef(null);
 
+  // Stop audio when user leaves the page (tab close, navigate away, or route change)
+  useEffect(() => {
+    const stopAudio = () => {
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current.currentTime = 0;
+      }
+    };
+
+    // Tab hidden or browser closed
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'hidden') stopAudio();
+    };
+
+    // iOS Safari / mobile: fires reliably on page exit
+    const handlePageHide = () => stopAudio();
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    window.addEventListener('pagehide', handlePageHide);
+
+    return () => {
+      // React unmount (navigating to another route)
+      stopAudio();
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      window.removeEventListener('pagehide', handlePageHide);
+    };
+  }, []);
+
   const guestName = searchParams.get('to') || '';
   const token = searchParams.get('t') || '';
 
