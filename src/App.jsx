@@ -20,7 +20,7 @@ function App() {
       {/* Public Wedding Invitation */}
       <Route path="/invite/:guestSlug" element={<WeddingPage />} />
       <Route path="/wedding" element={<WeddingPage />} />
-      <Route path="/" element={<WeddingPage />} />
+      <Route path="/" element={<NotFound />} />
 
       {/* Admin Routes */}
       <Route path="/admin/login" element={<AdminLogin />} />
