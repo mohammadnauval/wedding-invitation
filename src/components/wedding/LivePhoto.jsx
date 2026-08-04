@@ -2,14 +2,12 @@ import React, { useState, useEffect } from 'react';
 
 /**
  * LivePhoto
- * Renders one or more photos (cycling) inside its parent container.
+ * Renders one or more photos (cycling) clipped to a circle.
  *
- * Rendering model — IDENTICAL to PhotoCropEditor:
- *   base layer : object-cover fills the container (w-full h-full)
- *   crop layer : transform translate(x,y) scale(s) with transformOrigin center
- *
- * The parent in CoupleSection already has `rounded-full overflow-hidden`,
- * so clipping to circle is handled there — LivePhoto just fills it.
+ * Clipping is done HERE (not in the parent) so that transformed <img> children
+ * are correctly clipped. Using overflow:hidden + border-radius + isolation on
+ * the same element that contains the transforms avoids browser stacking-context
+ * bugs where a parent's overflow-hidden fails to clip transformed children.
  */
 function LivePhoto({ photos = [], alt = '', className = '', cropSettings = [] }) {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -36,9 +34,14 @@ function LivePhoto({ photos = [], alt = '', className = '', cropSettings = [] })
   };
 
   return (
-    // This div fills the parent (w-32 h-32 rounded-full overflow-hidden in CoupleSection).
-    // `relative` + explicit size so absolute children position correctly.
-    <div className={`relative w-full h-full ${className}`}>
+    <div
+      className={`relative w-full h-full ${className}`}
+      style={{
+        borderRadius: '50%',
+        overflow: 'hidden',
+        isolation: 'isolate', // forces new stacking context — fixes overflow-hidden + transform clipping
+      }}
+    >
       {photos.map((photo, index) => (
         <img
           key={index}

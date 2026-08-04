@@ -47,7 +47,8 @@ function CoupleSection({ weddingData }) {
           {/* Bride - left aligned */}
           <div className="py-2">
             <div className="flex items-center gap-4 ml-4">
-              <div className="w-32 h-32 shrink-0 rounded-full overflow-hidden ring-3 ring-[var(--color-primary)]/20 ring-offset-2 ring-offset-[var(--color-bg-soft)]">
+              {/* ring wrapper — NO overflow-hidden here, LivePhoto handles its own clipping */}
+              <div className="w-32 h-32 shrink-0 rounded-full ring-3 ring-[var(--color-primary)]/20 ring-offset-2 ring-offset-[var(--color-bg-soft)]">
                 <LivePhoto
                   photos={bridePhotos}
                   alt={bride.full_name || 'Bride'}
@@ -78,7 +79,8 @@ function CoupleSection({ weddingData }) {
           {/* Groom - right aligned */}
           <div className="py-2">
             <div className="flex items-center gap-4 flex-row-reverse mr-4">
-              <div className="w-32 h-32 shrink-0 rounded-full overflow-hidden ring-3 ring-[var(--color-primary)]/20 ring-offset-2 ring-offset-[var(--color-bg-soft)]">
+              {/* ring wrapper — NO overflow-hidden here, LivePhoto handles its own clipping */}
+              <div className="w-32 h-32 shrink-0 rounded-full ring-3 ring-[var(--color-primary)]/20 ring-offset-2 ring-offset-[var(--color-bg-soft)]">
                 <LivePhoto
                   photos={groomPhotos}
                   alt={groom.full_name || 'Groom'}
