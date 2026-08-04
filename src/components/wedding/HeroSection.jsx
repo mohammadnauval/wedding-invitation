@@ -17,17 +17,18 @@ function HeroSection({ weddingData }) {
 
   return (
     <section id="home" ref={ref} className="relative py-40 flex items-center justify-center bg-[var(--color-bg)]">
+
       {/* Hero background photo */}
       <div className="absolute inset-0">
         <img
           src="/images/wedding_hero_background.jpeg"
           alt=""
           className="w-full h-full object-cover"
-          style={{ opacity: 0.25 }}
+          style={{ opacity: 0.35 }}
         />
       </div>
 
-      {/* Soft gradient overlay to fade edges and protect text readability */}
+      {/* Gradient overlay — fade top & bottom for smooth section transitions */}
       <div
         className="absolute inset-0"
         style={{
@@ -36,13 +37,8 @@ function HeroSection({ weddingData }) {
         }}
       />
 
-      {/* Background border */}
-      <div className="absolute inset-0">
-        <img src="/images/background_border_fix.png" alt="" className="w-full h-full object-fill" />
-      </div>
-
       {/* Content */}
-      <div className={`relative text-center px-12 py-20 ${inView ? 'fade-up' : 'opacity-0'}`}>
+      <div className={`relative z-10 text-center px-12 py-20 ${inView ? 'fade-up' : 'opacity-0'}`}>
         <p className="text-[10px] font-bold tracking-[0.3em] uppercase text-[var(--color-primary)] mb-4">
           The Wedding of
         </p>
