@@ -12,7 +12,7 @@ function GreetingSection({ weddingData }) {
   };
 
   return (
-    <section ref={ref} className="relative py-16 bg-[var(--color-bg-soft)] overflow-hidden">
+    <section id="greeting" ref={ref} className="relative py-16 bg-[var(--color-bg-soft)] overflow-hidden">
       {/* Background border */}
       <div className="absolute inset-0">
         <img src="/images/background_border_fix.png" alt="" className="w-full h-full object-fill" />

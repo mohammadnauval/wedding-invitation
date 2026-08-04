@@ -62,7 +62,7 @@ function CountdownSection({ weddingData }) {
   const calendar = getCalendarWeek();
 
   return (
-    <section ref={ref} className="relative pt-12 pb-72 overflow-hidden bg-[var(--color-bg)]">
+    <section id="countdown" ref={ref} className="relative pt-12 pb-72 overflow-hidden bg-[var(--color-bg)]">
       {/* Background image */}
       <div className="absolute inset-0">
         <img src="/images/counting_days_background_without_border_2.PNG" alt="" className="w-full h-full object-cover" />

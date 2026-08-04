@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 
 const BASE_NAV_ITEMS = [
-  { id: 'home',    label: 'Home',    icon: '♡' },
-  { id: 'couple',  label: 'Couple',  icon: '✦' },
-  { id: 'event',   label: 'Event',   icon: '◆' },
-  { id: 'gallery', label: 'Gallery', icon: '▣', setting: 'gallery_enabled' },
-  { id: 'rsvp',    label: 'RSVP',    icon: '✉', setting: 'rsvp_enabled' },
+  { id: 'home',      label: 'Home',      icon: '♡' },
+  { id: 'greeting',  label: 'Doa',       icon: '✿' },
+  { id: 'couple',    label: 'Couple',    icon: '✦' },
+  { id: 'event',     label: 'Event',     icon: '◆' },
+  { id: 'countdown', label: 'Countdown', icon: '◎' },
+  { id: 'gallery',   label: 'Gallery',   icon: '▣', setting: 'gallery_enabled' },
+  { id: 'rsvp',      label: 'RSVP',      icon: '✉', setting: 'rsvp_enabled' },
 ];
 
 function FloatingNav({ weddingData }) {
