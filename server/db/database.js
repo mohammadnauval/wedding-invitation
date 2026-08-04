@@ -224,8 +224,40 @@ async function initDB() {
   // Insert default couple data
   const { rows: existingCouple } = await query('SELECT id FROM couple LIMIT 1');
   if (existingCouple.length === 0) {
-    await query('INSERT INTO couple (type, full_name, nickname, father_name, mother_name) VALUES ($1, $2, $3, $4, $5)', ['groom', 'Muhammad Nauval', 'Nauval', 'Ayah Nauval', 'Ibu Nauval']);
+    const defaultGroomPhotos = JSON.stringify(['/images/couple/groom/groom_1.JPEG', '/images/couple/groom/groom_2.JPEG']);
+    await query(
+      'INSERT INTO couple (type, full_name, nickname, father_name, mother_name, photo, photos) VALUES ($1, $2, $3, $4, $5, $6, $7)',
+      ['groom', 'Muhammad Nauval', 'Nauval', 'Ayah Nauval', 'Ibu Nauval', '/images/couple/groom/groom_1.JPEG', defaultGroomPhotos]
+    );
     await query('INSERT INTO couple (type, full_name, nickname, father_name, mother_name) VALUES ($1, $2, $3, $4, $5)', ['bride', 'Nama Pasangan', 'Pasangan', 'Ayah Pasangan', 'Ibu Pasangan']);
+  } else {
+    // Migration: if groom has no photos set, populate with default local photos
+    const { rows: groomRows } = await query("SELECT photos FROM couple WHERE type = 'groom'");
+    if (groomRows.length > 0) {
+      let groomPhotos = [];
+      try { groomPhotos = JSON.parse(groomRows[0].photos || '[]'); } catch (e) {}
+      if (groomPhotos.length === 0) {
+        const defaultGroomPhotos = JSON.stringify(['/images/couple/groom/groom_1.JPEG', '/images/couple/groom/groom_2.JPEG']);
+        await query(
+          "UPDATE couple SET photo = '/images/couple/groom/groom_1.JPEG', photos = $1 WHERE type = 'groom'",
+          [defaultGroomPhotos]
+        );
+      }
+    }
+
+    // Migration: if groom has no photos set, populate with default local photos
+    const { rows: brideRows } = await query("SELECT photos FROM couple WHERE type = 'bride'");
+    if (brideRows.length > 0) {
+      let bridePhotos = [];
+      try { bridePhotos = JSON.parse(brideRows[0].photos || '[]'); } catch (e) {}
+      if (bridePhotos.length === 0) {
+        const defaultBridePhotos = JSON.stringify(['/images/couple/bride/bride_1.JPEG', '/images/couple/bride/bride_2.JPEG']);
+        await query(
+          "UPDATE couple SET photo = '/images/couple/bride/groom_1.JPEG', photos = $1 WHERE type = 'bride'",
+          [defaultBridePhotos]
+        );
+      }
+    }
   }
 
   // Insert default event

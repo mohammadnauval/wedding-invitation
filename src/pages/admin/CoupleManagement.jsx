@@ -64,6 +64,25 @@ function CoupleManagement() {
   const handleDeletePhoto = async (type, url) => {
     if (!confirm('Hapus foto ini?')) return;
     try {
+      // If this is a local /images/ path (not an upload), just remove from array in DB
+      const isLocalImage = url.startsWith('/images/');
+      if (isLocalImage) {
+        const person = couple[type] || {};
+        let photos = [];
+        try { photos = JSON.parse(person.photos || '[]'); } catch (e) {}
+        photos = photos.filter(p => p !== url);
+        const mainPhoto = photos.length > 0 ? photos[0] : null;
+        await adminFetch('/couple/photo/update-array', {
+          method: 'PUT',
+          body: JSON.stringify({ type, photos, photo: mainPhoto }),
+        });
+        setCouple(prev => ({
+          ...prev,
+          [type]: { ...prev[type], photo: mainPhoto, photos: JSON.stringify(photos) },
+        }));
+        return;
+      }
+
       const data = await adminFetch('/couple/photo', {
         method: 'DELETE',
         body: JSON.stringify({ type, url }),
@@ -75,6 +94,23 @@ function CoupleManagement() {
           photo: data.photos?.[0] || null,
           photos: data.photos,
         },
+      }));
+    } catch (err) {
+      alert(err.message);
+    }
+  };
+
+  const handleUseDefaultPhotos = async (type) => {
+    if (type !== 'groom') return;
+    const defaultPhotos = ['/images/couple/groom/groom_1.JPEG', '/images/couple/groom/groom_2.JPEG'];
+    try {
+      await adminFetch('/couple/photo/update-array', {
+        method: 'PUT',
+        body: JSON.stringify({ type, photos: defaultPhotos, photo: defaultPhotos[0] }),
+      });
+      setCouple(prev => ({
+        ...prev,
+        [type]: { ...prev[type], photo: defaultPhotos[0], photos: JSON.stringify(defaultPhotos) },
       }));
     } catch (err) {
       alert(err.message);
