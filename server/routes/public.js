@@ -68,20 +68,18 @@ router.get('/invitations/:slugOrToken?', async (req, res) => {
     const loveStoriesResult = await query('SELECT * FROM love_stories ORDER BY sort_order');
     const giftsResult = await query('SELECT * FROM gifts ORDER BY sort_order');
 
-    // Get music info
+    // Get music from database (base64 data URL)
     let music = null;
     try {
-      const fs = require('fs');
-      const path = require('path');
-      const musicDir = path.join(__dirname, '../../uploads');
-      if (settings.music_enabled === '1' && fs.existsSync(musicDir)) {
-        const musicFiles = fs.readdirSync(musicDir).filter(f => f.startsWith('music'));
-        if (musicFiles.length > 0) {
-          music = { url: `/uploads/${musicFiles[0]}`, filename: musicFiles[0] };
-        }
+      const musicDataResult = await query("SELECT value FROM settings WHERE key = 'music_data'");
+      const musicNameResult = await query("SELECT value FROM settings WHERE key = 'music_filename'");
+      const musicData = musicDataResult.rows[0]?.value || null;
+      const filename = musicNameResult.rows[0]?.value || null;
+      if (settings.music_enabled === '1' && musicData) {
+        music = { url: musicData, filename };
       }
     } catch (e) {
-      // Skip on serverless
+      // Skip if music not found
     }
 
     // Content

@@ -9,22 +9,8 @@ const { v4: uuidv4 } = require('uuid');
 const { query } = require('../db/database');
 const { authMiddleware, JWT_SECRET } = require('../middleware/auth');
 
-// Multer config
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    const uploadDir = path.join(__dirname, '../../uploads');
-    try {
-      if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir, { recursive: true });
-    } catch (e) {
-      // Serverless - skip
-    }
-    cb(null, uploadDir);
-  },
-  filename: (req, file, cb) => {
-    const ext = path.extname(file.originalname).toLowerCase();
-    cb(null, `${Date.now()}-${uuidv4().substring(0, 8)}${ext}`);
-  },
-});
+// Multer config — memoryStorage for serverless compatibility (no disk writes)
+const storage = multer.memoryStorage();
 
 const upload = multer({
   storage,
@@ -234,11 +220,11 @@ router.post('/guests/import', upload.single('file'), async (req, res) => {
   try {
     if (!req.file) return res.status(400).json({ message: 'No file uploaded' });
 
-    const content = fs.readFileSync(req.file.path, 'utf-8');
+    // Use buffer directly (memoryStorage — no disk path)
+    const content = req.file.buffer.toString('utf-8');
     const lines = content.split('\n').filter(l => l.trim());
 
     if (lines.length < 2) {
-      fs.unlinkSync(req.file.path);
       return res.status(400).json({ message: 'File kosong atau format salah' });
     }
 
@@ -265,7 +251,6 @@ router.post('/guests/import', upload.single('file'), async (req, res) => {
       }
     }
 
-    fs.unlinkSync(req.file.path);
     res.json({ success: true, imported });
   } catch (err) {
     console.error(err);
@@ -373,7 +358,11 @@ router.post('/couple/photo', upload.single('photo'), async (req, res) => {
     const { type } = req.body;
     if (!req.file) return res.status(400).json({ message: 'No file' });
 
-    const url = `/uploads/${req.file.filename}`;
+    // Store as base64 data URL (serverless-compatible)
+    const ext = path.extname(req.file.originalname).toLowerCase().replace('.', '');
+    const mime = ext === 'png' ? 'image/png' : ext === 'webp' ? 'image/webp' : 'image/jpeg';
+    const base64 = req.file.buffer.toString('base64');
+    const url = `data:${mime};base64,${base64}`;
 
     // Get existing photos array
     const existing = await query('SELECT photos FROM couple WHERE type = $1', [type]);
@@ -424,11 +413,13 @@ router.delete('/couple/photo', async (req, res) => {
     const mainPhoto = photos.length > 0 ? photos[0] : null;
     await query('UPDATE couple SET photo = $1, photos = $2 WHERE type = $3', [mainPhoto, JSON.stringify(photos), type]);
 
-    // Delete file
-    const fs = require('fs');
-    const path = require('path');
-    const filePath = path.join(__dirname, '../../', url);
-    if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
+    // Only delete from disk if it's a file path (not a data URL)
+    if (url && url.startsWith('/uploads/')) {
+      try {
+        const filePath = path.join(__dirname, '../../', url);
+        if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
+      } catch (e) { /* serverless — skip */ }
+    }
 
     res.json({ success: true, photos });
   } catch (err) {
@@ -524,7 +515,11 @@ router.post('/gallery', upload.single('image'), async (req, res) => {
   try {
     if (!req.file) return res.status(400).json({ message: 'No file' });
 
-    const image_url = `/uploads/${req.file.filename}`;
+    // Store as base64 data URL (serverless-compatible)
+    const ext = path.extname(req.file.originalname).toLowerCase().replace('.', '');
+    const mime = ext === 'png' ? 'image/png' : ext === 'webp' ? 'image/webp' : 'image/jpeg';
+    const base64 = req.file.buffer.toString('base64');
+    const image_url = `data:${mime};base64,${base64}`;
     const thumbnail_url = image_url;
 
     const maxOrder = await query('SELECT MAX(sort_order) as max FROM gallery');
@@ -545,9 +540,12 @@ router.delete('/gallery/:id', async (req, res) => {
   try {
     const result = await query('SELECT * FROM gallery WHERE id = $1', [req.params.id]);
     const photo = result.rows[0];
-    if (photo) {
-      const filePath = path.join(__dirname, '../../', photo.image_url);
-      if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
+    // Only delete from disk if it's a file path (not a data URL)
+    if (photo && photo.image_url && photo.image_url.startsWith('/uploads/')) {
+      try {
+        const filePath = path.join(__dirname, '../../', photo.image_url);
+        if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
+      } catch (e) { /* serverless — skip */ }
     }
     await query('DELETE FROM gallery WHERE id = $1', [req.params.id]);
     res.json({ success: true });
@@ -672,14 +670,18 @@ router.delete('/gifts/:id', async (req, res) => {
   }
 });
 
-// Music
+// Music — stored as base64 data URL in settings table (serverless-compatible)
 router.get('/music', async (req, res) => {
   try {
-    const result = await query("SELECT value FROM settings WHERE key = 'music_enabled'");
-    const uploadDir = path.join(__dirname, '../../uploads');
-    const musicFiles = fs.existsSync(uploadDir) ? fs.readdirSync(uploadDir).filter(f => f.startsWith('music')) : [];
-    const music = musicFiles.length > 0 ? { url: `/uploads/${musicFiles[0]}`, filename: musicFiles[0] } : null;
-    res.json({ music, enabled: result.rows[0]?.value === '1' });
+    const enabledResult = await query("SELECT value FROM settings WHERE key = 'music_enabled'");
+    const dataResult = await query("SELECT value FROM settings WHERE key = 'music_data'");
+    const nameResult = await query("SELECT value FROM settings WHERE key = 'music_filename'");
+
+    const musicData = dataResult.rows[0]?.value || null;
+    const filename = nameResult.rows[0]?.value || null;
+    const music = musicData ? { url: musicData, filename } : null;
+
+    res.json({ music, enabled: enabledResult.rows[0]?.value === '1' });
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: 'Server error' });
@@ -690,16 +692,21 @@ router.post('/music', upload.single('music'), async (req, res) => {
   try {
     if (!req.file) return res.status(400).json({ message: 'No file' });
 
-    // Remove old music files
-    const uploadDir = path.join(__dirname, '../../uploads');
-    const oldFiles = fs.readdirSync(uploadDir).filter(f => f.startsWith('music'));
-    oldFiles.forEach(f => fs.unlinkSync(path.join(uploadDir, f)));
+    // Convert buffer to base64 data URL (works on serverless — no disk write needed)
+    const base64 = req.file.buffer.toString('base64');
+    const dataUrl = `data:audio/mpeg;base64,${base64}`;
+    const filename = req.file.originalname;
 
-    // Rename with music prefix
-    const newName = `music-${req.file.filename}`;
-    fs.renameSync(req.file.path, path.join(uploadDir, newName));
+    await query(
+      "INSERT INTO settings (key, value) VALUES ('music_data', $1) ON CONFLICT (key) DO UPDATE SET value = $1",
+      [dataUrl]
+    );
+    await query(
+      "INSERT INTO settings (key, value) VALUES ('music_filename', $1) ON CONFLICT (key) DO UPDATE SET value = $1",
+      [filename]
+    );
 
-    res.json({ success: true, url: `/uploads/${newName}` });
+    res.json({ success: true, url: dataUrl });
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: 'Server error' });
