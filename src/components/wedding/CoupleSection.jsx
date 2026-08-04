@@ -8,18 +8,27 @@ function CoupleSection({ weddingData }) {
   const groom = weddingData?.couple?.groom || {};
   const bride = weddingData?.couple?.bride || {};
 
-  const getPhotos = (person, defaultKey) => {
+  const getPhotos = (person, defaultPhotos) => {
     try {
       const parsed = JSON.parse(person.photos || '[]');
       if (parsed.length > 0) return parsed;
     } catch (e) {}
-    return person.photo ? [person.photo] : [defaultKey];
+    return person.photo ? [person.photo] : defaultPhotos;
   };
 
-  const bridePhotos = getPhotos(bride, '/uploads/bride-default.jpg');
-  const groomPhotos = groom.photos
-    ? (() => { try { const p = JSON.parse(groom.photos); return p.length ? p : ['/images/couple/groom/groom_1.JPEG', '/images/couple/groom/groom_2.JPEG']; } catch { return ['/images/couple/groom/groom_1.JPEG', '/images/couple/groom/groom_2.JPEG']; } })()
-    : ['/images/couple/groom/groom_1.JPEG', '/images/couple/groom/groom_2.JPEG'];
+  const parseCropSettings = (person) => {
+    try {
+      const parsed = JSON.parse(person.photo_focuses || '[]');
+      if (Array.isArray(parsed)) return parsed;
+    } catch (e) {}
+    return [];
+  };
+
+  const bridePhotos = getPhotos(bride, ['/images/couple/bride/bride_1.JPEG', '/images/couple/bride/bride_2.JPEG']);
+  const groomPhotos = getPhotos(groom, ['/images/couple/groom/groom_1.JPEG', '/images/couple/groom/groom_2.JPEG']);
+
+  const brideCropSettings = parseCropSettings(bride);
+  const groomCropSettings = parseCropSettings(groom);
 
   return (
     <section id="couple" ref={ref} className="relative py-16 overflow-hidden bg-[var(--color-bg)]">
@@ -43,6 +52,7 @@ function CoupleSection({ weddingData }) {
                   photos={bridePhotos}
                   alt={bride.full_name || 'Bride'}
                   objectPosition={bride.photo_focus || 'center'}
+                  cropSettings={brideCropSettings}
                   className="w-full h-full"
                 />
               </div>
@@ -75,6 +85,7 @@ function CoupleSection({ weddingData }) {
                   photos={groomPhotos}
                   alt={groom.full_name || 'Groom'}
                   objectPosition={groom.photo_focus || 'center'}
+                  cropSettings={groomCropSettings}
                   className="w-full h-full"
                 />
               </div>

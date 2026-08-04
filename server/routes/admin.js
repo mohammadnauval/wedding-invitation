@@ -356,10 +356,10 @@ router.put('/couple', async (req, res) => {
   try {
     const { groom, bride } = req.body;
 
-    const updateCouple = 'UPDATE couple SET full_name = $1, nickname = $2, father_name = $3, mother_name = $4, instagram = $5, child_order = $6, photo_focus = $7 WHERE type = $8';
+    const updateCouple = 'UPDATE couple SET full_name = $1, nickname = $2, father_name = $3, mother_name = $4, instagram = $5, child_order = $6, photo_focus = $7, photo_focuses = $8 WHERE type = $9';
 
-    if (groom) await query(updateCouple, [groom.full_name, groom.nickname, groom.father_name, groom.mother_name, groom.instagram || null, groom.child_order || null, groom.photo_focus || 'center', 'groom']);
-    if (bride) await query(updateCouple, [bride.full_name, bride.nickname, bride.father_name, bride.mother_name, bride.instagram || null, bride.child_order || null, bride.photo_focus || 'center', 'bride']);
+    if (groom) await query(updateCouple, [groom.full_name, groom.nickname, groom.father_name, groom.mother_name, groom.instagram || null, groom.child_order || null, groom.photo_focus || 'center', groom.photo_focuses || '[]', 'groom']);
+    if (bride) await query(updateCouple, [bride.full_name, bride.nickname, bride.father_name, bride.mother_name, bride.instagram || null, bride.child_order || null, bride.photo_focus || 'center', bride.photo_focuses || '[]', 'bride']);
 
     res.json({ success: true });
   } catch (err) {
@@ -387,6 +387,21 @@ router.post('/couple/photo', upload.single('photo'), async (req, res) => {
 
     await query('UPDATE couple SET photo = $1, photos = $2 WHERE type = $3', [url, JSON.stringify(photos), type]);
     res.json({ url, photos });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+// Update photos array without file upload (for local/static images)
+router.put('/couple/photo/update-array', async (req, res) => {
+  try {
+    const { type, photos, photo, photo_focuses } = req.body;
+    await query(
+      'UPDATE couple SET photo = $1, photos = $2, photo_focuses = $3 WHERE type = $4',
+      [photo, JSON.stringify(photos), photo_focuses ? JSON.stringify(photo_focuses) : '[]', type]
+    );
+    res.json({ success: true, photos });
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: 'Server error' });
@@ -426,6 +441,18 @@ router.put('/couple/focus', async (req, res) => {
   try {
     const { type, photo_focus } = req.body;
     await query('UPDATE couple SET photo_focus = $1 WHERE type = $2', [photo_focus, type]);
+    res.json({ success: true });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+// Save per-photo crop settings (array of {x, y, scale})
+router.put('/couple/focuses', async (req, res) => {
+  try {
+    const { type, photo_focuses } = req.body;
+    await query('UPDATE couple SET photo_focuses = $1 WHERE type = $2', [photo_focuses, type]);
     res.json({ success: true });
   } catch (err) {
     console.error(err);

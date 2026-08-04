@@ -64,21 +64,27 @@ function CoupleManagement() {
   const handleDeletePhoto = async (type, url) => {
     if (!confirm('Hapus foto ini?')) return;
     try {
-      // If this is a local /images/ path (not an upload), just remove from array in DB
       const isLocalImage = url.startsWith('/images/');
       if (isLocalImage) {
         const person = couple[type] || {};
         let photos = [];
         try { photos = JSON.parse(person.photos || '[]'); } catch (e) {}
+        const deletedIndex = photos.indexOf(url);
         photos = photos.filter(p => p !== url);
         const mainPhoto = photos.length > 0 ? photos[0] : null;
+
+        // Also remove the corresponding crop setting
+        let focuses = [];
+        try { focuses = JSON.parse(person.photo_focuses || '[]'); } catch (e) {}
+        if (deletedIndex >= 0) focuses.splice(deletedIndex, 1);
+
         await adminFetch('/couple/photo/update-array', {
           method: 'PUT',
-          body: JSON.stringify({ type, photos, photo: mainPhoto }),
+          body: JSON.stringify({ type, photos, photo: mainPhoto, photo_focuses: focuses }),
         });
         setCouple(prev => ({
           ...prev,
-          [type]: { ...prev[type], photo: mainPhoto, photos: JSON.stringify(photos) },
+          [type]: { ...prev[type], photo: mainPhoto, photos: JSON.stringify(photos), photo_focuses: JSON.stringify(focuses) },
         }));
         return;
       }
@@ -101,20 +107,39 @@ function CoupleManagement() {
   };
 
   const handleUseDefaultPhotos = async (type) => {
-    if (type !== 'groom') return;
-    const defaultPhotos = ['/images/couple/groom/groom_1.JPEG', '/images/couple/groom/groom_2.JPEG'];
+    const defaults = {
+      groom: ['/images/couple/groom/groom_1.JPEG', '/images/couple/groom/groom_2.JPEG'],
+      bride: ['/images/couple/bride/bride_1.JPEG', '/images/couple/bride/bride_2.JPEG'],
+    };
+    const defaultPhotos = defaults[type];
+    if (!defaultPhotos) return;
     try {
       await adminFetch('/couple/photo/update-array', {
         method: 'PUT',
-        body: JSON.stringify({ type, photos: defaultPhotos, photo: defaultPhotos[0] }),
+        body: JSON.stringify({ type, photos: defaultPhotos, photo: defaultPhotos[0], photo_focuses: [] }),
       });
       setCouple(prev => ({
         ...prev,
-        [type]: { ...prev[type], photo: defaultPhotos[0], photos: JSON.stringify(defaultPhotos) },
+        [type]: { ...prev[type], photo: defaultPhotos[0], photos: JSON.stringify(defaultPhotos), photo_focuses: '[]' },
       }));
     } catch (err) {
       alert(err.message);
     }
+  };
+
+  const handleCropsChange = async (type, newCrops) => {
+    const jsonStr = JSON.stringify(newCrops);
+    setCouple(prev => ({
+      ...prev,
+      [type]: { ...prev[type], photo_focuses: jsonStr },
+    }));
+    // Auto-save to DB
+    try {
+      await adminFetch('/couple/focuses', {
+        method: 'PUT',
+        body: JSON.stringify({ type, photo_focuses: jsonStr }),
+      });
+    } catch (e) { /* silent */ }
   };
 
   const updateField = (type, field, value) => {
@@ -128,19 +153,30 @@ function CoupleManagement() {
 
   const renderPersonForm = (type, label) => {
     const person = couple[type] || {};
+
     const photos = (() => {
       try {
         const parsed = JSON.parse(person.photos || '[]');
         if (parsed.length > 0) return parsed;
       } catch (e) {}
       if (type === 'groom') return ['/images/couple/groom/groom_1.JPEG', '/images/couple/groom/groom_2.JPEG'];
+      if (type === 'bride') return ['/images/couple/bride/bride_1.JPEG', '/images/couple/bride/bride_2.JPEG'];
       return person.photo ? [person.photo] : [];
+    })();
+
+    const cropSettings = (() => {
+      try {
+        const parsed = JSON.parse(person.photo_focuses || '[]');
+        if (Array.isArray(parsed)) return parsed;
+      } catch (e) {}
+      return [];
     })();
 
     return (
       <div className="bg-white p-6 rounded-xl border border-gray-100">
         <h3 className="text-lg font-medium text-gray-800 mb-4">{label}</h3>
         <div className="space-y-4">
+
           {/* Photo gallery */}
           <div>
             <label className="text-xs text-gray-600 mb-2 block">
@@ -153,7 +189,6 @@ function CoupleManagement() {
                     src={url}
                     alt={`Photo ${index + 1}`}
                     className="w-full h-full object-cover"
-                    style={{ objectPosition: person.photo_focus || 'center' }}
                   />
                   <button
                     onClick={() => handleDeletePhoto(type, url)}
@@ -168,37 +203,36 @@ function CoupleManagement() {
               ))}
             </div>
 
-            <label className="cursor-pointer">
-              <span className={`inline-block px-3 py-1.5 text-xs rounded-lg ${uploading[type] ? 'bg-gray-200 text-gray-500' : 'bg-[var(--color-primary)] text-white hover:bg-[var(--color-primary-dark)]'}`}>
-                {uploading[type] ? 'Uploading...' : '+ Upload Foto'}
-              </span>
-              <input
-                type="file"
-                accept="image/*"
-                multiple
-                className="hidden"
-                disabled={uploading[type]}
-                onChange={(e) => handlePhotoUpload(type, e.target.files)}
-              />
-            </label>
+            <div className="flex items-center gap-2 flex-wrap">
+              <label className="cursor-pointer">
+                <span className={`inline-block px-3 py-1.5 text-xs rounded-lg ${uploading[type] ? 'bg-gray-200 text-gray-500' : 'bg-[var(--color-primary)] text-white hover:bg-[var(--color-primary-dark)]'}`}>
+                  {uploading[type] ? 'Uploading...' : '+ Upload Foto'}
+                </span>
+                <input
+                  type="file"
+                  accept="image/*"
+                  multiple
+                  className="hidden"
+                  disabled={uploading[type]}
+                  onChange={(e) => handlePhotoUpload(type, e.target.files)}
+                />
+              </label>
+              <button
+                onClick={() => handleUseDefaultPhotos(type)}
+                className="px-3 py-1.5 text-xs rounded-lg border border-gray-200 text-gray-500 hover:border-gray-300 hover:text-gray-700"
+              >
+                Gunakan foto default
+              </button>
+            </div>
           </div>
 
-          {/* Focus position */}
+          {/* Crop / zoom per foto */}
           <div>
-            <label className="text-xs text-gray-600 mb-2 block">Fokus Foto</label>
+            <label className="text-xs text-gray-600 mb-2 block">Crop & Zoom (per foto)</label>
             <PhotoFocusPicker
-              src={photos[0] || null}
-              value={person.photo_focus || '50% 50%'}
-              onChange={async (val) => {
-                updateField(type, 'photo_focus', val);
-                // Auto-save focus to DB
-                try {
-                  await adminFetch('/couple/focus', {
-                    method: 'PUT',
-                    body: JSON.stringify({ type, photo_focus: val }),
-                  });
-                } catch (e) { /* silent */ }
-              }}
+              photos={photos}
+              cropSettings={cropSettings}
+              onChangeCrops={(newCrops) => handleCropsChange(type, newCrops)}
             />
           </div>
 

@@ -73,6 +73,7 @@ async function initDB() {
   await query(`ALTER TABLE couple ADD COLUMN IF NOT EXISTS child_order TEXT`);
   await query(`ALTER TABLE couple ADD COLUMN IF NOT EXISTS photos TEXT`);
   await query(`ALTER TABLE couple ADD COLUMN IF NOT EXISTS photo_focus TEXT DEFAULT 'center'`);
+  await query(`ALTER TABLE couple ADD COLUMN IF NOT EXISTS photo_focuses TEXT DEFAULT '[]'`);
 
   await query(`
     CREATE TABLE IF NOT EXISTS rsvp (
