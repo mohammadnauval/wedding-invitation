@@ -253,7 +253,7 @@ async function initDB() {
       if (bridePhotos.length === 0) {
         const defaultBridePhotos = JSON.stringify(['/images/couple/bride/bride_1.JPEG', '/images/couple/bride/bride_2.JPEG']);
         await query(
-          "UPDATE couple SET photo = '/images/couple/bride/groom_1.JPEG', photos = $1 WHERE type = 'bride'",
+          "UPDATE couple SET photo = '/images/couple/bride/bride_1.JPEG', photos = $1 WHERE type = 'bride'",
           [defaultBridePhotos]
         );
       }
