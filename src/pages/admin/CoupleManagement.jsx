@@ -1,15 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { adminFetch, adminUpload } from '../../hooks/useAdmin';
-
-const FOCUS_OPTIONS = [
-  { value: 'top', label: 'Atas' },
-  { value: 'center', label: 'Tengah' },
-  { value: 'bottom', label: 'Bawah' },
-  { value: 'left', label: 'Kiri' },
-  { value: 'right', label: 'Kanan' },
-  { value: '50% 20%', label: 'Atas-Tengah' },
-  { value: '50% 30%', label: 'Wajah (atas)' },
-];
+import PhotoFocusPicker from '../../components/admin/PhotoFocusPicker';
 
 function CoupleManagement() {
   const [couple, setCouple] = useState({ groom: {}, bride: {} });
@@ -154,34 +145,12 @@ function CoupleManagement() {
 
           {/* Focus position */}
           <div>
-            <label className="text-xs text-gray-600 mb-1 block">Fokus Foto (area yang ditampilkan)</label>
-            <div className="grid grid-cols-3 gap-1.5 mb-2">
-              {FOCUS_OPTIONS.map(opt => (
-                <button
-                  key={opt.value}
-                  type="button"
-                  onClick={() => updateField(type, 'photo_focus', opt.value)}
-                  className={`py-1.5 text-xs rounded-lg border transition-colors ${
-                    (person.photo_focus || 'center') === opt.value
-                      ? 'bg-[var(--color-primary)] text-white border-[var(--color-primary)]'
-                      : 'bg-gray-50 text-gray-600 border-gray-200 hover:bg-gray-100'
-                  }`}
-                >
-                  {opt.label}
-                </button>
-              ))}
-            </div>
-            {/* Preview */}
-            {photos.length > 0 && (
-              <div className="w-20 h-20 rounded-full overflow-hidden border-2 border-gray-200 mt-2">
-                <img
-                  src={photos[0]}
-                  alt="Preview"
-                  className="w-full h-full object-cover"
-                  style={{ objectPosition: person.photo_focus || 'center' }}
-                />
-              </div>
-            )}
+            <label className="text-xs text-gray-600 mb-2 block">Fokus Foto</label>
+            <PhotoFocusPicker
+              src={photos[0] || null}
+              value={person.photo_focus || '50% 50%'}
+              onChange={(val) => updateField(type, 'photo_focus', val)}
+            />
           </div>
 
           {/* Other fields */}
