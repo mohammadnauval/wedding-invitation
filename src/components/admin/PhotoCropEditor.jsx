@@ -3,58 +3,95 @@ import React, { useState, useRef, useEffect, useCallback } from 'react';
 /**
  * PhotoCropEditor — Instagram-style circular crop editor.
  *
- * Crop values stored as PERCENTAGES of container size (0–100), not pixels.
- * This makes the crop render identically at any container size (editor=288px, invitation=128px).
+ * Stores crop as: { posX, posY, scale }
+ *   posX, posY : CSS object-position percentage, 0–100
+ *                (50,50 = center, 0,0 = top-left, 100,100 = bottom-right)
+ *   scale      : zoom multiplier applied via transform:scale() on a wrapper div
  *
- *   x, y  : translate as % of container size  (e.g. 10 means shift by 10% of container width/height)
- *   scale : zoom multiplier (1 = fit, 4 = max)
+ * Rendering in the editor and in LivePhoto is identical:
+ *   <div style="overflow:hidden; border-radius:50%">
+ *     <div style="width:100%; height:100%; transform:scale(s); transform-origin: posX% posY%">
+ *       <img style="width:100%; height:100%; object-cover; object-position: posX% posY%" />
+ *     </div>
+ *   </div>
  *
- * At render time:  translatePx = (x / 100) * containerSizePx
+ * Panning works by adjusting posX/posY (which shifts object-position focus point).
+ * Zooming works by adjusting scale (which enlarges around the focus point).
  */
 
-const CIRCLE_SIZE = 288; // px — editor circle diameter
+const CIRCLE_SIZE = 288; // px — editor circle display size
 
 function PhotoCropEditor({ src, initialCrop, onSave, onCancel }) {
   const [crop, setCrop] = useState(() => ({
-    x: initialCrop?.x ?? 0,   // % of container
-    y: initialCrop?.y ?? 0,   // % of container
+    posX: initialCrop?.posX ?? 50,
+    posY: initialCrop?.posY ?? 50,
     scale: initialCrop?.scale ?? 1,
   }));
 
   const [dragging, setDragging] = useState(false);
-  const dragStart = useRef({ mx: 0, my: 0, cx: 0, cy: 0 });
+  const [imgNatural, setImgNatural] = useState({ w: 1, h: 1 });
+  const dragStart = useRef({ mx: 0, my: 0, px: 50, py: 50 });
   const containerRef = useRef(null);
 
+  // Get natural image dimensions to compute correct pan sensitivity
+  useEffect(() => {
+    if (!src) return;
+    const img = new Image();
+    img.onload = () => setImgNatural({ w: img.naturalWidth, h: img.naturalHeight });
+    img.src = src;
+  }, [src]);
+
   /**
-   * Clamp: after object-cover+scale, how far can we translate before an edge shows?
-   * At scale s, rendered size = CIRCLE_SIZE * s.
-   * Max pixel shift = (CIRCLE_SIZE * s - CIRCLE_SIZE) / 2 = CIRCLE_SIZE * (s-1) / 2
-   * As percentage of CIRCLE_SIZE: maxPct = (s - 1) / 2 * 100
+   * How much does object-position need to change per pixel of drag?
+   *
+   * At scale=1, object-cover renders the image so the shorter dimension fills
+   * the container exactly, and the longer dimension overflows.
+   * The "pannable" range in the overflow dimension:
+   *   renderedW = CIRCLE_SIZE * (imgW / imgH)  if landscape
+   *   renderedH = CIRCLE_SIZE * (imgH / imgW)  if portrait
+   * pannable pixels in X = max(0, renderedW - CIRCLE_SIZE) * scale
+   * 100% of object-position maps to that pannable range.
+   * So: pct per pixel = 100 / pannable_pixels
    */
-  const clamp = useCallback((nextCrop) => {
-    const s = nextCrop.scale;
-    const maxPct = ((s - 1) / 2) * 100;
+  const getPanSensitivity = useCallback((s) => {
+    const { w, h } = imgNatural;
+    if (w === 0 || h === 0) return { x: 0.3, y: 0.3 };
+    const aspectRatio = w / h;
+    let renderedW, renderedH;
+    if (aspectRatio >= 1) {
+      // Landscape: height fits, width overflows
+      renderedH = CIRCLE_SIZE;
+      renderedW = CIRCLE_SIZE * aspectRatio;
+    } else {
+      // Portrait: width fits, height overflows
+      renderedW = CIRCLE_SIZE;
+      renderedH = CIRCLE_SIZE / aspectRatio;
+    }
+    const pannableX = Math.max(1, (renderedW - CIRCLE_SIZE) * s);
+    const pannableY = Math.max(1, (renderedH - CIRCLE_SIZE) * s);
     return {
-      ...nextCrop,
-      x: Math.min(maxPct, Math.max(-maxPct, nextCrop.x)),
-      y: Math.min(maxPct, Math.max(-maxPct, nextCrop.y)),
+      x: 100 / pannableX,
+      y: 100 / pannableY,
     };
-  }, []);
+  }, [imgNatural]);
 
   // ── Mouse drag ──────────────────────────────────────────────────────────────
   const onMouseDown = (e) => {
     e.preventDefault();
     setDragging(true);
-    dragStart.current = { mx: e.clientX, my: e.clientY, cx: crop.x, cy: crop.y };
+    dragStart.current = { mx: e.clientX, my: e.clientY, px: crop.posX, py: crop.posY };
   };
 
   const onMouseMove = useCallback((e) => {
     if (!dragging) return;
-    // Convert pixel delta → percentage of circle size
-    const dxPct = ((e.clientX - dragStart.current.mx) / CIRCLE_SIZE) * 100;
-    const dyPct = ((e.clientY - dragStart.current.my) / CIRCLE_SIZE) * 100;
-    setCrop(prev => clamp({ ...prev, x: dragStart.current.cx + dxPct, y: dragStart.current.cy + dyPct }));
-  }, [dragging, clamp]);
+    const dx = e.clientX - dragStart.current.mx;
+    const dy = e.clientY - dragStart.current.my;
+    const sens = getPanSensitivity(crop.scale);
+    // Dragging right moves viewport left → decrease posX
+    const newX = Math.min(100, Math.max(0, dragStart.current.px - dx * sens.x));
+    const newY = Math.min(100, Math.max(0, dragStart.current.py - dy * sens.y));
+    setCrop(prev => ({ ...prev, posX: newX, posY: newY }));
+  }, [dragging, getPanSensitivity, crop.scale]);
 
   const onMouseUp = useCallback(() => setDragging(false), []);
 
@@ -68,13 +105,13 @@ function PhotoCropEditor({ src, initialCrop, onSave, onCancel }) {
   }, [onMouseMove, onMouseUp]);
 
   // ── Touch drag / pinch zoom ─────────────────────────────────────────────────
-  const touchRef = useRef({ x: 0, y: 0, dist: 0, cx: 0, cy: 0, cs: 1 });
+  const touchRef = useRef({ x: 0, y: 0, dist: 0, px: 50, py: 50, cs: 1 });
 
   const onTouchStart = (e) => {
     if (e.touches.length === 1) {
       touchRef.current = {
         x: e.touches[0].clientX, y: e.touches[0].clientY,
-        cx: crop.x, cy: crop.y, cs: crop.scale, dist: 0,
+        px: crop.posX, py: crop.posY, cs: crop.scale, dist: 0,
       };
       setDragging(true);
     } else if (e.touches.length === 2) {
@@ -88,16 +125,19 @@ function PhotoCropEditor({ src, initialCrop, onSave, onCancel }) {
   const onTouchMove = (e) => {
     e.preventDefault();
     if (e.touches.length === 1 && dragging) {
-      const dxPct = ((e.touches[0].clientX - touchRef.current.x) / CIRCLE_SIZE) * 100;
-      const dyPct = ((e.touches[0].clientY - touchRef.current.y) / CIRCLE_SIZE) * 100;
-      setCrop(prev => clamp({ ...prev, x: touchRef.current.cx + dxPct, y: touchRef.current.cy + dyPct }));
+      const dx = e.touches[0].clientX - touchRef.current.x;
+      const dy = e.touches[0].clientY - touchRef.current.y;
+      const sens = getPanSensitivity(crop.scale);
+      const newX = Math.min(100, Math.max(0, touchRef.current.px - dx * sens.x));
+      const newY = Math.min(100, Math.max(0, touchRef.current.py - dy * sens.y));
+      setCrop(prev => ({ ...prev, posX: newX, posY: newY }));
     } else if (e.touches.length === 2) {
       const dx = e.touches[0].clientX - e.touches[1].clientX;
       const dy = e.touches[0].clientY - e.touches[1].clientY;
       const dist = Math.hypot(dx, dy);
       const ratio = dist / (touchRef.current.dist || dist);
       const newScale = Math.min(4, Math.max(1, touchRef.current.cs * ratio));
-      setCrop(prev => clamp({ ...prev, scale: newScale }));
+      setCrop(prev => ({ ...prev, scale: newScale }));
     }
   };
 
@@ -107,8 +147,8 @@ function PhotoCropEditor({ src, initialCrop, onSave, onCancel }) {
   const onWheel = useCallback((e) => {
     e.preventDefault();
     const delta = e.deltaY > 0 ? -0.08 : 0.08;
-    setCrop(prev => clamp({ ...prev, scale: Math.min(4, Math.max(1, prev.scale + delta)) }));
-  }, [clamp]);
+    setCrop(prev => ({ ...prev, scale: Math.min(4, Math.max(1, prev.scale + delta)) }));
+  }, []);
 
   useEffect(() => {
     const el = containerRef.current;
@@ -118,18 +158,10 @@ function PhotoCropEditor({ src, initialCrop, onSave, onCancel }) {
   }, [onWheel]);
 
   const handleSave = () => onSave(crop);
-  const handleReset = () => setCrop({ x: 0, y: 0, scale: 1 });
+  const handleReset = () => setCrop({ posX: 50, posY: 50, scale: 1 });
 
-  // Render: convert % back to px for this editor's CIRCLE_SIZE
-  const txPx = (crop.x / 100) * CIRCLE_SIZE;
-  const tyPx = (crop.y / 100) * CIRCLE_SIZE;
-
-  const imgStyle = {
-    transform: `translate(${txPx}px, ${tyPx}px) scale(${crop.scale})`,
-    transformOrigin: 'center center',
-    cursor: dragging ? 'grabbing' : 'grab',
-    userSelect: 'none',
-  };
+  // Render using the same model as LivePhoto
+  const objectPos = `${crop.posX.toFixed(1)}% ${crop.posY.toFixed(1)}%`;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80">
@@ -147,40 +179,56 @@ function PhotoCropEditor({ src, initialCrop, onSave, onCancel }) {
           </button>
         </div>
 
-        {/* Circle crop area */}
+        {/* Circle crop — EXACT same rendering as LivePhoto */}
         <div
           ref={containerRef}
-          className="relative select-none"
+          className="relative select-none flex-shrink-0"
           style={{
             width: CIRCLE_SIZE,
             height: CIRCLE_SIZE,
             borderRadius: '50%',
             overflow: 'hidden',
-            isolation: 'isolate',
-            background: '#f0f0f0',
-            border: '4px solid rgba(var(--color-primary-rgb, 180,60,100), 0.3)',
-            boxShadow: '0 4px 20px rgba(0,0,0,0.2)',
+            background: '#e5e7eb',
+            cursor: dragging ? 'grabbing' : 'grab',
+            boxShadow: '0 0 0 4px rgba(180,60,100,0.25), 0 4px 20px rgba(0,0,0,0.2)',
           }}
           onMouseDown={onMouseDown}
           onTouchStart={onTouchStart}
           onTouchMove={onTouchMove}
           onTouchEnd={onTouchEnd}
         >
-          <img
-            src={src}
-            alt="Crop"
-            className="absolute inset-0 w-full h-full object-cover"
-            style={imgStyle}
-            draggable={false}
-          />
+          {/* Scale wrapper — zoom around the focus point */}
+          <div
+            style={{
+              width: '100%',
+              height: '100%',
+              transform: `scale(${crop.scale})`,
+              transformOrigin: objectPos,
+            }}
+          >
+            <img
+              src={src}
+              alt="Crop"
+              style={{
+                width: '100%',
+                height: '100%',
+                objectFit: 'cover',
+                objectPosition: objectPos,
+                display: 'block',
+                pointerEvents: 'none',
+                userSelect: 'none',
+              }}
+              draggable={false}
+            />
+          </div>
 
           {/* Rule-of-thirds grid */}
           <div
             className="absolute inset-0 pointer-events-none"
             style={{
               backgroundImage:
-                'linear-gradient(rgba(255,255,255,0.18) 1px, transparent 1px), ' +
-                'linear-gradient(90deg, rgba(255,255,255,0.18) 1px, transparent 1px)',
+                'linear-gradient(rgba(255,255,255,0.2) 1px, transparent 1px), ' +
+                'linear-gradient(90deg, rgba(255,255,255,0.2) 1px, transparent 1px)',
               backgroundSize: '33.33% 33.33%',
             }}
           />
@@ -196,7 +244,7 @@ function PhotoCropEditor({ src, initialCrop, onSave, onCancel }) {
               max="4"
               step="0.01"
               value={crop.scale}
-              onChange={(e) => setCrop(prev => clamp({ ...prev, scale: parseFloat(e.target.value) }))}
+              onChange={(e) => setCrop(prev => ({ ...prev, scale: parseFloat(e.target.value) }))}
               className="flex-1 h-1.5 accent-[var(--color-primary)] cursor-pointer"
             />
             <span className="text-xs text-gray-500 w-8 text-right">{crop.scale.toFixed(1)}×</span>

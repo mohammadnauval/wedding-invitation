@@ -21,20 +21,20 @@ function PhotoFocusPicker({ photos = [], cropSettings = [], onChangeCrops }) {
 
   const getCrop = (index) => {
     const c = cropSettings[index];
-    if (c && typeof c === 'object') return c;
-    return { x: 0, y: 0, scale: 1 };
+    if (c && typeof c === 'object' && 'posX' in c) return c;
+    return { posX: 50, posY: 50, scale: 1 };
   };
 
-  // Build inline style for thumbnail preview — x,y are % of container, convert to px for 80px thumbnail
-  const THUMB_SIZE = 80; // w-20 = 80px
-  const getThumbnailStyle = (index) => {
+  // Thumbnail preview uses the same render model as LivePhoto/editor
+  const getThumbnailImgStyle = (index) => {
     const c = getCrop(index);
-    const xPx = ((c.x ?? 0) / 100) * THUMB_SIZE;
-    const yPx = ((c.y ?? 0) / 100) * THUMB_SIZE;
-    return {
-      transform: `translate(${xPx}px, ${yPx}px) scale(${c.scale ?? 1})`,
-      transformOrigin: 'center center',
-    };
+    const objPos = `${c.posX}% ${c.posY}%`;
+    return { objectFit: 'cover', objectPosition: objPos, width: '100%', height: '100%', display: 'block' };
+  };
+  const getThumbnailScaleStyle = (index) => {
+    const c = getCrop(index);
+    const objPos = `${c.posX}% ${c.posY}%`;
+    return { width: '100%', height: '100%', transform: `scale(${c.scale})`, transformOrigin: objPos };
   };
 
   const handleSave = (index, newCrop) => {
@@ -55,7 +55,7 @@ function PhotoFocusPicker({ photos = [], cropSettings = [], onChangeCrops }) {
       <div className="flex flex-wrap gap-3">
         {photos.map((url, i) => {
           const crop = getCrop(i);
-          const hasCrop = crop.scale > 1.01 || Math.abs(crop.x) > 1 || Math.abs(crop.y) > 1;
+          const hasCrop = crop.scale > 1.01 || crop.posX !== 50 || crop.posY !== 50;
 
           return (
             <button
@@ -64,21 +64,19 @@ function PhotoFocusPicker({ photos = [], cropSettings = [], onChangeCrops }) {
               className="relative group focus:outline-none"
               title={`Edit crop foto ${i + 1}`}
             >
-              {/* Circle preview — 80px thumbnail */}
+              {/* Circle preview */}
               <div
-                className="w-20 h-20 border-2 border-gray-200 group-hover:border-[var(--color-primary)] transition-colors shadow-sm bg-gray-100"
-                style={{
-                  clipPath: 'circle(50% at center)',
-                  WebkitClipPath: 'circle(50% at center)',
-                }}
+                className="w-20 h-20 bg-gray-100 border-2 border-gray-200 group-hover:border-[var(--color-primary)] transition-colors shadow-sm"
+                style={{ borderRadius: '50%', overflow: 'hidden' }}
               >
-                <img
-                  src={url}
-                  alt={`Foto ${i + 1}`}
-                  className="w-full h-full object-cover"
-                  style={getThumbnailStyle(i)}
-                  draggable={false}
-                />
+                <div style={getThumbnailScaleStyle(i)}>
+                  <img
+                    src={url}
+                    alt={`Foto ${i + 1}`}
+                    style={getThumbnailImgStyle(i)}
+                    draggable={false}
+                  />
+                </div>
               </div>
 
               {/* Edit overlay */}

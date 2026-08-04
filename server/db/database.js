@@ -74,6 +74,16 @@ async function initDB() {
   await query(`ALTER TABLE couple ADD COLUMN IF NOT EXISTS photos TEXT`);
   await query(`ALTER TABLE couple ADD COLUMN IF NOT EXISTS photo_focus TEXT DEFAULT 'center'`);
   await query(`ALTER TABLE couple ADD COLUMN IF NOT EXISTS photo_focuses TEXT DEFAULT '[]'`);
+  // Reset any stale pixel-based crop data — old format used {x,y} in px, new format uses {posX,posY,scale}
+  // Detect old format by checking if any entry has 'x' key (not 'posX')
+  await query(`
+    UPDATE couple SET photo_focuses = '[]'
+    WHERE photo_focuses IS NOT NULL
+      AND photo_focuses != '[]'
+      AND photo_focuses != ''
+      AND photo_focuses::text LIKE '%"x"%'
+      AND photo_focuses::text NOT LIKE '%"posX"%'
+  `);
 
   await query(`
     CREATE TABLE IF NOT EXISTS rsvp (

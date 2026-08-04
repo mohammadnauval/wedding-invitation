@@ -1,35 +1,24 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 
 /**
  * LivePhoto
  *
- * Crop values (x, y) are stored as % of container size — NOT pixels.
- * At render: translatePx = (x / 100) * containerSizePx
- * This keeps the crop visually identical regardless of container size
- * (editor=288px vs invitation=128px).
+ * Renders one or more cycling photos clipped to a circle.
  *
- * Clipping: uses clip-path:circle() which is more reliable than
- * overflow:hidden + border-radius when child elements have transforms.
+ * cropSettings[i] = { posX, posY, scale }
+ *   posX, posY : CSS object-position % (0–100), default 50
+ *   scale      : zoom multiplier (1 = no zoom), default 1
+ *
+ * Rendering model (IDENTICAL to PhotoCropEditor):
+ *   outer div  : overflow:hidden, border-radius:50%  (circle clip)
+ *   scale div  : transform:scale(s), transformOrigin: posX% posY%
+ *   img        : object-cover, objectPosition: posX% posY%
+ *
+ * This approach uses only native CSS — no px math, no ResizeObserver,
+ * no stacking context hacks. Works correctly at any container size.
  */
-function LivePhoto({ photos = [], alt = '', className = '', cropSettings = [] }) {
+function LivePhoto({ photos = [], alt = '', cropSettings = [] }) {
   const [activeIndex, setActiveIndex] = useState(0);
-  const containerRef = useRef(null);
-  const [containerSize, setContainerSize] = useState(128); // default w-32
-
-  // Measure actual container size on mount and resize
-  useEffect(() => {
-    const el = containerRef.current;
-    if (!el) return;
-    const measure = () => {
-      const rect = el.getBoundingClientRect();
-      // Use the smaller dimension to be safe
-      setContainerSize(Math.min(rect.width, rect.height) || 128);
-    };
-    measure();
-    const ro = new ResizeObserver(measure);
-    ro.observe(el);
-    return () => ro.disconnect();
-  }, []);
 
   useEffect(() => {
     if (photos.length <= 1) return;
@@ -41,42 +30,67 @@ function LivePhoto({ photos = [], alt = '', className = '', cropSettings = [] })
 
   if (photos.length === 0) return null;
 
-  const getCropStyle = (index) => {
+  const getObjectPos = (index) => {
     const c = cropSettings[index];
-    const scale = c?.scale ?? 1;
-    // Convert % → px using actual container size
-    const xPx = ((c?.x ?? 0) / 100) * containerSize;
-    const yPx = ((c?.y ?? 0) / 100) * containerSize;
-    return {
-      transform: `translate(${xPx}px, ${yPx}px) scale(${scale})`,
-      transformOrigin: 'center center',
-    };
+    const x = c?.posX ?? 50;
+    const y = c?.posY ?? 50;
+    return `${x}% ${y}%`;
+  };
+
+  const getScale = (index) => {
+    return cropSettings[index]?.scale ?? 1;
   };
 
   return (
+    // Outer: fills parent, clips to circle
     <div
-      ref={containerRef}
-      className={`relative w-full h-full ${className}`}
       style={{
-        // clip-path:circle clips correctly even when children have transforms,
-        // unlike overflow:hidden + border-radius which can fail with transforms.
-        clipPath: 'circle(50% at center)',
-        WebkitClipPath: 'circle(50% at center)',
+        position: 'relative',
+        width: '100%',
+        height: '100%',
+        borderRadius: '50%',
+        overflow: 'hidden',
       }}
     >
-      {photos.map((photo, index) => (
-        <img
-          key={index}
-          src={photo}
-          alt={alt}
-          className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${
-            index === activeIndex ? 'opacity-100' : 'opacity-0'
-          }`}
-          style={getCropStyle(index)}
-          loading="lazy"
-          draggable={false}
-        />
-      ))}
+      {photos.map((photo, index) => {
+        const objPos = getObjectPos(index);
+        const scale = getScale(index);
+        return (
+          <div
+            key={index}
+            style={{
+              position: 'absolute',
+              inset: 0,
+              opacity: index === activeIndex ? 1 : 0,
+              transition: 'opacity 1s ease',
+            }}
+          >
+            {/* Scale wrapper — zoom around focus point */}
+            <div
+              style={{
+                width: '100%',
+                height: '100%',
+                transform: `scale(${scale})`,
+                transformOrigin: objPos,
+              }}
+            >
+              <img
+                src={photo}
+                alt={alt}
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover',
+                  objectPosition: objPos,
+                  display: 'block',
+                }}
+                loading="lazy"
+                draggable={false}
+              />
+            </div>
+          </div>
+        );
+      })}
     </div>
   );
 }

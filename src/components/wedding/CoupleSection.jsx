@@ -54,8 +54,7 @@ function CoupleSection({ weddingData }) {
                   alt={bride.full_name || 'Bride'}
                   cropSettings={brideCropSettings}
                 />
-              </div>
-              <div className="text-left flex-1">
+              </div>              <div className="text-left flex-1">
                 <h3 className="font-couple text-3xl text-[var(--color-primary)] leading-tight">
                   {bride.nickname || 'Bride'}
                 </h3>
