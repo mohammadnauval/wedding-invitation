@@ -93,8 +93,12 @@ function CoupleManagement() {
   const renderPersonForm = (type, label) => {
     const person = couple[type] || {};
     const photos = (() => {
-      try { return JSON.parse(person.photos || '[]'); }
-      catch { return person.photo ? [person.photo] : []; }
+      try {
+        const parsed = JSON.parse(person.photos || '[]');
+        if (parsed.length > 0) return parsed;
+      } catch (e) {}
+      if (type === 'groom') return ['/images/couple/groom/groom_1.JPEG', '/images/couple/groom/groom_2.JPEG'];
+      return person.photo ? [person.photo] : [];
     })();
 
     return (
@@ -149,7 +153,16 @@ function CoupleManagement() {
             <PhotoFocusPicker
               src={photos[0] || null}
               value={person.photo_focus || '50% 50%'}
-              onChange={(val) => updateField(type, 'photo_focus', val)}
+              onChange={async (val) => {
+                updateField(type, 'photo_focus', val);
+                // Auto-save focus to DB
+                try {
+                  await adminFetch('/couple/focus', {
+                    method: 'PUT',
+                    body: JSON.stringify({ type, photo_focus: val }),
+                  });
+                } catch (e) { /* silent */ }
+              }}
             />
           </div>
 

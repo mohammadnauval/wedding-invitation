@@ -17,7 +17,9 @@ function CoupleSection({ weddingData }) {
   };
 
   const bridePhotos = getPhotos(bride, '/uploads/bride-default.jpg');
-  const groomPhotos = getPhotos(groom, '/uploads/groom-default.jpg');
+  const groomPhotos = groom.photos
+    ? (() => { try { const p = JSON.parse(groom.photos); return p.length ? p : ['/images/couple/groom/groom_1.JPEG', '/images/couple/groom/groom_2.JPEG']; } catch { return ['/images/couple/groom/groom_1.JPEG', '/images/couple/groom/groom_2.JPEG']; } })()
+    : ['/images/couple/groom/groom_1.JPEG', '/images/couple/groom/groom_2.JPEG'];
 
   return (
     <section id="couple" ref={ref} className="relative py-16 overflow-hidden bg-[var(--color-bg)]">
