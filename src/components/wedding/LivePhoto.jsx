@@ -2,11 +2,16 @@ import React, { useState, useEffect } from 'react';
 
 /**
  * LivePhoto
- * Displays a photo (or cycling live photos) inside a fixed container.
- * cropSettings: array of { x, y, scale } — one per photo, index-matched.
- * Falls back to objectPosition (legacy) if cropSettings not provided.
+ * Renders one or more photos (cycling) inside its parent container.
+ *
+ * Rendering model — IDENTICAL to PhotoCropEditor:
+ *   base layer : object-cover fills the container (w-full h-full)
+ *   crop layer : transform translate(x,y) scale(s) with transformOrigin center
+ *
+ * The parent in CoupleSection already has `rounded-full overflow-hidden`,
+ * so clipping to circle is handled there — LivePhoto just fills it.
  */
-function LivePhoto({ photos = [], alt = '', className = '', objectPosition = 'center', cropSettings = [] }) {
+function LivePhoto({ photos = [], alt = '', className = '', cropSettings = [] }) {
   const [activeIndex, setActiveIndex] = useState(0);
 
   useEffect(() => {
@@ -21,19 +26,19 @@ function LivePhoto({ photos = [], alt = '', className = '', objectPosition = 'ce
 
   const getCropStyle = (index) => {
     const c = cropSettings[index];
-    if (c && typeof c === 'object' && (c.scale > 1.01 || Math.abs(c.x) > 0.5 || Math.abs(c.y) > 0.5)) {
-      return {
-        objectPosition: 'center',
-        transform: `translate(${c.x}px, ${c.y}px) scale(${c.scale})`,
-        transformOrigin: 'center center',
-      };
-    }
-    // Legacy fallback
-    return { objectPosition };
+    const scale = c?.scale ?? 1;
+    const x = c?.x ?? 0;
+    const y = c?.y ?? 0;
+    return {
+      transform: `translate(${x}px, ${y}px) scale(${scale})`,
+      transformOrigin: 'center center',
+    };
   };
 
   return (
-    <div className={`relative ${className}`}>
+    // This div fills the parent (w-32 h-32 rounded-full overflow-hidden in CoupleSection).
+    // `relative` + explicit size so absolute children position correctly.
+    <div className={`relative w-full h-full ${className}`}>
       {photos.map((photo, index) => (
         <img
           key={index}

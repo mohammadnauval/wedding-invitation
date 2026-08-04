@@ -25,11 +25,11 @@ function PhotoFocusPicker({ photos = [], cropSettings = [], onChangeCrops }) {
     return { x: 0, y: 0, scale: 1 };
   };
 
-  // Build inline style for a thumbnail preview using the saved crop
+  // Build inline style for a thumbnail preview using the saved crop — identical to LivePhoto
   const getThumbnailStyle = (index) => {
     const c = getCrop(index);
     return {
-      transform: `translate(${c.x * 0.25}px, ${c.y * 0.25}px) scale(${c.scale})`,
+      transform: `translate(${c.x}px, ${c.y}px) scale(${c.scale})`,
       transformOrigin: 'center center',
     };
   };

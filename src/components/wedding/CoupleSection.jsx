@@ -51,9 +51,7 @@ function CoupleSection({ weddingData }) {
                 <LivePhoto
                   photos={bridePhotos}
                   alt={bride.full_name || 'Bride'}
-                  objectPosition={bride.photo_focus || 'center'}
                   cropSettings={brideCropSettings}
-                  className="w-full h-full"
                 />
               </div>
               <div className="text-left flex-1">
@@ -84,9 +82,7 @@ function CoupleSection({ weddingData }) {
                 <LivePhoto
                   photos={groomPhotos}
                   alt={groom.full_name || 'Groom'}
-                  objectPosition={groom.photo_focus || 'center'}
                   cropSettings={groomCropSettings}
-                  className="w-full h-full"
                 />
               </div>
               <div className="text-right flex-1">

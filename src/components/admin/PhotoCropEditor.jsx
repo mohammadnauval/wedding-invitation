@@ -1,31 +1,34 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 
 /**
- * PhotoCropEditor
- * Instagram-style circular crop editor.
- * - Drag to pan the photo inside the circle
- * - Scroll / pinch to zoom
- * - Returns { x, y, scale } where x,y are translate offsets in px relative to center
+ * PhotoCropEditor — Instagram-style circular crop editor.
+ *
+ * Rendering model (identical to LivePhoto):
+ *   - The <img> fills the circle with object-cover (scale=1, no pan = default view)
+ *   - transform: translate(x,y) scale(s) is applied on top
+ *   - transformOrigin: center center
+ *
+ * This means the saved {x, y, scale} produces the EXACT same result in
+ * LivePhoto as what you see here in the editor.
+ *
+ * Clamp logic keeps the image covering the circle at all times.
  */
 
-const CIRCLE_SIZE = 288; // px — display size of the crop circle in the editor
+const CIRCLE_SIZE = 288; // px — editor circle diameter
 
 function PhotoCropEditor({ src, initialCrop, onSave, onCancel }) {
-  // crop state: translate (x,y) in px from the natural center, scale
-  const [crop, setCrop] = useState(() => {
-    if (initialCrop && typeof initialCrop === 'object') {
-      return { x: initialCrop.x || 0, y: initialCrop.y || 0, scale: initialCrop.scale || 1 };
-    }
-    return { x: 0, y: 0, scale: 1 };
-  });
+  const [crop, setCrop] = useState(() => ({
+    x: initialCrop?.x ?? 0,
+    y: initialCrop?.y ?? 0,
+    scale: initialCrop?.scale ?? 1,
+  }));
 
-  const [imgSize, setImgSize] = useState({ w: 0, h: 0 }); // natural size of the image
+  // Natural image dimensions — needed for clamp
+  const [imgSize, setImgSize] = useState({ w: 0, h: 0 });
   const [dragging, setDragging] = useState(false);
   const dragStart = useRef({ mx: 0, my: 0, cx: 0, cy: 0 });
   const containerRef = useRef(null);
-  const imgRef = useRef(null);
 
-  // Load image to get natural dimensions
   useEffect(() => {
     if (!src) return;
     const img = new Image();
@@ -33,27 +36,27 @@ function PhotoCropEditor({ src, initialCrop, onSave, onCancel }) {
     img.src = src;
   }, [src]);
 
-  // Clamp translate so the image always covers the circle
+  /**
+   * Clamp translate so the image (after object-cover + scale) always covers
+   * the full CIRCLE_SIZE circle.
+   *
+   * At scale=1, object-cover makes the image fill CIRCLE_SIZE in both axes
+   * (the shorter dimension of the natural image fits exactly, the other overflows).
+   * After applying scale(s), the rendered size is CIRCLE_SIZE*s in each axis.
+   * The max translate in each axis before an edge enters the circle:
+   *   maxT = (CIRCLE_SIZE * s - CIRCLE_SIZE) / 2 = CIRCLE_SIZE * (s - 1) / 2
+   */
   const clamp = useCallback((nextCrop) => {
-    if (imgSize.w === 0 || imgSize.h === 0) return nextCrop;
-
-    const scale = nextCrop.scale;
-    // Rendered size of the image inside the editor
-    const renderedW = (imgSize.w / imgSize.h) * CIRCLE_SIZE * scale;
-    const renderedH = CIRCLE_SIZE * scale;
-
-    // Max allowed offset (so edge doesn't enter the circle)
-    const maxX = Math.max(0, (renderedW - CIRCLE_SIZE) / 2);
-    const maxY = Math.max(0, (renderedH - CIRCLE_SIZE) / 2);
-
+    const s = nextCrop.scale;
+    const maxT = (CIRCLE_SIZE * (s - 1)) / 2;
     return {
       ...nextCrop,
-      x: Math.min(maxX, Math.max(-maxX, nextCrop.x)),
-      y: Math.min(maxY, Math.max(-maxY, nextCrop.y)),
+      x: Math.min(maxT, Math.max(-maxT, nextCrop.x)),
+      y: Math.min(maxT, Math.max(-maxT, nextCrop.y)),
     };
-  }, [imgSize]);
+  }, []);
 
-  // Mouse drag
+  // ── Mouse drag ──────────────────────────────────────────────────────────────
   const onMouseDown = (e) => {
     e.preventDefault();
     setDragging(true);
@@ -67,14 +70,26 @@ function PhotoCropEditor({ src, initialCrop, onSave, onCancel }) {
     setCrop(prev => clamp({ ...prev, x: dragStart.current.cx + dx, y: dragStart.current.cy + dy }));
   }, [dragging, clamp]);
 
-  const onMouseUp = () => setDragging(false);
+  const onMouseUp = useCallback(() => setDragging(false), []);
 
-  // Touch drag
+  useEffect(() => {
+    window.addEventListener('mousemove', onMouseMove);
+    window.addEventListener('mouseup', onMouseUp);
+    return () => {
+      window.removeEventListener('mousemove', onMouseMove);
+      window.removeEventListener('mouseup', onMouseUp);
+    };
+  }, [onMouseMove, onMouseUp]);
+
+  // ── Touch drag / pinch zoom ─────────────────────────────────────────────────
   const touchRef = useRef({ x: 0, y: 0, dist: 0, cx: 0, cy: 0, cs: 1 });
 
   const onTouchStart = (e) => {
     if (e.touches.length === 1) {
-      touchRef.current = { x: e.touches[0].clientX, y: e.touches[0].clientY, cx: crop.x, cy: crop.y, cs: crop.scale, dist: 0 };
+      touchRef.current = {
+        x: e.touches[0].clientX, y: e.touches[0].clientY,
+        cx: crop.x, cy: crop.y, cs: crop.scale, dist: 0,
+      };
       setDragging(true);
     } else if (e.touches.length === 2) {
       const dx = e.touches[0].clientX - e.touches[1].clientX;
@@ -102,52 +117,36 @@ function PhotoCropEditor({ src, initialCrop, onSave, onCancel }) {
 
   const onTouchEnd = () => setDragging(false);
 
-  // Scroll to zoom
-  const onWheel = (e) => {
+  // ── Scroll to zoom ──────────────────────────────────────────────────────────
+  const onWheel = useCallback((e) => {
     e.preventDefault();
     const delta = e.deltaY > 0 ? -0.08 : 0.08;
     setCrop(prev => clamp({ ...prev, scale: Math.min(4, Math.max(1, prev.scale + delta)) }));
-  };
+  }, [clamp]);
 
-  // Attach wheel with non-passive to allow preventDefault
   useEffect(() => {
     const el = containerRef.current;
     if (!el) return;
     el.addEventListener('wheel', onWheel, { passive: false });
     return () => el.removeEventListener('wheel', onWheel);
-  }, [clamp]);
+  }, [onWheel]);
 
-  // Global mouse move/up for smooth drag outside element
-  useEffect(() => {
-    window.addEventListener('mousemove', onMouseMove);
-    window.addEventListener('mouseup', onMouseUp);
-    return () => {
-      window.removeEventListener('mousemove', onMouseMove);
-      window.removeEventListener('mouseup', onMouseUp);
-    };
-  }, [onMouseMove]);
-
+  // ── Helpers ─────────────────────────────────────────────────────────────────
   const handleSave = () => onSave(crop);
-  const handleReset = () => setCrop(clamp({ x: 0, y: 0, scale: 1 }));
+  const handleReset = () => setCrop({ x: 0, y: 0, scale: 1 });
 
-  // Image style inside the circle
+  // Image style — MUST match LivePhoto's getCropStyle exactly
   const imgStyle = {
     transform: `translate(${crop.x}px, ${crop.y}px) scale(${crop.scale})`,
     transformOrigin: 'center center',
     cursor: dragging ? 'grabbing' : 'grab',
     userSelect: 'none',
-    // fit the image to cover the circle at scale=1
-    width: imgSize.h > 0 ? `${(imgSize.w / imgSize.h) * 100}%` : '100%',
-    height: '100%',
-    objectFit: 'cover',
-    objectPosition: 'center',
-    display: 'block',
-    flexShrink: 0,
   };
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80">
       <div className="bg-white rounded-2xl shadow-2xl flex flex-col items-center p-6 gap-5 w-[360px] max-w-[95vw]">
+
         {/* Header */}
         <div className="w-full flex items-center justify-between">
           <button onClick={onCancel} className="text-sm text-gray-500 hover:text-gray-800">Batal</button>
@@ -160,34 +159,35 @@ function PhotoCropEditor({ src, initialCrop, onSave, onCancel }) {
           </button>
         </div>
 
-        {/* Circle crop area */}
+        {/* Circle crop area — uses object-cover, identical to LivePhoto */}
         <div
           ref={containerRef}
-          className="relative overflow-hidden rounded-full border-4 border-[var(--color-primary)]/40 shadow-lg select-none"
+          className="relative rounded-full overflow-hidden border-4 border-[var(--color-primary)]/40 shadow-lg select-none"
           style={{ width: CIRCLE_SIZE, height: CIRCLE_SIZE, background: '#f0f0f0' }}
           onMouseDown={onMouseDown}
           onTouchStart={onTouchStart}
           onTouchMove={onTouchMove}
           onTouchEnd={onTouchEnd}
         >
-          {/* The photo */}
-          <div className="absolute inset-0 flex items-center justify-center overflow-hidden">
-            <img
-              ref={imgRef}
-              src={src}
-              alt="Crop"
-              style={imgStyle}
-              draggable={false}
-            />
-          </div>
+          {/* Photo — object-cover fills the circle, transform pans/zooms */}
+          <img
+            src={src}
+            alt="Crop"
+            className="absolute inset-0 w-full h-full object-cover"
+            style={imgStyle}
+            draggable={false}
+          />
 
-          {/* Grid overlay (rule of thirds) */}
-          <div className="absolute inset-0 pointer-events-none" style={{ borderRadius: '50%', overflow: 'hidden' }}>
-            <div className="absolute inset-0" style={{
-              backgroundImage: 'linear-gradient(rgba(255,255,255,0.15) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.15) 1px, transparent 1px)',
+          {/* Rule-of-thirds grid */}
+          <div
+            className="absolute inset-0 pointer-events-none"
+            style={{
+              backgroundImage:
+                'linear-gradient(rgba(255,255,255,0.18) 1px, transparent 1px), ' +
+                'linear-gradient(90deg, rgba(255,255,255,0.18) 1px, transparent 1px)',
               backgroundSize: '33.33% 33.33%',
-            }} />
-          </div>
+            }}
+          />
         </div>
 
         {/* Zoom slider */}
@@ -200,10 +200,7 @@ function PhotoCropEditor({ src, initialCrop, onSave, onCancel }) {
               max="4"
               step="0.01"
               value={crop.scale}
-              onChange={(e) => {
-                const newScale = parseFloat(e.target.value);
-                setCrop(prev => clamp({ ...prev, scale: newScale }));
-              }}
+              onChange={(e) => setCrop(prev => clamp({ ...prev, scale: parseFloat(e.target.value) }))}
               className="flex-1 h-1.5 accent-[var(--color-primary)] cursor-pointer"
             />
             <span className="text-xs text-gray-500 w-8 text-right">{crop.scale.toFixed(1)}×</span>
@@ -213,7 +210,9 @@ function PhotoCropEditor({ src, initialCrop, onSave, onCancel }) {
         {/* Hint & reset */}
         <div className="w-full flex items-center justify-between px-1">
           <p className="text-[10px] text-gray-400">Drag untuk geser · Scroll/pinch untuk zoom</p>
-          <button onClick={handleReset} className="text-[10px] text-gray-400 hover:text-gray-600 underline">Reset</button>
+          <button onClick={handleReset} className="text-[10px] text-gray-400 hover:text-gray-600 underline">
+            Reset
+          </button>
         </div>
       </div>
     </div>
