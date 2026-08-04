@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-function LivePhoto({ photos = [], alt = '', className = '' }) {
+function LivePhoto({ photos = [], alt = '', className = '', objectPosition = 'center' }) {
   const [activeIndex, setActiveIndex] = useState(0);
 
   useEffect(() => {
@@ -25,6 +25,7 @@ function LivePhoto({ photos = [], alt = '', className = '' }) {
           className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${
             index === activeIndex ? 'opacity-100' : 'opacity-0'
           }`}
+          style={{ objectPosition }}
           loading="lazy"
         />
       ))}

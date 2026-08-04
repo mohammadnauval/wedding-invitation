@@ -71,6 +71,8 @@ async function initDB() {
   await query(`ALTER TABLE guests ADD COLUMN IF NOT EXISTS wa_type TEXT DEFAULT 'muslim'`);
   await query(`ALTER TABLE guests ADD COLUMN IF NOT EXISTS invite_type TEXT DEFAULT 'partner'`);
   await query(`ALTER TABLE couple ADD COLUMN IF NOT EXISTS child_order TEXT`);
+  await query(`ALTER TABLE couple ADD COLUMN IF NOT EXISTS photos TEXT`);
+  await query(`ALTER TABLE couple ADD COLUMN IF NOT EXISTS photo_focus TEXT DEFAULT 'center'`);
 
   await query(`
     CREATE TABLE IF NOT EXISTS rsvp (

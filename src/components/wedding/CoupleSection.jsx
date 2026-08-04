@@ -8,6 +8,17 @@ function CoupleSection({ weddingData }) {
   const groom = weddingData?.couple?.groom || {};
   const bride = weddingData?.couple?.bride || {};
 
+  const getPhotos = (person, defaultKey) => {
+    try {
+      const parsed = JSON.parse(person.photos || '[]');
+      if (parsed.length > 0) return parsed;
+    } catch (e) {}
+    return person.photo ? [person.photo] : [defaultKey];
+  };
+
+  const bridePhotos = getPhotos(bride, '/uploads/bride-default.jpg');
+  const groomPhotos = getPhotos(groom, '/uploads/groom-default.jpg');
+
   return (
     <section id="couple" ref={ref} className="relative py-16 overflow-hidden bg-[var(--color-bg)]">
       {/* Background border */}
@@ -25,10 +36,11 @@ function CoupleSection({ weddingData }) {
           {/* Bride - left aligned */}
           <div className="py-2">
             <div className="flex items-center gap-4 ml-4">
-              <div className="w-20 h-20 shrink-0 rounded-full overflow-hidden ring-3 ring-[var(--color-primary)]/20 ring-offset-2 ring-offset-[var(--color-bg-soft)]">
+              <div className="w-32 h-32 shrink-0 rounded-full overflow-hidden ring-3 ring-[var(--color-primary)]/20 ring-offset-2 ring-offset-[var(--color-bg-soft)]">
                 <LivePhoto
-                  photos={['/images/bride_1.png', '/images/bride_2.png']}
+                  photos={bridePhotos}
                   alt={bride.full_name || 'Bride'}
+                  objectPosition={bride.photo_focus || 'center'}
                   className="w-full h-full"
                 />
               </div>
@@ -56,10 +68,11 @@ function CoupleSection({ weddingData }) {
           {/* Groom - right aligned */}
           <div className="py-2">
             <div className="flex items-center gap-4 flex-row-reverse mr-4">
-              <div className="w-20 h-20 shrink-0 rounded-full overflow-hidden ring-3 ring-[var(--color-primary)]/20 ring-offset-2 ring-offset-[var(--color-bg-soft)]">
+              <div className="w-32 h-32 shrink-0 rounded-full overflow-hidden ring-3 ring-[var(--color-primary)]/20 ring-offset-2 ring-offset-[var(--color-bg-soft)]">
                 <LivePhoto
-                  photos={['/images/groom_1.png', '/images/groom_2.png']}
+                  photos={groomPhotos}
                   alt={groom.full_name || 'Groom'}
+                  objectPosition={groom.photo_focus || 'center'}
                   className="w-full h-full"
                 />
               </div>

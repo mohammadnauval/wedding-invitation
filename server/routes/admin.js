@@ -356,10 +356,10 @@ router.put('/couple', async (req, res) => {
   try {
     const { groom, bride } = req.body;
 
-    const updateCouple = 'UPDATE couple SET full_name = $1, nickname = $2, father_name = $3, mother_name = $4, instagram = $5, child_order = $6 WHERE type = $7';
+    const updateCouple = 'UPDATE couple SET full_name = $1, nickname = $2, father_name = $3, mother_name = $4, instagram = $5, child_order = $6, photo_focus = $7 WHERE type = $8';
 
-    if (groom) await query(updateCouple, [groom.full_name, groom.nickname, groom.father_name, groom.mother_name, groom.instagram || null, groom.child_order || null, 'groom']);
-    if (bride) await query(updateCouple, [bride.full_name, bride.nickname, bride.father_name, bride.mother_name, bride.instagram || null, bride.child_order || null, 'bride']);
+    if (groom) await query(updateCouple, [groom.full_name, groom.nickname, groom.father_name, groom.mother_name, groom.instagram || null, groom.child_order || null, groom.photo_focus || 'center', 'groom']);
+    if (bride) await query(updateCouple, [bride.full_name, bride.nickname, bride.father_name, bride.mother_name, bride.instagram || null, bride.child_order || null, bride.photo_focus || 'center', 'bride']);
 
     res.json({ success: true });
   } catch (err) {
@@ -374,8 +374,59 @@ router.post('/couple/photo', upload.single('photo'), async (req, res) => {
     if (!req.file) return res.status(400).json({ message: 'No file' });
 
     const url = `/uploads/${req.file.filename}`;
-    await query('UPDATE couple SET photo = $1 WHERE type = $2', [url, type]);
-    res.json({ url });
+
+    // Get existing photos array
+    const existing = await query('SELECT photos FROM couple WHERE type = $1', [type]);
+    let photos = [];
+    try {
+      photos = JSON.parse(existing.rows[0]?.photos || '[]');
+    } catch (e) {
+      photos = [];
+    }
+    photos.push(url);
+
+    await query('UPDATE couple SET photo = $1, photos = $2 WHERE type = $3', [url, JSON.stringify(photos), type]);
+    res.json({ url, photos });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+router.delete('/couple/photo', async (req, res) => {
+  try {
+    const { type, url } = req.body;
+
+    const existing = await query('SELECT photos FROM couple WHERE type = $1', [type]);
+    let photos = [];
+    try {
+      photos = JSON.parse(existing.rows[0]?.photos || '[]');
+    } catch (e) {
+      photos = [];
+    }
+    photos = photos.filter(p => p !== url);
+
+    const mainPhoto = photos.length > 0 ? photos[0] : null;
+    await query('UPDATE couple SET photo = $1, photos = $2 WHERE type = $3', [mainPhoto, JSON.stringify(photos), type]);
+
+    // Delete file
+    const fs = require('fs');
+    const path = require('path');
+    const filePath = path.join(__dirname, '../../', url);
+    if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
+
+    res.json({ success: true, photos });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+router.put('/couple/focus', async (req, res) => {
+  try {
+    const { type, photo_focus } = req.body;
+    await query('UPDATE couple SET photo_focus = $1 WHERE type = $2', [photo_focus, type]);
+    res.json({ success: true });
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: 'Server error' });
