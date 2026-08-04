@@ -1,15 +1,21 @@
 import React, { useState, useEffect } from 'react';
 
-const navItems = [
-  { id: 'home', label: 'Home', icon: '♡' },
-  { id: 'couple', label: 'Couple', icon: '✦' },
-  { id: 'event', label: 'Event', icon: '◆' },
-  { id: 'gallery', label: 'Gallery', icon: '▣' },
-  { id: 'rsvp', label: 'RSVP', icon: '✉' },
+const BASE_NAV_ITEMS = [
+  { id: 'home',    label: 'Home',    icon: '♡' },
+  { id: 'couple',  label: 'Couple',  icon: '✦' },
+  { id: 'event',   label: 'Event',   icon: '◆' },
+  { id: 'gallery', label: 'Gallery', icon: '▣', setting: 'gallery_enabled' },
+  { id: 'rsvp',    label: 'RSVP',    icon: '✉', setting: 'rsvp_enabled' },
 ];
 
-function FloatingNav() {
+function FloatingNav({ weddingData }) {
   const [activeSection, setActiveSection] = useState('home');
+
+  // Only show nav items whose corresponding section is actually rendered
+  const navItems = BASE_NAV_ITEMS.filter(item => {
+    if (!item.setting) return true;
+    return weddingData?.settings?.[item.setting] === '1';
+  });
 
   useEffect(() => {
     const handleScroll = () => {

@@ -151,7 +151,7 @@ function WeddingPage() {
             )}
             <SectionDivider variant="hearts" />
             <ClosingSection weddingData={weddingData} />
-            <FloatingNav />
+            <FloatingNav weddingData={weddingData} />
             <MusicPlayer audioRef={audioRef} weddingData={weddingData} />
             <FallingHearts />
           </>
