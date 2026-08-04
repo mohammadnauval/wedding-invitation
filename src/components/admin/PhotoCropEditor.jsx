@@ -3,56 +3,41 @@ import React, { useState, useRef, useEffect, useCallback } from 'react';
 /**
  * PhotoCropEditor — Instagram-style circular crop editor.
  *
- * Rendering model (identical to LivePhoto):
- *   - The <img> fills the circle with object-cover (scale=1, no pan = default view)
- *   - transform: translate(x,y) scale(s) is applied on top
- *   - transformOrigin: center center
+ * Crop values stored as PERCENTAGES of container size (0–100), not pixels.
+ * This makes the crop render identically at any container size (editor=288px, invitation=128px).
  *
- * This means the saved {x, y, scale} produces the EXACT same result in
- * LivePhoto as what you see here in the editor.
+ *   x, y  : translate as % of container size  (e.g. 10 means shift by 10% of container width/height)
+ *   scale : zoom multiplier (1 = fit, 4 = max)
  *
- * Clamp logic keeps the image covering the circle at all times.
+ * At render time:  translatePx = (x / 100) * containerSizePx
  */
 
 const CIRCLE_SIZE = 288; // px — editor circle diameter
 
 function PhotoCropEditor({ src, initialCrop, onSave, onCancel }) {
   const [crop, setCrop] = useState(() => ({
-    x: initialCrop?.x ?? 0,
-    y: initialCrop?.y ?? 0,
+    x: initialCrop?.x ?? 0,   // % of container
+    y: initialCrop?.y ?? 0,   // % of container
     scale: initialCrop?.scale ?? 1,
   }));
 
-  // Natural image dimensions — needed for clamp
-  const [imgSize, setImgSize] = useState({ w: 0, h: 0 });
   const [dragging, setDragging] = useState(false);
   const dragStart = useRef({ mx: 0, my: 0, cx: 0, cy: 0 });
   const containerRef = useRef(null);
 
-  useEffect(() => {
-    if (!src) return;
-    const img = new Image();
-    img.onload = () => setImgSize({ w: img.naturalWidth, h: img.naturalHeight });
-    img.src = src;
-  }, [src]);
-
   /**
-   * Clamp translate so the image (after object-cover + scale) always covers
-   * the full CIRCLE_SIZE circle.
-   *
-   * At scale=1, object-cover makes the image fill CIRCLE_SIZE in both axes
-   * (the shorter dimension of the natural image fits exactly, the other overflows).
-   * After applying scale(s), the rendered size is CIRCLE_SIZE*s in each axis.
-   * The max translate in each axis before an edge enters the circle:
-   *   maxT = (CIRCLE_SIZE * s - CIRCLE_SIZE) / 2 = CIRCLE_SIZE * (s - 1) / 2
+   * Clamp: after object-cover+scale, how far can we translate before an edge shows?
+   * At scale s, rendered size = CIRCLE_SIZE * s.
+   * Max pixel shift = (CIRCLE_SIZE * s - CIRCLE_SIZE) / 2 = CIRCLE_SIZE * (s-1) / 2
+   * As percentage of CIRCLE_SIZE: maxPct = (s - 1) / 2 * 100
    */
   const clamp = useCallback((nextCrop) => {
     const s = nextCrop.scale;
-    const maxT = (CIRCLE_SIZE * (s - 1)) / 2;
+    const maxPct = ((s - 1) / 2) * 100;
     return {
       ...nextCrop,
-      x: Math.min(maxT, Math.max(-maxT, nextCrop.x)),
-      y: Math.min(maxT, Math.max(-maxT, nextCrop.y)),
+      x: Math.min(maxPct, Math.max(-maxPct, nextCrop.x)),
+      y: Math.min(maxPct, Math.max(-maxPct, nextCrop.y)),
     };
   }, []);
 
@@ -65,9 +50,10 @@ function PhotoCropEditor({ src, initialCrop, onSave, onCancel }) {
 
   const onMouseMove = useCallback((e) => {
     if (!dragging) return;
-    const dx = e.clientX - dragStart.current.mx;
-    const dy = e.clientY - dragStart.current.my;
-    setCrop(prev => clamp({ ...prev, x: dragStart.current.cx + dx, y: dragStart.current.cy + dy }));
+    // Convert pixel delta → percentage of circle size
+    const dxPct = ((e.clientX - dragStart.current.mx) / CIRCLE_SIZE) * 100;
+    const dyPct = ((e.clientY - dragStart.current.my) / CIRCLE_SIZE) * 100;
+    setCrop(prev => clamp({ ...prev, x: dragStart.current.cx + dxPct, y: dragStart.current.cy + dyPct }));
   }, [dragging, clamp]);
 
   const onMouseUp = useCallback(() => setDragging(false), []);
@@ -102,9 +88,9 @@ function PhotoCropEditor({ src, initialCrop, onSave, onCancel }) {
   const onTouchMove = (e) => {
     e.preventDefault();
     if (e.touches.length === 1 && dragging) {
-      const dx = e.touches[0].clientX - touchRef.current.x;
-      const dy = e.touches[0].clientY - touchRef.current.y;
-      setCrop(prev => clamp({ ...prev, x: touchRef.current.cx + dx, y: touchRef.current.cy + dy }));
+      const dxPct = ((e.touches[0].clientX - touchRef.current.x) / CIRCLE_SIZE) * 100;
+      const dyPct = ((e.touches[0].clientY - touchRef.current.y) / CIRCLE_SIZE) * 100;
+      setCrop(prev => clamp({ ...prev, x: touchRef.current.cx + dxPct, y: touchRef.current.cy + dyPct }));
     } else if (e.touches.length === 2) {
       const dx = e.touches[0].clientX - e.touches[1].clientX;
       const dy = e.touches[0].clientY - e.touches[1].clientY;
@@ -131,13 +117,15 @@ function PhotoCropEditor({ src, initialCrop, onSave, onCancel }) {
     return () => el.removeEventListener('wheel', onWheel);
   }, [onWheel]);
 
-  // ── Helpers ─────────────────────────────────────────────────────────────────
   const handleSave = () => onSave(crop);
   const handleReset = () => setCrop({ x: 0, y: 0, scale: 1 });
 
-  // Image style — MUST match LivePhoto's getCropStyle exactly
+  // Render: convert % back to px for this editor's CIRCLE_SIZE
+  const txPx = (crop.x / 100) * CIRCLE_SIZE;
+  const tyPx = (crop.y / 100) * CIRCLE_SIZE;
+
   const imgStyle = {
-    transform: `translate(${crop.x}px, ${crop.y}px) scale(${crop.scale})`,
+    transform: `translate(${txPx}px, ${tyPx}px) scale(${crop.scale})`,
     transformOrigin: 'center center',
     cursor: dragging ? 'grabbing' : 'grab',
     userSelect: 'none',
@@ -159,17 +147,25 @@ function PhotoCropEditor({ src, initialCrop, onSave, onCancel }) {
           </button>
         </div>
 
-        {/* Circle crop area — uses object-cover, identical to LivePhoto */}
+        {/* Circle crop area */}
         <div
           ref={containerRef}
-          className="relative rounded-full overflow-hidden border-4 border-[var(--color-primary)]/40 shadow-lg select-none"
-          style={{ width: CIRCLE_SIZE, height: CIRCLE_SIZE, background: '#f0f0f0' }}
+          className="relative select-none"
+          style={{
+            width: CIRCLE_SIZE,
+            height: CIRCLE_SIZE,
+            borderRadius: '50%',
+            overflow: 'hidden',
+            isolation: 'isolate',
+            background: '#f0f0f0',
+            border: '4px solid rgba(var(--color-primary-rgb, 180,60,100), 0.3)',
+            boxShadow: '0 4px 20px rgba(0,0,0,0.2)',
+          }}
           onMouseDown={onMouseDown}
           onTouchStart={onTouchStart}
           onTouchMove={onTouchMove}
           onTouchEnd={onTouchEnd}
         >
-          {/* Photo — object-cover fills the circle, transform pans/zooms */}
           <img
             src={src}
             alt="Crop"

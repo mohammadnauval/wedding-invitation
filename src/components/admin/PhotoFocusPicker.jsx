@@ -25,11 +25,14 @@ function PhotoFocusPicker({ photos = [], cropSettings = [], onChangeCrops }) {
     return { x: 0, y: 0, scale: 1 };
   };
 
-  // Build inline style for a thumbnail preview using the saved crop — identical to LivePhoto
+  // Build inline style for thumbnail preview — x,y are % of container, convert to px for 80px thumbnail
+  const THUMB_SIZE = 80; // w-20 = 80px
   const getThumbnailStyle = (index) => {
     const c = getCrop(index);
+    const xPx = ((c.x ?? 0) / 100) * THUMB_SIZE;
+    const yPx = ((c.y ?? 0) / 100) * THUMB_SIZE;
     return {
-      transform: `translate(${c.x}px, ${c.y}px) scale(${c.scale})`,
+      transform: `translate(${xPx}px, ${yPx}px) scale(${c.scale ?? 1})`,
       transformOrigin: 'center center',
     };
   };
@@ -61,17 +64,21 @@ function PhotoFocusPicker({ photos = [], cropSettings = [], onChangeCrops }) {
               className="relative group focus:outline-none"
               title={`Edit crop foto ${i + 1}`}
             >
-              {/* Circle preview — same size as invitation (w-32 = 128px) */}
-              <div className="w-20 h-20 rounded-full overflow-hidden border-2 border-gray-200 group-hover:border-[var(--color-primary)] transition-colors shadow-sm">
-                <div className="w-full h-full overflow-hidden rounded-full flex items-center justify-center bg-gray-100">
-                  <img
-                    src={url}
-                    alt={`Foto ${i + 1}`}
-                    className="w-full h-full object-cover"
-                    style={getThumbnailStyle(i)}
-                    draggable={false}
-                  />
-                </div>
+              {/* Circle preview — 80px thumbnail */}
+              <div
+                className="w-20 h-20 border-2 border-gray-200 group-hover:border-[var(--color-primary)] transition-colors shadow-sm bg-gray-100"
+                style={{
+                  clipPath: 'circle(50% at center)',
+                  WebkitClipPath: 'circle(50% at center)',
+                }}
+              >
+                <img
+                  src={url}
+                  alt={`Foto ${i + 1}`}
+                  className="w-full h-full object-cover"
+                  style={getThumbnailStyle(i)}
+                  draggable={false}
+                />
               </div>
 
               {/* Edit overlay */}
