@@ -13,8 +13,14 @@ function FloatingNav({ weddingData }) {
 
   // Only show nav items whose corresponding section is actually rendered
   const navItems = BASE_NAV_ITEMS.filter(item => {
-    if (!item.setting) return true;
-    return weddingData?.settings?.[item.setting] === '1';
+    if (item.id === 'gallery') {
+      return weddingData?.settings?.gallery_enabled === '1' &&
+             (weddingData?.gallery?.length ?? 0) > 0;
+    }
+    if (item.setting) {
+      return weddingData?.settings?.[item.setting] === '1';
+    }
+    return true;
   });
 
   useEffect(() => {
