@@ -17,12 +17,28 @@ function HeroSection({ weddingData }) {
 
   return (
     <section id="home" ref={ref} className="relative py-40 flex items-center justify-center bg-[var(--color-bg)]">
+      {/* Hero background photo */}
+      <div className="absolute inset-0">
+        <img
+          src="/images/wedding_hero_background.jpeg"
+          alt=""
+          className="w-full h-full object-cover"
+          style={{ opacity: 0.25 }}
+        />
+      </div>
+
+      {/* Soft gradient overlay to fade edges and protect text readability */}
+      <div
+        className="absolute inset-0"
+        style={{
+          background:
+            'linear-gradient(to bottom, var(--color-bg) 0%, transparent 20%, transparent 80%, var(--color-bg) 100%)',
+        }}
+      />
+
       {/* Background border */}
       <div className="absolute inset-0">
-        {/* Mobile */}
-        <img src="/images/background_border_fix.png" alt="" className="w-full h-full object-fill md:hidden" />
-        {/* Desktop/Tablet */}
-        <img src="/images/background_border_fix.png" alt="" className="w-full h-full object-fill hidden md:block" />
+        <img src="/images/background_border_fix.png" alt="" className="w-full h-full object-fill" />
       </div>
 
       {/* Content */}
