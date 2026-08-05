@@ -2,6 +2,31 @@ import React, { useState, useEffect } from 'react';
 import { adminFetch, adminUpload } from '../../hooks/useAdmin';
 import PhotoFocusPicker from '../../components/admin/PhotoFocusPicker';
 
+// Compress image client-side before upload to stay within Vercel's 4.5MB request limit
+async function compressImage(file, maxPx = 1200, quality = 0.88) {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    const url = URL.createObjectURL(file);
+    img.onload = () => {
+      URL.revokeObjectURL(url);
+      let { width, height } = img;
+      if (width > maxPx || height > maxPx) {
+        if (width >= height) { height = Math.round((height / width) * maxPx); width = maxPx; }
+        else { width = Math.round((width / height) * maxPx); height = maxPx; }
+      }
+      const canvas = document.createElement('canvas');
+      canvas.width = width; canvas.height = height;
+      canvas.getContext('2d').drawImage(img, 0, 0, width, height);
+      canvas.toBlob(
+        (blob) => blob ? resolve(new File([blob], file.name.replace(/\.[^.]+$/, '.jpg'), { type: 'image/jpeg' })) : reject(new Error('Compression failed')),
+        'image/jpeg', quality,
+      );
+    };
+    img.onerror = () => { URL.revokeObjectURL(url); reject(new Error('Failed to load image')); };
+    img.src = url;
+  });
+}
+
 function CoupleManagement() {
   const [couple, setCouple] = useState({ groom: {}, bride: {} });
   const [loading, setLoading] = useState(true);
@@ -41,8 +66,9 @@ function CoupleManagement() {
     setUploading(prev => ({ ...prev, [type]: true }));
     try {
       for (let i = 0; i < files.length; i++) {
+        const compressed = await compressImage(files[i]);
         const formData = new FormData();
-        formData.append('photo', files[i]);
+        formData.append('photo', compressed);
         formData.append('type', type);
         const data = await adminUpload('/couple/photo', formData);
         setCouple(prev => ({
