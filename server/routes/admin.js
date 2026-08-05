@@ -358,11 +358,15 @@ router.post('/couple/photo', upload.single('photo'), async (req, res) => {
     const { type } = req.body;
     if (!req.file) return res.status(400).json({ message: 'No file' });
 
-    // Store as base64 data URL (serverless-compatible)
-    const ext = path.extname(req.file.originalname).toLowerCase().replace('.', '');
-    const mime = ext === 'png' ? 'image/png' : ext === 'webp' ? 'image/webp' : 'image/jpeg';
-    const base64 = req.file.buffer.toString('base64');
-    const url = `data:${mime};base64,${base64}`;
+    // Compress & resize: max 800px, JPEG quality 90 — enough for the 128px circle display
+    const sharp = require('sharp');
+    const compressed = await sharp(req.file.buffer)
+      .rotate()
+      .resize(800, 800, { fit: 'inside', withoutEnlargement: true })
+      .jpeg({ quality: 90 })
+      .toBuffer();
+
+    const url = `data:image/jpeg;base64,${compressed.toString('base64')}`;
 
     // Get existing photos array
     const existing = await query('SELECT photos FROM couple WHERE type = $1', [type]);
@@ -515,11 +519,16 @@ router.post('/gallery', upload.single('image'), async (req, res) => {
   try {
     if (!req.file) return res.status(400).json({ message: 'No file' });
 
-    // Store as base64 data URL (serverless-compatible)
-    const ext = path.extname(req.file.originalname).toLowerCase().replace('.', '');
-    const mime = ext === 'png' ? 'image/png' : ext === 'webp' ? 'image/webp' : 'image/jpeg';
-    const base64 = req.file.buffer.toString('base64');
-    const image_url = `data:${mime};base64,${base64}`;
+    // Compress & resize: max 1200px wide, JPEG quality 85 — reduces blur on HiDPI screens
+    // by ensuring the stored image has sufficient resolution without being unnecessarily large
+    const sharp = require('sharp');
+    const compressed = await sharp(req.file.buffer)
+      .rotate() // auto-rotate based on EXIF orientation
+      .resize(1200, 1200, { fit: 'inside', withoutEnlargement: true })
+      .jpeg({ quality: 85, progressive: true })
+      .toBuffer();
+
+    const image_url = `data:image/jpeg;base64,${compressed.toString('base64')}`;
     const thumbnail_url = image_url;
 
     const maxOrder = await query('SELECT MAX(sort_order) as max FROM gallery');
