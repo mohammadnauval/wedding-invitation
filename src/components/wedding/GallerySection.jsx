@@ -44,8 +44,8 @@ function GallerySection({ weddingData }) {
 
         {/* Slideshow */}
         <div
-          className="relative overflow-hidden rounded-2xl shadow-lg select-none"
-          style={{ aspectRatio: '4/3' }}
+          className="relative overflow-hidden rounded-2xl shadow-lg select-none bg-black"
+          style={{ aspectRatio: '3/4' }}
           onMouseEnter={() => setPaused(true)}
           onMouseLeave={() => setPaused(false)}
           onTouchStart={onTouchStart}
@@ -61,7 +61,7 @@ function GallerySection({ weddingData }) {
               <img
                 src={photo.image_url}
                 alt={`Gallery ${index + 1}`}
-                className="w-full h-full object-cover"
+                className="w-full h-full object-contain"
                 loading={index === 0 ? 'eager' : 'lazy'}
                 draggable={false}
               />
