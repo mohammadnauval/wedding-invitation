@@ -44,24 +44,29 @@ function GallerySection({ weddingData }) {
 
         {/* Slideshow */}
         <div
-          className="relative overflow-hidden rounded-2xl shadow-lg select-none bg-black"
-          style={{ aspectRatio: '3/4' }}
+          className="relative overflow-hidden rounded-2xl shadow-lg select-none"
           onMouseEnter={() => setPaused(true)}
           onMouseLeave={() => setPaused(false)}
           onTouchStart={onTouchStart}
           onTouchEnd={onTouchEnd}
         >
-          {/* Slides */}
+          {/* Slides — stack all, only current is visible */}
           {gallery.map((photo, index) => (
             <div
               key={photo.id || index}
-              className="absolute inset-0 transition-opacity duration-700"
-              style={{ opacity: index === current ? 1 : 0, pointerEvents: index === current ? 'auto' : 'none' }}
+              className="transition-opacity duration-700"
+              style={{
+                opacity: index === current ? 1 : 0,
+                // Non-active slides are absolutely positioned so they don't affect layout
+                position: index === current ? 'relative' : 'absolute',
+                inset: 0,
+                pointerEvents: index === current ? 'auto' : 'none',
+              }}
             >
               <img
                 src={photo.image_url}
                 alt={`Gallery ${index + 1}`}
-                className="w-full h-full object-contain"
+                className="w-full h-auto block rounded-2xl"
                 loading={index === 0 ? 'eager' : 'lazy'}
                 draggable={false}
               />
