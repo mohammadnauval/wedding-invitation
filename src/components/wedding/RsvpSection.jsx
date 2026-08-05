@@ -177,20 +177,6 @@ function RsvpSection({ guestData, weddingData }) {
               </div>
             )}
 
-            {/* Notes */}
-            <div>
-              <label className="block text-xs text-[var(--color-text-muted)] mb-1">
-                Pesan / Catatan
-              </label>
-              <textarea
-                value={formData.notes}
-                onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
-                rows={3}
-                className="w-full px-4 py-3 bg-white border border-[var(--color-border)] rounded-xl text-sm resize-none"
-                placeholder="Tulis pesan atau catatan..."
-              />
-            </div>
-
             {/* Message */}
             {message && (
               <p className={`text-xs text-center ${message.type === 'error' ? 'text-red-500' : 'text-green-600'}`}>
