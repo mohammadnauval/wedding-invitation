@@ -6,8 +6,8 @@ const BASE_NAV_ITEMS = [
   { id: 'couple',    label: 'Couple',    icon: '✦' },
   { id: 'event',     label: 'Event',     icon: '◆' },
   { id: 'countdown', label: 'Countdown', icon: '◎' },
-  { id: 'gallery',   label: 'Gallery',   icon: '▣', setting: 'gallery_enabled' },
   { id: 'rsvp',      label: 'RSVP',      icon: '✉', setting: 'rsvp_enabled' },
+  { id: 'gallery',   label: 'Gallery',   icon: '▣', setting: 'gallery_enabled' },
 ];
 
 function FloatingNav({ weddingData }) {

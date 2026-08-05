@@ -165,12 +165,6 @@ function WeddingPage() {
             <EventSection weddingData={weddingData} />
             <SectionDivider variant="hearts" />
             <CountdownSection weddingData={weddingData} />
-            {weddingData?.settings?.gallery_enabled === '1' && (
-              <>
-                <SectionDivider variant="hearts" />
-                <GallerySection weddingData={weddingData} />
-              </>
-            )}
             {weddingData?.settings?.rsvp_enabled === '1' && (
               <>
                 <SectionDivider variant="hearts" />
@@ -179,6 +173,12 @@ function WeddingPage() {
             )}
             <SectionDivider variant="hearts" />
             <ClosingSection weddingData={weddingData} />
+            {weddingData?.settings?.gallery_enabled === '1' && (
+              <>
+                <SectionDivider variant="hearts" />
+                <GallerySection weddingData={weddingData} />
+              </>
+            )}
             <FloatingNav weddingData={weddingData} />
             <MusicPlayer audioRef={audioRef} weddingData={weddingData} />
             <FallingHearts />
