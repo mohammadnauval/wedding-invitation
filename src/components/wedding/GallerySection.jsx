@@ -14,8 +14,12 @@ function GallerySection({ weddingData }) {
   const prevImage = () => setLightboxIndex((prev) => (prev - 1 + gallery.length) % gallery.length);
 
   return (
-    <section id="gallery" ref={ref} className="py-16 bg-[var(--color-bg-soft)]">
-      <div className={`section-container ${inView ? 'fade-up' : 'opacity-0'}`}>
+    <section id="gallery" ref={ref} className="relative py-16 overflow-hidden">
+      {/* Background */}
+      <div className="absolute inset-0">
+        <img src="/images/background_gallery.png" alt="" className="w-full h-full object-cover" />
+      </div>
+      <div className={`section-container relative z-10 ${inView ? 'fade-up' : 'opacity-0'}`}>
         <h2 className="section-title">Gallery</h2>
         <p className="section-subtitle">Momen Berharga Kami</p>
 
