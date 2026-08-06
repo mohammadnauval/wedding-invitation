@@ -7,7 +7,7 @@ const BASE_NAV_ITEMS = [
   { id: 'event',     label: 'Event',     icon: '◆' },
   { id: 'countdown', label: 'Countdown', icon: '◎' },
   { id: 'rsvp',      label: 'RSVP',      icon: '✉', setting: 'rsvp_enabled' },
-  { id: 'gallery',   label: 'Gallery',   icon: '▣', setting: 'gallery_enabled' },
+  { id: 'gallery',   label: 'Gallery',   icon: '▣' },
 ];
 
 function FloatingNav({ weddingData }) {
@@ -15,10 +15,7 @@ function FloatingNav({ weddingData }) {
 
   // Only show nav items whose corresponding section is actually rendered
   const navItems = BASE_NAV_ITEMS.filter(item => {
-    if (item.id === 'gallery') {
-      // Gallery now loads from manifest.json independently, always show if enabled
-      return weddingData?.settings?.gallery_enabled === '1';
-    }
+    if (item.id === 'gallery') return true; // Gallery always rendered (reads manifest.json)
     if (item.setting) {
       return weddingData?.settings?.[item.setting] === '1';
     }

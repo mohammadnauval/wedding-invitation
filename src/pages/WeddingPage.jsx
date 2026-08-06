@@ -173,12 +173,8 @@ function WeddingPage() {
             )}
             <SectionDivider variant="hearts" />
             <ClosingSection weddingData={weddingData} />
-            {weddingData?.settings?.gallery_enabled === '1' && (
-              <>
-                <SectionDivider variant="hearts" />
-                <GallerySection />
-              </>
-            )}
+            <SectionDivider variant="hearts" />
+            <GallerySection />
             <FloatingNav weddingData={weddingData} />
             <MusicPlayer audioRef={audioRef} weddingData={weddingData} />
             <FallingHearts />
