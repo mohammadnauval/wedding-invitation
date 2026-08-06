@@ -517,20 +517,29 @@ router.get('/gallery', async (req, res) => {
 
 router.post('/gallery', upload.single('image'), async (req, res) => {
   try {
-    if (!req.file) return res.status(400).json({ message: 'No file' });
+    // Support two modes:
+    // 1. Upload file (compressed client-side) → store as base64
+    // 2. Static path (file already in /public/images/gallery/) → store path string
+    const { static_path } = req.body || {};
+    let image_url;
 
-    // Compress & resize: max 1200px wide, JPEG quality 85 — reduces blur on HiDPI screens
-    // by ensuring the stored image has sufficient resolution without being unnecessarily large
-    const sharp = require('sharp');
-    const compressed = await sharp(req.file.buffer)
-      .rotate() // auto-rotate based on EXIF orientation
-      .resize(1200, 1200, { fit: 'inside', withoutEnlargement: true })
-      .jpeg({ quality: 85, progressive: true })
-      .toBuffer();
+    if (static_path) {
+      // Static file mode — just save the path
+      image_url = static_path;
+    } else if (req.file) {
+      // Upload mode — compress with sharp and store as base64
+      const sharp = require('sharp');
+      const compressed = await sharp(req.file.buffer)
+        .rotate()
+        .resize(1200, 1200, { fit: 'inside', withoutEnlargement: true })
+        .jpeg({ quality: 85, progressive: true })
+        .toBuffer();
+      image_url = `data:image/jpeg;base64,${compressed.toString('base64')}`;
+    } else {
+      return res.status(400).json({ message: 'No file or path provided' });
+    }
 
-    const image_url = `data:image/jpeg;base64,${compressed.toString('base64')}`;
     const thumbnail_url = image_url;
-
     const maxOrder = await query('SELECT MAX(sort_order) as max FROM gallery');
     const sort_order = (parseInt(maxOrder.rows[0]?.max) || 0) + 1;
 

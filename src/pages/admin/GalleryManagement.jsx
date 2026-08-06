@@ -3,8 +3,6 @@ import { adminFetch, adminUpload } from '../../hooks/useAdmin';
 
 /**
  * Compress an image File using Canvas before uploading.
- * Resizes to max 1600px and encodes as JPEG at the given quality.
- * Returns a new File object that fits within Vercel's 4.5MB request limit.
  */
 async function compressImage(file, maxPx = 1600, quality = 0.82) {
   return new Promise((resolve, reject) => {
@@ -13,31 +11,16 @@ async function compressImage(file, maxPx = 1600, quality = 0.82) {
     img.onload = () => {
       URL.revokeObjectURL(url);
       let { width, height } = img;
-
-      // Scale down if needed
       if (width > maxPx || height > maxPx) {
-        if (width >= height) {
-          height = Math.round((height / width) * maxPx);
-          width = maxPx;
-        } else {
-          width = Math.round((width / height) * maxPx);
-          height = maxPx;
-        }
+        if (width >= height) { height = Math.round((height / width) * maxPx); width = maxPx; }
+        else { width = Math.round((width / height) * maxPx); height = maxPx; }
       }
-
       const canvas = document.createElement('canvas');
-      canvas.width = width;
-      canvas.height = height;
-      const ctx = canvas.getContext('2d');
-      ctx.drawImage(img, 0, 0, width, height);
-
+      canvas.width = width; canvas.height = height;
+      canvas.getContext('2d').drawImage(img, 0, 0, width, height);
       canvas.toBlob(
-        (blob) => {
-          if (!blob) return reject(new Error('Compression failed'));
-          resolve(new File([blob], file.name.replace(/\.[^.]+$/, '.jpg'), { type: 'image/jpeg' }));
-        },
-        'image/jpeg',
-        quality,
+        (blob) => blob ? resolve(new File([blob], file.name.replace(/\.[^.]+$/, '.jpg'), { type: 'image/jpeg' })) : reject(new Error('Compression failed')),
+        'image/jpeg', quality,
       );
     };
     img.onerror = () => { URL.revokeObjectURL(url); reject(new Error('Failed to load image')); };
@@ -50,6 +33,7 @@ function GalleryManagement() {
   const [loading, setLoading] = useState(true);
   const [uploading, setUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState('');
+  const [staticPath, setStaticPath] = useState('');
 
   useEffect(() => { loadGallery(); }, []);
 
@@ -64,6 +48,7 @@ function GalleryManagement() {
     }
   };
 
+  // Upload file (compressed client-side)
   const handleUpload = async (e) => {
     const files = Array.from(e.target.files || []);
     if (files.length === 0) return;
@@ -85,6 +70,28 @@ function GalleryManagement() {
     } finally {
       setUploading(false);
       e.target.value = '';
+    }
+  };
+
+  // Add static file path (file already in /public/images/gallery/)
+  const handleAddStaticPath = async () => {
+    const trimmed = staticPath.trim();
+    if (!trimmed) return;
+
+    // Ensure path starts with /images/gallery/
+    const finalPath = trimmed.startsWith('/images/gallery/')
+      ? trimmed
+      : `/images/gallery/${trimmed}`;
+
+    try {
+      await adminFetch('/gallery', {
+        method: 'POST',
+        body: JSON.stringify({ static_path: finalPath }),
+      });
+      setStaticPath('');
+      loadGallery();
+    } catch (err) {
+      alert(err.message);
     }
   };
 
@@ -121,6 +128,31 @@ function GalleryManagement() {
         <p className="text-xs text-gray-500 mb-4 text-center">{uploadProgress}</p>
       )}
 
+      {/* Add static path */}
+      <div className="bg-white p-4 rounded-xl border border-gray-100 mb-6">
+        <p className="text-xs text-gray-500 mb-2">
+          Atau tambahkan foto dari folder <code className="bg-gray-100 px-1 rounded">/public/images/gallery/</code>
+        </p>
+        <div className="flex gap-2">
+          <input
+            type="text"
+            value={staticPath}
+            onChange={(e) => setStaticPath(e.target.value)}
+            placeholder="nama_file.jpg"
+            className="flex-1 px-3 py-2 border border-gray-200 rounded-lg text-sm"
+          />
+          <button
+            onClick={handleAddStaticPath}
+            className="px-4 py-2 text-xs bg-[var(--color-primary)] text-white rounded-lg hover:bg-[var(--color-primary-dark)]"
+          >
+            Tambah
+          </button>
+        </div>
+        <p className="text-[10px] text-gray-400 mt-1">
+          Commit foto ke git terlebih dahulu, lalu masukkan nama file di sini.
+        </p>
+      </div>
+
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
         {gallery.map((photo) => (
           <div key={photo.id} className="relative group aspect-square rounded-xl overflow-hidden border border-gray-100">
@@ -142,7 +174,7 @@ function GalleryManagement() {
       </div>
 
       {gallery.length === 0 && (
-        <p className="text-center py-12 text-gray-400 text-sm">No photos yet. Upload some!</p>
+        <p className="text-center py-12 text-gray-400 text-sm">No photos yet. Upload some or add from static folder!</p>
       )}
     </div>
   );
