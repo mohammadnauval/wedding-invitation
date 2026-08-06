@@ -16,8 +16,8 @@ function FloatingNav({ weddingData }) {
   // Only show nav items whose corresponding section is actually rendered
   const navItems = BASE_NAV_ITEMS.filter(item => {
     if (item.id === 'gallery') {
-      return weddingData?.settings?.gallery_enabled === '1' &&
-             (weddingData?.gallery?.length ?? 0) > 0;
+      // Gallery now loads from manifest.json independently, always show if enabled
+      return weddingData?.settings?.gallery_enabled === '1';
     }
     if (item.setting) {
       return weddingData?.settings?.[item.setting] === '1';

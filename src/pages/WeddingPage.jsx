@@ -176,7 +176,7 @@ function WeddingPage() {
             {weddingData?.settings?.gallery_enabled === '1' && (
               <>
                 <SectionDivider variant="hearts" />
-                <GallerySection weddingData={weddingData} />
+                <GallerySection />
               </>
             )}
             <FloatingNav weddingData={weddingData} />

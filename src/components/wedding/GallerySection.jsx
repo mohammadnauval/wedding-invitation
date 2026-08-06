@@ -1,23 +1,30 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import useInView from '../../hooks/useInView';
 
-function GallerySection({ weddingData }) {
+function GallerySection() {
   const [ref, inView] = useInView();
   const [current, setCurrent] = useState(0);
   const [paused, setPaused] = useState(false);
+  const [photos, setPhotos] = useState([]);
   const touchStartX = useRef(null);
-  const rawGallery = weddingData?.gallery || [];
 
-  // Sort by filename (image_url) ascending
-  const gallery = [...rawGallery].sort((a, b) => {
-    const nameA = (a.image_url || '').split('/').pop().toLowerCase();
-    const nameB = (b.image_url || '').split('/').pop().toLowerCase();
-    return nameA.localeCompare(nameB, undefined, { numeric: true });
-  });
+  // Load gallery from static manifest (no DB dependency)
+  useEffect(() => {
+    fetch('/images/gallery/manifest.json')
+      .then(r => r.json())
+      .then(data => {
+        if (Array.isArray(data) && data.length > 0) {
+          // Already sorted by filename in manifest, but sort just in case
+          const sorted = [...data].sort((a, b) =>
+            a.split('/').pop().toLowerCase().localeCompare(b.split('/').pop().toLowerCase(), undefined, { numeric: true })
+          );
+          setPhotos(sorted);
+        }
+      })
+      .catch(() => {});
+  }, []);
 
-  if (gallery.length === 0) return null;
-
-  const total = gallery.length;
+  const total = photos.length;
 
   const prev = useCallback(() => setCurrent(i => (i - 1 + total) % total), [total]);
   const next = useCallback(() => setCurrent(i => (i + 1) % total), [total]);
@@ -38,6 +45,8 @@ function GallerySection({ weddingData }) {
     touchStartX.current = null;
   };
 
+  if (photos.length === 0) return null;
+
   return (
     <section id="gallery" ref={ref} className="relative py-16 overflow-hidden">
       {/* Background */}
@@ -56,21 +65,19 @@ function GallerySection({ weddingData }) {
           onTouchStart={onTouchStart}
           onTouchEnd={onTouchEnd}
         >
-          {/* Slides — stack all, only current is visible */}
-          {gallery.map((photo, index) => (
+          {photos.map((src, index) => (
             <div
-              key={photo.id || index}
+              key={src}
               className="transition-opacity duration-700"
               style={{
                 opacity: index === current ? 1 : 0,
-                // Non-active slides are absolutely positioned so they don't affect layout
                 position: index === current ? 'relative' : 'absolute',
                 inset: 0,
                 pointerEvents: index === current ? 'auto' : 'none',
               }}
             >
               <img
-                src={photo.image_url}
+                src={src}
                 alt={`Gallery ${index + 1}`}
                 className="w-full h-auto block rounded-2xl"
                 loading={index === 0 ? 'eager' : 'lazy'}
@@ -108,7 +115,7 @@ function GallerySection({ weddingData }) {
         {/* Dot indicators */}
         {total > 1 && (
           <div className="flex justify-center gap-1.5 mt-4">
-            {gallery.map((_, index) => (
+            {photos.map((_, index) => (
               <button
                 key={index}
                 onClick={() => setCurrent(index)}
@@ -116,7 +123,7 @@ function GallerySection({ weddingData }) {
                 style={{
                   width: index === current ? '20px' : '6px',
                   height: '6px',
-                  background: index === current ? 'var(--color-primary)' : 'var(--color-primary)',
+                  background: 'var(--color-primary)',
                   opacity: index === current ? 1 : 0.3,
                 }}
                 aria-label={`Go to photo ${index + 1}`}
