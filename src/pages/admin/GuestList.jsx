@@ -310,6 +310,7 @@ Merupakan suatu kehormatan bagi kami apabila Bapak/Ibu/Saudara/i dapat hadir. Te
                 <th className="text-left px-4 py-3 font-medium text-gray-600">Category</th>
                 <th className="text-center px-4 py-3 font-medium text-gray-600">Type</th>
                 <th className="text-center px-4 py-3 font-medium text-gray-600">RSVP</th>
+                <th className="text-center px-4 py-3 font-medium text-gray-600">Pax</th>
                 <th className="text-center px-4 py-3 font-medium text-gray-600">WA</th>
                 <th className="text-right px-4 py-3 font-medium text-gray-600">Actions</th>
               </tr>
@@ -343,6 +344,9 @@ Merupakan suatu kehormatan bagi kami apabila Bapak/Ibu/Saudara/i dapat hadir. Te
                         : guest.rsvp_status === 'not_attending' ? 'Tidak Hadir'
                         : 'Pending'}
                     </span>
+                  </td>
+                  <td className="px-4 py-3 text-center text-xs font-medium text-gray-700">
+                    {guest.rsvp_status === 'attending' ? guest.rsvp_pax || 0 : '-'}
                   </td>
                   <td className="px-4 py-3 text-center">
                     {guest.wa_sent ? (
