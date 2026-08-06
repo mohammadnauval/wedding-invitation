@@ -1,29 +1,22 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import useInView from '../../hooks/useInView';
 
+// Gallery photos — hardcoded paths to static files in /public/images/gallery/
+// To update: add/remove entries here, commit & push.
+const GALLERY_PHOTOS = [
+  '/images/gallery/02_gallery.jpg',
+  '/images/gallery/03_gallery.jpeg',
+  '/images/gallery/04_gallery.jpeg',
+  '/images/gallery/05_gallery.jpeg',
+];
+
 function GallerySection() {
   const [ref, inView] = useInView();
   const [current, setCurrent] = useState(0);
   const [paused, setPaused] = useState(false);
-  const [photos, setPhotos] = useState([]);
   const touchStartX = useRef(null);
 
-  // Load gallery from static manifest (no DB dependency)
-  useEffect(() => {
-    fetch('/images/gallery/manifest.json?v=' + Date.now())
-      .then(r => r.json())
-      .then(data => {
-        if (Array.isArray(data) && data.length > 0) {
-          // Already sorted by filename in manifest, but sort just in case
-          const sorted = [...data].sort((a, b) =>
-            a.split('/').pop().toLowerCase().localeCompare(b.split('/').pop().toLowerCase(), undefined, { numeric: true })
-          );
-          setPhotos(sorted);
-        }
-      })
-      .catch(() => {});
-  }, []);
-
+  const photos = GALLERY_PHOTOS;
   const total = photos.length;
 
   const prev = useCallback(() => setCurrent(i => (i - 1 + total) % total), [total]);
