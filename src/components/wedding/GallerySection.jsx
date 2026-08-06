@@ -6,7 +6,14 @@ function GallerySection({ weddingData }) {
   const [current, setCurrent] = useState(0);
   const [paused, setPaused] = useState(false);
   const touchStartX = useRef(null);
-  const gallery = weddingData?.gallery || [];
+  const rawGallery = weddingData?.gallery || [];
+
+  // Sort by filename (image_url) ascending
+  const gallery = [...rawGallery].sort((a, b) => {
+    const nameA = (a.image_url || '').split('/').pop().toLowerCase();
+    const nameB = (b.image_url || '').split('/').pop().toLowerCase();
+    return nameA.localeCompare(nameB, undefined, { numeric: true });
+  });
 
   if (gallery.length === 0) return null;
 
