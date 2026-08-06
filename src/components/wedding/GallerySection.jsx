@@ -10,7 +10,7 @@ function GallerySection() {
 
   // Load gallery from static manifest (no DB dependency)
   useEffect(() => {
-    fetch('/images/gallery/manifest.json')
+    fetch('/images/gallery/manifest.json?v=' + Date.now())
       .then(r => r.json())
       .then(data => {
         if (Array.isArray(data) && data.length > 0) {
