@@ -40,7 +40,6 @@ function GallerySection({ weddingData }) {
 
       <div className={`section-container relative z-10 ${inView ? 'fade-up' : 'opacity-0'}`}>
         <h2 className="section-title">Gallery</h2>
-        <p className="section-subtitle">Momen Berharga Kami</p>
 
         {/* Slideshow */}
         <div
