@@ -84,7 +84,7 @@ function GalleryManagement() {
       : `/images/gallery/${trimmed}`;
 
     try {
-      await adminFetch('/gallery', {
+      await adminFetch('/gallery/static', {
         method: 'POST',
         body: JSON.stringify({ static_path: finalPath }),
       });

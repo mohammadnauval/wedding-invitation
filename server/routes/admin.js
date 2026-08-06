@@ -515,6 +515,28 @@ router.get('/gallery', async (req, res) => {
   }
 });
 
+// Add gallery photo from static path (file already in /public/images/gallery/)
+router.post('/gallery/static', async (req, res) => {
+  try {
+    const { static_path } = req.body;
+    if (!static_path) return res.status(400).json({ message: 'No path provided' });
+
+    const image_url = static_path;
+    const thumbnail_url = image_url;
+    const maxOrder = await query('SELECT MAX(sort_order) as max FROM gallery');
+    const sort_order = (parseInt(maxOrder.rows[0]?.max) || 0) + 1;
+
+    await query(
+      'INSERT INTO gallery (image_url, thumbnail_url, sort_order) VALUES ($1, $2, $3)',
+      [image_url, thumbnail_url, sort_order]
+    );
+    res.json({ success: true });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
 router.post('/gallery', upload.single('image'), async (req, res) => {
   try {
     // Support two modes:
