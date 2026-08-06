@@ -41,7 +41,6 @@ function CoupleSection({ weddingData }) {
 
       <div className={`section-container relative z-10 pt-52 ${inView ? 'fade-up' : 'opacity-0'}`}>
         <h2 className="section-title">The Couple</h2>
-        <p className="section-subtitle font-bold drop-shadow-sm">Two hearts, one love story</p>
 
         <div className="space-y-5">
           {/* Bride - left aligned */}
