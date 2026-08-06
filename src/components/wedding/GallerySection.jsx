@@ -4,6 +4,7 @@ import useInView from '../../hooks/useInView';
 // Gallery photos — hardcoded paths to static files in /public/images/gallery/
 // To update: add/remove entries here, commit & push.
 const GALLERY_PHOTOS = [
+  '/images/gallery/01_fix_gallery.JPEG',
   '/images/gallery/02_gallery.jpg',
   '/images/gallery/03_gallery.jpeg',
   '/images/gallery/04_gallery.jpeg',
