@@ -42,10 +42,10 @@ router.get('/invitations/:slugOrToken?', async (req, res) => {
       return res.status(404).json({ message: 'Undangan tidak ditemukan' });
     }
 
-    // Get RSVP for guest
+    // Get RSVP for guest — don't show manual RSVP to the guest (they should still see the RSVP form)
     let rsvp = null;
     if (guest) {
-      const rsvpResult = await query('SELECT * FROM rsvp WHERE guest_id = $1', [guest.id]);
+      const rsvpResult = await query('SELECT * FROM rsvp WHERE guest_id = $1 AND is_manual = FALSE', [guest.id]);
       rsvp = rsvpResult.rows[0] || null;
     }
 
@@ -142,11 +142,21 @@ router.post('/rsvp', async (req, res) => {
     // Check existing RSVP
     const existingResult = await query('SELECT * FROM rsvp WHERE guest_id = $1', [guest_id]);
     if (existingResult.rows.length > 0) {
+      const existing = existingResult.rows[0];
+      if (existing.is_manual) {
+        // Override manual RSVP with guest's own submission
+        await query(
+          'UPDATE rsvp SET attendance_status = $1, pax = $2, notes = $3, is_manual = FALSE, updated_at = CURRENT_TIMESTAMP WHERE guest_id = $4',
+          [attendance_status, actualPax, notes || '', guest_id]
+        );
+        const rsvpResult = await query('SELECT * FROM rsvp WHERE guest_id = $1', [guest_id]);
+        return res.json({ rsvp: rsvpResult.rows[0] });
+      }
       return res.status(400).json({ message: 'RSVP sudah pernah dikirim. Gunakan endpoint update.' });
     }
 
     await query(
-      'INSERT INTO rsvp (guest_id, attendance_status, pax, notes) VALUES ($1, $2, $3, $4)',
+      'INSERT INTO rsvp (guest_id, attendance_status, pax, notes, is_manual) VALUES ($1, $2, $3, $4, FALSE)',
       [guest_id, attendance_status, actualPax, notes || '']
     );
 

@@ -85,6 +85,8 @@ async function initDB() {
       AND photo_focuses::text NOT LIKE '%"posX"%'
   `);
 
+  await query(`ALTER TABLE rsvp ADD COLUMN IF NOT EXISTS is_manual BOOLEAN DEFAULT FALSE`);
+
   await query(`
     CREATE TABLE IF NOT EXISTS rsvp (
       id SERIAL PRIMARY KEY,

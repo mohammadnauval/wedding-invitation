@@ -192,6 +192,26 @@ Merupakan suatu kehormatan bagi kami apabila Bapak/Ibu/Saudara/i dapat hadir. Te
   };
 
   const [filterRsvp, setFilterRsvp] = useState('');
+  const [manualRsvpGuest, setManualRsvpGuest] = useState(null);
+  const [manualRsvpData, setManualRsvpData] = useState({ attendance_status: 'attending', pax: 1 });
+
+  const handleManualRsvp = async () => {
+    if (!manualRsvpGuest) return;
+    try {
+      await adminFetch('/rsvp/manual', {
+        method: 'POST',
+        body: JSON.stringify({
+          guest_id: manualRsvpGuest.id,
+          attendance_status: manualRsvpData.attendance_status,
+          pax: manualRsvpData.pax,
+        }),
+      });
+      setManualRsvpGuest(null);
+      loadData();
+    } catch (err) {
+      alert(err.message);
+    }
+  };
 
   const filteredGuests = guests.filter((g) => {
     const matchSearch = g.name.toLowerCase().includes(search.toLowerCase()) ||
@@ -343,6 +363,7 @@ Merupakan suatu kehormatan bagi kami apabila Bapak/Ibu/Saudara/i dapat hadir. Te
                       {guest.rsvp_status === 'attending' ? 'Hadir'
                         : guest.rsvp_status === 'not_attending' ? 'Tidak Hadir'
                         : 'Pending'}
+                      {guest.rsvp_is_manual && <span className="ml-1 opacity-60">(M)</span>}
                     </span>
                   </td>
                   <td className="px-4 py-3 text-center text-xs font-medium text-gray-700">
@@ -357,6 +378,13 @@ Merupakan suatu kehormatan bagi kami apabila Bapak/Ibu/Saudara/i dapat hadir. Te
                   </td>
                   <td className="px-4 py-3 text-right">
                     <div className="flex items-center justify-end gap-1">
+                      <button
+                        onClick={() => { setManualRsvpGuest(guest); setManualRsvpData({ attendance_status: 'attending', pax: 1 }); }}
+                        className="px-2 py-1 text-xs text-purple-600 hover:bg-purple-50 rounded"
+                        title="RSVP Manual"
+                      >
+                        ✓
+                      </button>
                       <button
                         onClick={() => sendWhatsApp(guest)}
                         className="px-2 py-1 text-xs text-green-600 hover:bg-green-50 rounded"
@@ -588,6 +616,80 @@ Merupakan suatu kehormatan bagi kami apabila Bapak/Ibu/Saudara/i dapat hadir. Te
               >
                 Simpan Templates
               </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Manual RSVP Modal */}
+      {manualRsvpGuest && (
+        <div className="fixed inset-0 bg-black/30 z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-2xl p-6 w-full max-w-sm">
+            <h3 className="text-lg font-semibold mb-1">RSVP Manual</h3>
+            <p className="text-xs text-gray-500 mb-4">
+              Set kehadiran untuk <strong>{manualRsvpGuest.name}</strong>
+            </p>
+            {manualRsvpGuest.rsvp_status && !manualRsvpGuest.rsvp_is_manual && (
+              <p className="text-[10px] text-amber-600 bg-amber-50 rounded px-2 py-1 mb-3">
+                ⚠️ Tamu ini sudah RSVP sendiri — tidak bisa di-override manual.
+              </p>
+            )}
+            <div className="space-y-3">
+              <div>
+                <label className="text-xs text-gray-600 mb-1 block">Status</label>
+                <div className="grid grid-cols-2 gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setManualRsvpData(d => ({ ...d, attendance_status: 'attending' }))}
+                    className={`py-2 rounded-lg text-xs border transition-all ${
+                      manualRsvpData.attendance_status === 'attending'
+                        ? 'bg-green-500 text-white border-green-500'
+                        : 'bg-white border-gray-200 text-gray-600'
+                    }`}
+                  >
+                    Hadir
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setManualRsvpData(d => ({ ...d, attendance_status: 'not_attending' }))}
+                    className={`py-2 rounded-lg text-xs border transition-all ${
+                      manualRsvpData.attendance_status === 'not_attending'
+                        ? 'bg-red-500 text-white border-red-500'
+                        : 'bg-white border-gray-200 text-gray-600'
+                    }`}
+                  >
+                    Tidak Hadir
+                  </button>
+                </div>
+              </div>
+              {manualRsvpData.attendance_status === 'attending' && (
+                <div>
+                  <label className="text-xs text-gray-600 mb-1 block">Jumlah Pax</label>
+                  <select
+                    value={manualRsvpData.pax}
+                    onChange={(e) => setManualRsvpData(d => ({ ...d, pax: parseInt(e.target.value) }))}
+                    className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm"
+                  >
+                    {Array.from({ length: manualRsvpGuest.max_pax || 5 }, (_, i) => i + 1).map(n => (
+                      <option key={n} value={n}>{n}</option>
+                    ))}
+                  </select>
+                </div>
+              )}
+              <div className="flex gap-2 pt-2">
+                <button
+                  onClick={() => setManualRsvpGuest(null)}
+                  className="flex-1 py-2.5 border border-gray-200 rounded-lg text-sm text-gray-600"
+                >
+                  Batal
+                </button>
+                <button
+                  onClick={handleManualRsvp}
+                  className="flex-1 py-2.5 bg-[var(--color-primary)] text-white rounded-lg text-sm"
+                >
+                  Simpan
+                </button>
+              </div>
             </div>
           </div>
         </div>

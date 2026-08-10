@@ -96,7 +96,7 @@ router.get('/categories', async (req, res) => {
 router.get('/guests', async (req, res) => {
   try {
     const result = await query(`
-      SELECT g.*, gc.name as category_name, r.attendance_status as rsvp_status, r.pax as rsvp_pax
+      SELECT g.*, gc.name as category_name, r.attendance_status as rsvp_status, r.pax as rsvp_pax, r.is_manual as rsvp_is_manual
       FROM guests g
       LEFT JOIN guest_categories gc ON g.category_id = gc.id
       LEFT JOIN rsvp r ON g.id = r.guest_id
@@ -281,6 +281,39 @@ router.put('/rsvp/:id', async (req, res) => {
       'UPDATE rsvp SET attendance_status = $1, pax = $2, notes = $3, updated_at = CURRENT_TIMESTAMP WHERE id = $4',
       [attendance_status, pax || 0, notes || '', req.params.id]
     );
+    res.json({ success: true });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+// Manual RSVP — admin sets attendance for a guest (can be overridden by guest's own RSVP)
+router.post('/rsvp/manual', async (req, res) => {
+  try {
+    const { guest_id, attendance_status, pax } = req.body;
+    if (!guest_id || !attendance_status) {
+      return res.status(400).json({ message: 'guest_id and attendance_status required' });
+    }
+
+    // Check if guest already has an RSVP
+    const existing = await query('SELECT * FROM rsvp WHERE guest_id = $1', [guest_id]);
+    if (existing.rows.length > 0) {
+      // Only update if existing is also manual — don't override guest's own RSVP
+      if (existing.rows[0].is_manual) {
+        await query(
+          'UPDATE rsvp SET attendance_status = $1, pax = $2, is_manual = TRUE, updated_at = CURRENT_TIMESTAMP WHERE guest_id = $3',
+          [attendance_status, pax || 1, guest_id]
+        );
+      } else {
+        return res.status(400).json({ message: 'Tamu sudah RSVP sendiri, tidak bisa di-override oleh manual RSVP' });
+      }
+    } else {
+      await query(
+        'INSERT INTO rsvp (guest_id, attendance_status, pax, is_manual) VALUES ($1, $2, $3, TRUE)',
+        [guest_id, attendance_status, pax || 1]
+      );
+    }
     res.json({ success: true });
   } catch (err) {
     console.error(err);
