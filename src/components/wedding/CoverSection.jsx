@@ -7,12 +7,19 @@ function CoverSection({ weddingData, guestName, guestData, onOpen }) {
   return (
     <div className="fixed inset-0 z-50 bg-[var(--color-bg)] lg:relative lg:min-h-screen overflow-hidden">
 
-      {/* Background image */}
+      {/* Background image - phone version for mobile, desktop version for larger screens */}
       <div className="absolute inset-0">
-        <img
-          src="/images/welcome_page_syukuran.png"
-          alt=""
-          className="w-full h-full object-cover"
+        {/* Mobile */}
+        <img 
+          src="/images/welcome_page_syukuran.png" 
+          alt="" 
+          className="w-full h-full object-contain md:hidden"
+        />
+        {/* Desktop/Tablet */}
+        <img 
+          src="/images/welcome_page_syukuran.png" 
+          alt="" 
+          className="w-full h-full object-contain hidden md:block"
         />
       </div>
 
