@@ -88,7 +88,7 @@ router.get('/invitations/:slugOrToken?', async (req, res) => {
         opening: settings.greeting_opening || 'Bismillahirrahmanirrahim',
         quote: settings.greeting_quote || 'Dan di antara tanda-tanda (kebesaran)-Nya ialah Dia menciptakan pasangan-pasangan untukmu dari jenismu sendiri, agar kamu cenderung dan merasa tenteram kepadanya, dan Dia menjadikan di antaramu rasa kasih dan sayang.',
         source: settings.greeting_source || 'QS. Ar-Rum: 21',
-        closing: settings.greeting_closing || 'Dengan memohon rahmat dan ridho Allah SWT, kami bermaksud mengundang Bapak/Ibu/Saudara/i untuk hadir dalam acara pernikahan kami.',
+        closing: settings.greeting_closing || 'Dengan memohon rahmat dan ridho Allah SWT, kami bermaksud mengundang Bapak/Ibu/Saudara/i untuk hadir dalam acara syukuran pernikahan kami.',
       },
       closing: settings.closing_message || '',
       countdown_message: settings.countdown_message || 'Today is Our Special Day',
