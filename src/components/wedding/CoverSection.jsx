@@ -7,6 +7,15 @@ function CoverSection({ weddingData, guestName, guestData, onOpen }) {
   return (
     <div className="fixed inset-0 z-50 bg-[var(--color-bg)] lg:relative lg:min-h-screen overflow-hidden">
 
+      {/* Background image */}
+      <div className="absolute inset-0">
+        <img
+          src="/images/welcome_page_syukuran.png"
+          alt=""
+          className="w-full h-full object-contain"
+        />
+      </div>
+
       {/* Content wrapper */}
       <div className="absolute inset-0 max-w-[480px] mx-auto">
         {/* Dear + Button - pinned to bottom */}
