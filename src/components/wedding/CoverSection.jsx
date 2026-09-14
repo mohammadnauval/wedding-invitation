@@ -12,7 +12,7 @@ function CoverSection({ weddingData, guestName, guestData, onOpen }) {
         <img
           src="/images/welcome_page_syukuran.png"
           alt=""
-          className="w-full h-full object-contain"
+          className="w-full h-full object-cover"
         />
       </div>
 
