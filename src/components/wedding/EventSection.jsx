@@ -43,11 +43,6 @@ function EventSection({ weddingData }) {
         <p className="section-subtitle font-bold drop-shadow-sm">Join us to celebrate our love</p>
 
         <div className="relative">
-          {/* Venue image behind cards */}
-          <div className="absolute inset-0 rounded-3xl overflow-hidden">
-            <img src="/images/venue_background.jpg.jpg" alt="" className="w-full h-full object-cover opacity-50" />
-          </div>
-
           <div className="relative z-10 space-y-6">
           {events.map((event, index) => (
             <div
