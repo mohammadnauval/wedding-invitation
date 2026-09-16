@@ -53,7 +53,7 @@ function HeroSection({ weddingData }) {
 
         <div className="flex items-center justify-center gap-4 mt-6">
           <div className="w-12 h-[2px] bg-[var(--color-primary)]" />
-          <p className="font-couple text-2xl text-[var(--color-primary)]">
+          <p className="font-couple text-3xl text-[var(--color-primary)]">
             {weddingDate}
           </p>
           <div className="w-12 h-[2px] bg-[var(--color-primary)]" />
