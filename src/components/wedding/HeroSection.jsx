@@ -51,12 +51,12 @@ function HeroSection({ weddingData }) {
           We invite you to share in our joy
         </p>
 
-        <div className="flex items-center justify-center gap-4 mt-6">
-          <div className="w-12 h-[2px] bg-[var(--color-primary)]" />
-          <p className="font-couple text-3xl text-[var(--color-primary)]">
+        <div className="flex items-center justify-center gap-3 mt-6">
+          <div className="w-6 h-[2px] bg-[var(--color-primary)] shrink-0" />
+          <p className="font-couple text-3xl text-[var(--color-primary)] whitespace-nowrap">
             {weddingDate}
           </p>
-          <div className="w-12 h-[2px] bg-[var(--color-primary)]" />
+          <div className="w-6 h-[2px] bg-[var(--color-primary)] shrink-0" />
         </div>
       </div>
     </section>
