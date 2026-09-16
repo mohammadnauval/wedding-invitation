@@ -8,11 +8,11 @@ function HeroSection({ weddingData }) {
   const groomName = weddingData?.couple?.groom?.nickname || 'Groom';
 
   const weddingDate = weddingData?.events?.[0]?.event_date
-    ? new Date(weddingData.events[0].event_date).toLocaleDateString('en-GB', {
-        day: '2-digit',
-        month: '2-digit',
+    ? new Date(weddingData.events[0].event_date).toLocaleDateString('id-ID', {
+        day: 'numeric',
+        month: 'long',
         year: 'numeric',
-      }).replace(/\//g, '.')
+      })
     : '';
 
   return (
