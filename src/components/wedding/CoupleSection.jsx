@@ -60,7 +60,7 @@ function CoupleSection({ weddingData }) {
                 <p className="text-xs font-medium text-[var(--color-text)] mt-0.5">
                   {bride.full_name || ''}
                 </p>
-                <p className="text-[10px] text-[var(--color-text-muted)] mt-1 leading-relaxed">
+                <p className="text-sm text-[var(--color-text-muted)] mt-1 leading-relaxed">
                   {bride.child_order ? `Putri ${bride.child_order} dari` : 'Putri dari'}<br/>Bapak {bride.father_name || '-'}<br/>& Ibu {bride.mother_name || '-'}
                 </p>
               </div>
@@ -92,7 +92,7 @@ function CoupleSection({ weddingData }) {
                 <p className="text-xs font-medium text-[var(--color-text)] mt-0.5">
                   {groom.full_name || ''}
                 </p>
-                <p className="text-[10px] text-[var(--color-text-muted)] mt-1 leading-relaxed">
+                <p className="text-sm text-[var(--color-text-muted)] mt-1 leading-relaxed">
                   {groom.child_order ? `Putra ${groom.child_order} dari` : 'Putra dari'}<br/>Bapak {groom.father_name || '-'}<br/>& Ibu {groom.mother_name || '-'}
                 </p>
               </div>
